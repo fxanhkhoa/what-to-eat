@@ -1,7 +1,9 @@
-<script>
+<script context="module">
+	import '../i18n';
 	import Header from './Header.svelte';
 	import './styles.css';
 	import '../app.css';
+
 </script>
 
 <div class="app">
