@@ -1,5 +1,6 @@
 <script>
 	import { _ } from 'svelte-i18n';
+	import WheelOfFortune from './wheel-of-fortune.svelte';
 </script>
 
 <svelte:head>
@@ -7,8 +8,8 @@
 	<meta name="description" content="hôm nay ăn gì" />
 </svelte:head>
 
-<section id="welcome">
-	<div class="grid grid-cols-12">
+<section id="welcome" class="bg-gradient-to-br from-purple-500 to-purple-300 px-5 md:px-20">
+	<div class="grid grid-cols-12 place-items-center">
 		<div class="col-span-12 md:col-span-6 flex flex-col gap-5">
 			<h1 class="text-left">{$_('welcome.title')}</h1>
 			<h4>{$_('welcome.subtitle')}</h4>
@@ -31,12 +32,20 @@
 				<span
 					class="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100"
 				/>
-				<span class="relative uppercase transition-colors duration-300 delay-200 group-hover:text-white ease"
+				<span
+					class="relative uppercase transition-colors duration-300 delay-200 group-hover:text-white ease"
 					>{$_('build-your-own-menus')}</span
 				>
 			</a>
 		</div>
-		<div class="col-span-12 md:col-span-6" />
+		<div class="col-span-12 md:col-span-6"><WheelOfFortune /></div>
+	</div>
+</section>
+
+<section id="category" class="bg-white px-5 md:px-20">
+	<div class="flex flex-col gap-5">
+		<h1>{$_('categories')}</h1>
+		<h4>{$_('category.subtitle')}</h4>
 	</div>
 </section>
 
