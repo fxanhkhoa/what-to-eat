@@ -46,27 +46,144 @@
 	</div>
 </section>
 
-<section id="category" class="bg-white px-10 md:px-32">
-	<div class="flex flex-col gap-5">
-		<h1>{$_('categories')}</h1>
-		<h4>{$_('category.subtitle')}</h4>
-		<div class="grid grid-cols-12">
-			<div class="col-span-3 flex gap-3">
+<section id="category" class="bg-white px-10 md:px-32 pt-10">
+	<div class="flex flex-col gap-5 md:gap-10">
+		<h1 class="text-center font-bold text-black">{$_('categories')}</h1>
+		<h5 class="text-justify text-gray-500">{$_('category.subtitle')}</h5>
+		<div class="grid grid-cols-12 gap-5">
+			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 relative w-auto px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-gray-300 hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
 				>
 					<i class="fa-solid fa-blender my-auto text-xl text-blue-500" />
-					<h5>{$_('milk-and-dairy')}</h5>
+					<h5 class="my-auto">{$_('milk-and-dairy')}</h5>
 				</a>
 			</div>
-			<div class="col-span-3 flex gap-3">
+			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 relative w-auto px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-gray-300 hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
 				>
 					<i class="fa-solid fa-wheat-awn my-auto text-xl text-blue-500" />
-					<h5>{$_('grains')}</h5>
+					<h5 class="my-auto">{$_('grains')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-glass-water my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('beverages-nonalcoholic')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-drumstick-bite my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('protein-foods')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-cookie-bite my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('snacks-and-sweets')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-wine-glass my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('alcoholic-beverages')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-bottle-water my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('water')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-burger my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('fats-and-oils')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-bowl-food my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('mixed-dishes')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-apple-whole my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('fruit')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-pepper-hot my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('condiments-and-sauces')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-cubes-stacked my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('condiments-and-sauces')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-seedling my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('vegetables')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-baby my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('infant-formula-and-baby-food')}</h5>
+				</a>
+			</div>
+			<div class="col-span-4 md:col-span-3 flex gap-3">
+				<a
+					href="#_"
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
+				>
+					<i class="fa-solid fa-comment-dots my-auto text-xl text-blue-500" />
+					<h5 class="my-auto">{$_('other')}</h5>
 				</a>
 			</div>
 		</div>
