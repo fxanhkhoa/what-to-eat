@@ -6,5 +6,18 @@
 	"categories": "Categories",
     "category.subtitle": "Dish categories are a way of organizing dishes into groups based on their main ingredients, cooking method, or overall purpose. This can be helpful for cooks when planning meals, for restaurants when organizing their menus, and for diners when browsing for something to eat.",
     "milk-and-dairy": "Milk and Dairy",
-    "grains": "Grains"
+    "grains": "Grains",
+	"beverages-nonalcoholic": "Beverages Nonalcoholic",
+	"protein-foods": "Protein Food",
+	"snacks-and-sweets": "Snacks and Sweets",
+	"alcoholic-beverages": "Alcoholic Beverages",
+	"water": "Water",
+	"fats-and-oils": "Fats and Oils",
+	"mixed-dishes": "Mixed Dishes",
+	"fruit": "Fruit",
+	"condiments-and-sauces": "Condiments and Sauces",
+	"sugars": "Sugars",
+	"vegetables": "Vegetables",
+	"infant-formula-and-baby-food": "Infant Formula and Baby Food",
+	"other": "Other"
 }

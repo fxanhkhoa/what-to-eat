@@ -12,14 +12,14 @@
 	/>
 </svelte:head>
 
-<section id="welcome" class="bg-gradient-to-br from-purple-500 to-purple-300 px-5 md:px-20">
+<section id="welcome" class="px-5 md:px-20 flex flex-col justify-center">
 	<div class="grid grid-cols-12 place-items-center">
 		<div class="col-span-12 md:col-span-6 flex flex-col gap-5">
-			<h1 class="text-left">{$_('welcome.title')}</h1>
-			<h4>{$_('welcome.subtitle')}</h4>
+			<h1 class="text-justify font-bold text-white">{$_('welcome.title')}</h1>
+			<span class="text-gray-400 text-justify">{$_('welcome.subtitle')}</span>
 			<a
 				href="#_"
-				class="relative px-5 py-3 overflow-hidden font-medium text-gray-600 bg-purple-300 border border-gray-100 rounded-lg shadow-inner group"
+				class="relative w-48 md:w-96 md:mt-10 px-5 py-3 overflow-hidden font-medium text-gray-600 bg-purple-300 border border-gray-100 rounded-lg shadow-inner group"
 			>
 				<span
 					class="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease"
@@ -75,30 +75,14 @@
 
 <style>
 	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
+		min-height: 90vh;
+	}
+	#welcome {
+		background-image: url('../lib/images/bg-section-welcome.jpg');
+		background-size: cover;
 	}
 
 	h1 {
 		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
 	}
 </style>
