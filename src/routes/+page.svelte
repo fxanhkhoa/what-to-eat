@@ -8,8 +8,7 @@
 	<meta name="description" content="hôm nay ăn gì" />
 	<link
 		href="./../../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
-		rel="stylesheet"
-	/>
+		rel="stylesheet" />
 </svelte:head>
 
 <section id="welcome" class="px-5 md:px-20 flex flex-col justify-center">
@@ -19,34 +18,142 @@
 			<span class="text-gray-400 text-justify">{$_('welcome.subtitle')}</span>
 			<a
 				href="#_"
-				class="relative w-48 md:w-96 md:mt-10 px-5 py-3 overflow-hidden font-medium text-gray-600 bg-purple-300 border border-gray-100 rounded-lg shadow-inner group"
-			>
+				class="relative w-48 md:w-96 md:mt-10 px-5 py-3 overflow-hidden font-medium text-gray-600 bg-purple-300 border border-gray-100 rounded-lg shadow-inner group">
 				<span
-					class="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease"
-				/>
+					class="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease" />
 				<span
-					class="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-gray-600 group-hover:w-full ease"
-				/>
+					class="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-gray-600 group-hover:w-full ease" />
 				<span
-					class="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"
-				/>
+					class="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease" />
 				<span
-					class="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"
-				/>
+					class="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease" />
 				<span
-					class="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100"
-				/>
+					class="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100" />
 				<span
-					class="relative uppercase transition-colors duration-300 delay-200 group-hover:text-white ease"
-					>{$_('build-your-own-menus')}</span
-				>
+					class="relative uppercase transition-colors duration-300 delay-200 group-hover:text-white ease font-semibold"
+					>{$_('build-your-own-menus')}</span>
 			</a>
 		</div>
 		<div class="col-span-12 md:col-span-6"><WheelOfFortune /></div>
 	</div>
 </section>
 
-<section id="category" class="bg-white px-10 md:px-32 pt-10">
+<section id="meal-category" class="bg-white px-10 md:px-32 relative">
+	<div
+		class="grid grid-cols-12 gap-5 -translate-y-20 bg-white rounded-lg p-5 md:p-10 shadow-lg drop-shadow-xl">
+		<div
+			class="col-span-4 md:col-span-3 flex flex-col justify-center items-center gap-1 cursor-pointer group">
+			<div class="p-3 bg-gray-100 rounded-full group-hover:bg-gray-300 duration-300 ease-in-out">
+				<img
+					alt="dinner"
+					src="src\lib\images\meal-category\breakfast.jpg"
+					class="object-cover rounded-full w-16 h-16" />
+			</div>
+			<h4 class="font-bold">{$_('breakfast')}</h4>
+		</div>
+
+		<div
+			class="col-span-4 md:col-span-3 flex flex-col justify-center items-center gap-1 cursor-pointer group">
+			<div class="p-3 bg-gray-100 rounded-full group-hover:bg-gray-300 duration-300 ease-in-out">
+				<img
+					alt="dinner"
+					src="src\lib\images\meal-category\lunch.jpg"
+					class="object-cover rounded-full w-16 h-16" />
+			</div>
+			<h4 class="font-bold">{$_('lunch')}</h4>
+		</div>
+
+		<div
+			class="col-span-4 md:col-span-3 flex flex-col justify-center items-center gap-1 cursor-pointer group">
+			<div class="p-3 bg-gray-100 rounded-full group-hover:bg-gray-300 duration-300 ease-in-out">
+				<img
+					alt="dinner"
+					src="src\lib\images\meal-category\brunch.webp"
+					class="object-cover rounded-full w-16 h-16" />
+			</div>
+			<h4 class="font-bold">{$_('brunch')}</h4>
+		</div>
+
+		<div
+			class="col-span-4 md:col-span-3 flex flex-col justify-center items-center gap-1 cursor-pointer group">
+			<div class="p-3 bg-gray-100 rounded-full group-hover:bg-gray-300 duration-300 ease-in-out">
+				<img
+					alt="dinner"
+					src="src\lib\images\meal-category\dinner.png"
+					class="object-cover rounded-full w-16 h-16" />
+			</div>
+			<h4 class="font-bold">{$_('dinner')}</h4>
+		</div>
+
+		<div
+			class="col-span-4 md:col-span-3 flex flex-col justify-center items-center gap-1 cursor-pointer group">
+			<div class="p-3 bg-gray-100 rounded-full group-hover:bg-gray-300 duration-300 ease-in-out">
+				<img
+					alt="dinner"
+					src="src\lib\images\meal-category\salad.webp"
+					class="object-cover rounded-full w-16 h-16" />
+			</div>
+			<h4 class="font-bold">{$_('salad')}</h4>
+		</div>
+
+		<div
+			class="col-span-4 md:col-span-3 flex flex-col justify-center items-center gap-1 cursor-pointer group">
+			<div class="p-3 bg-gray-100 rounded-full group-hover:bg-gray-300 duration-300 ease-in-out">
+				<img
+					alt="dinner"
+					src="src\lib\images\meal-category\burger.webp"
+					class="object-cover rounded-full w-16 h-16" />
+			</div>
+			<h4 class="font-bold">{$_('burger')}</h4>
+		</div>
+
+		<div
+			class="col-span-4 md:col-span-3 flex flex-col justify-center items-center gap-1 cursor-pointer group">
+			<div class="p-3 bg-gray-100 rounded-full group-hover:bg-gray-300 duration-300 ease-in-out">
+				<img
+					alt="dinner"
+					src="src\lib\images\meal-category\soup.jpg"
+					class="object-cover rounded-full w-16 h-16" />
+			</div>
+			<h4 class="font-bold">{$_('soup')}</h4>
+		</div>
+
+		<div
+			class="col-span-4 md:col-span-3 flex flex-col justify-center items-center gap-1 cursor-pointer group">
+			<div class="p-3 bg-gray-100 rounded-full group-hover:bg-gray-300 duration-300 ease-in-out">
+				<img
+					alt="dinner"
+					src="src\lib\images\meal-category\appetize.jpg"
+					class="object-cover rounded-full w-16 h-16" />
+			</div>
+			<h4 class="font-bold">{$_('appetize')}</h4>
+		</div>
+
+		<div
+			class="col-span-4 md:col-span-3 flex flex-col justify-center items-center gap-1 cursor-pointer group">
+			<div class="p-3 bg-gray-100 rounded-full group-hover:bg-gray-300 duration-300 ease-in-out">
+				<img
+					alt="dinner"
+					src="src\lib\images\meal-category\dessert.jpg"
+					class="object-cover rounded-full w-16 h-16" />
+			</div>
+			<h4 class="font-bold">{$_('dessert')}</h4>
+		</div>
+
+		<div
+			class="col-span-4 md:col-span-3 flex flex-col justify-center items-center gap-1 cursor-pointer group">
+			<div class="p-3 bg-gray-100 rounded-full group-hover:bg-gray-300 duration-300 ease-in-out">
+				<img
+					alt="dinner"
+					src="src\lib\images\meal-category\hotpot.jpg"
+					class="object-cover rounded-full w-16 h-16" />
+			</div>
+			<h4 class="font-bold">{$_('hot-pot')}</h4>
+		</div>
+	</div>
+</section>
+
+<section id="food-category" class="bg-white px-10 md:px-32 pt-10">
 	<div class="flex flex-col gap-5 md:gap-10">
 		<h1 class="text-center font-bold text-black">{$_('categories')}</h1>
 		<h5 class="text-justify text-gray-500">{$_('category.subtitle')}</h5>
@@ -54,8 +161,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-blender my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('milk-and-dairy')}</h5>
 				</a>
@@ -63,8 +169,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-wheat-awn my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('grains')}</h5>
 				</a>
@@ -72,8 +177,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-glass-water my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('beverages-nonalcoholic')}</h5>
 				</a>
@@ -81,8 +185,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-drumstick-bite my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('protein-foods')}</h5>
 				</a>
@@ -90,8 +193,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-cookie-bite my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('snacks-and-sweets')}</h5>
 				</a>
@@ -99,8 +201,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-wine-glass my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('alcoholic-beverages')}</h5>
 				</a>
@@ -108,8 +209,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-bottle-water my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('water')}</h5>
 				</a>
@@ -117,8 +217,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-burger my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('fats-and-oils')}</h5>
 				</a>
@@ -126,8 +225,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-bowl-food my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('mixed-dishes')}</h5>
 				</a>
@@ -135,8 +233,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-apple-whole my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('fruit')}</h5>
 				</a>
@@ -144,8 +241,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-pepper-hot my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('condiments-and-sauces')}</h5>
 				</a>
@@ -153,8 +249,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-cubes-stacked my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('condiments-and-sauces')}</h5>
 				</a>
@@ -162,8 +257,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-seedling my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('vegetables')}</h5>
 				</a>
@@ -171,8 +265,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-baby my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('infant-formula-and-baby-food')}</h5>
 				</a>
@@ -180,8 +273,7 @@
 			<div class="col-span-4 md:col-span-3 flex gap-3">
 				<a
 					href="#_"
-					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out"
-				>
+					class="flex gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-comment-dots my-auto text-xl text-blue-500" />
 					<h5 class="my-auto">{$_('other')}</h5>
 				</a>

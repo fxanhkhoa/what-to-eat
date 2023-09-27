@@ -19,5 +19,15 @@
 	"sugars": "Sugars",
 	"vegetables": "Vegetables",
 	"infant-formula-and-baby-food": "Infant Formula and Baby Food",
-	"other": "Other"
+	"other": "Other",
+	"breakfast": "Breakfast",
+	"brunch": "Brunch",
+	"lunch": "Lunch",
+	"dinner": "Dinner",
+	"burger": "Burger",
+	"salad": "Salad",
+	"soup": "Soup",
+	"appetizer": "Appetizer",
+	"dessert": "Dessert",
+	"hot-pot": "Hotpot"
 }
