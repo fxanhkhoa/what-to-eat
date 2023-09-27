@@ -1,6 +1,9 @@
-<script>
+<script context="module">
+	import '../i18n';
 	import Header from './Header.svelte';
 	import './styles.css';
+	import '../app.css';
+
 </script>
 
 <div class="app">
@@ -26,9 +29,7 @@
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		padding: 1rem;
 		width: 100%;
-		max-width: 64rem;
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
