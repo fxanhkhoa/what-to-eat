@@ -12,7 +12,6 @@
 		PUBLIC_appId,
 		PUBLIC_measurementId
 	} from '$env/static/public';
-	import { redirect } from '@sveltejs/kit';
 
 	let provider: GoogleAuthProvider;
 	let auth: Auth;
@@ -28,6 +27,9 @@
 	};
 
 	onMount(() => {
+		if (localStorage.getItem('TOKEN')) {
+			location.href = '/admin';
+		}
 		// Initialize Firebase
 		const app = initializeApp(firebaseConfig);
 		const analytics = getAnalytics(app);
