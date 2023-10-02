@@ -1,13 +1,30 @@
-<script context="module">
-	import '../i18n';
-	import Header from './Header.svelte';
-	import './styles.css';
-	import '../app.css';
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import type { LayoutData } from './$types';
+	import { authStore } from '../../stores/authStore';
+	import { goto } from '$app/navigation';
+	import { auth } from '../../firebase/firebase-server';
+
+	export let data: LayoutData;
+
+	onMount(() => {
+		const authUnsubscribe = authStore.subscribe((curr) => {
+			if (!curr.currentUser) {
+				goto('/login');
+			}
+			auth.updateCurrentUser(curr.currentUser);
+			try {
+				auth.currentUser?.reload().then();
+			} catch (error) {
+				auth.signOut();
+				goto('/login');
+			}
+		});
+		return { authUnsubscribe };
+	});
 </script>
 
 <div class="app">
-	<Header />
-
 	<main>
 		<slot />
 	</main>

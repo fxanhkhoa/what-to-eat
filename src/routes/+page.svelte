@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { _ } from 'svelte-i18n';
 	import WheelOfFortune from './wheel-of-fortune.svelte';
 </script>
