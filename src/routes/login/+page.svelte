@@ -1,40 +1,14 @@
 <script lang="ts">
-	import { initializeApp } from 'firebase/app';
-	import { getAnalytics } from 'firebase/analytics';
-	import { GoogleAuthProvider, getAuth, type Auth, signInWithPopup } from 'firebase/auth';
+	import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 	import { onMount } from 'svelte';
-	import {
-		PUBLIC_apiKey,
-		PUBLIC_authDomain,
-		PUBLIC_projectId,
-		PUBLIC_storageBucket,
-		PUBLIC_messagingSenderId,
-		PUBLIC_appId,
-		PUBLIC_measurementId
-	} from '$env/static/public';
+	import { goto } from '$app/navigation';
+	import { auth } from '../../firebase/firebase-server';
+	import { authStore } from '../../stores/authStore';
 
 	let provider: GoogleAuthProvider;
-	let auth: Auth;
-
-	const firebaseConfig = {
-		apiKey: PUBLIC_apiKey,
-		authDomain: PUBLIC_authDomain,
-		projectId: PUBLIC_projectId,
-		storageBucket: PUBLIC_storageBucket,
-		messagingSenderId: PUBLIC_messagingSenderId,
-		appId: PUBLIC_appId,
-		measurementId: PUBLIC_measurementId
-	};
 
 	onMount(() => {
-		if (localStorage.getItem('TOKEN')) {
-			location.href = '/admin';
-		}
-		// Initialize Firebase
-		const app = initializeApp(firebaseConfig);
-		const analytics = getAnalytics(app);
 		provider = new GoogleAuthProvider();
-		auth = getAuth();
 	});
 
 	function loginWithGoogle() {
@@ -43,12 +17,11 @@
 				// This gives you a Google Access Token. You can use it to access the Google API.
 				const credential = GoogleAuthProvider.credentialFromResult(result);
 				const token = credential?.accessToken;
-				if (token) {
-					localStorage.setItem('TOKEN', token);
-				}
 				const user = result.user;
-				console.log(user);
-				location.href = '/admin';
+				authStore.update((curr) => {
+					return { ...curr, isLoading: false, currentUser: user };
+				});
+				goto('/admin');
 			})
 			.catch((error) => {
 				// Handle Errors here.
