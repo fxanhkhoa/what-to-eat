@@ -24,7 +24,7 @@
 	});
 </script>
 
-<div class="app">
+<div class="app bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
 	<main>
 		<slot />
 	</main>
