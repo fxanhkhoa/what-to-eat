@@ -31,5 +31,7 @@
 	"dessert": "Dessert",
 	"hot-pot": "Hotpot",
 	"dish-management": "Dish Management",
-	"add": "Add"
+	"add": "Add",
+	"editor": "Editor",
+	"raw-html": "Raw Html"
 }
