@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { _ } from 'svelte-i18n';
+	import { RichTextComposer } from 'svelte-lexical';
+	import PlaygroundEditorTheme from '../../../../editor-theme/PlaygroundEditorTheme';
 
 	export let data: PageData;
 	let editType = 1;
@@ -48,7 +50,9 @@
 						class="relative flex list-none flex-wrap rounded-xl bg-blue-gray-50/60 p-1"
 						data-tabs="tabs"
 						role="list">
-						<li class="z-30 flex-auto text-center rounded-xl transition duration-300 ease-in {editType === 1 && 'bg-gray-400'}">
+						<li
+							class="z-30 flex-auto text-center rounded-xl transition duration-300 ease-in {editType ===
+								1 && 'bg-gray-400'}">
 							<button
 								on:click={() => setEditType(1)}
 								type="button"
@@ -60,7 +64,9 @@
 								<span class="ml-1 text-gray-300">{$_('editor')}</span>
 							</button>
 						</li>
-						<li class="z-30 flex-auto text-center rounded-xl transition duration-300 ease-in {editType === 2 && 'bg-gray-400'}">
+						<li
+							class="z-30 flex-auto text-center rounded-xl transition duration-300 ease-in {editType ===
+								2 && 'bg-gray-400'}">
 							<button
 								on:click={() => setEditType(2)}
 								type="button"
@@ -68,18 +74,22 @@
 								data-tab-target=""
 								role="tab"
 								aria-selected="false">
-								<i class="fa-solid fa-code text-gray-300"></i>
+								<i class="fa-solid fa-code text-gray-300" />
 								<span class="ml-1 text-gray-300">{$_('raw-html')}</span>
 							</button>
 						</li>
 					</ul>
 				</div>
 			</div>
-			<input
-				type="text"
-				id="content"
-				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-				required />
+			{#if editType === 1}
+				<RichTextComposer theme={PlaygroundEditorTheme} />
+			{:else if editType === 2}
+				<input
+					type="text"
+					id="content"
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					required />
+			{/if}
 		</div>
 
 		<button
