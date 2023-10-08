@@ -33,5 +33,18 @@
 	"dish-management": "Quản Lý Món Ăn",
 	"add": "Thêm",
 	"editor": "Công cụ biên tập",
-	"raw-html": "Raw Html"
+	"raw-html": "Raw Html",
+	"preview": "Xem Trước",
+	"tags-placeholder": "Tags phân cách bởi dấu phẩy",
+	"author": "Tác giả",
+	"title": "Tiêu đề",
+	"content": "Nội Dung",
+	"preparation-time": "Thời gian chuẩn bị",
+	"cooking-time": "Thời gian nấu",
+	"difficult-level": "Độ khó",
+	"rating": "Đánh giá",
+	"meal-categories": "Phân loại món ăn",
+	"ingredient-categories": "Phân loại nguyên liệu",
+	"thumbnail": "Ảnh bìa",
+	"in-minute": "Đơn vị phút"
 }

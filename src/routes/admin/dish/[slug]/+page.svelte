@@ -1,14 +1,16 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import { _ } from 'svelte-i18n';
-	import { RichTextComposer } from 'svelte-lexical';
-	import PlaygroundEditorTheme from '../../../../editor-theme/PlaygroundEditorTheme';
+	import Tiptap from '$lib/Tiptap.svelte';
 
-	export let data: PageData;
 	let editType = 1;
+	let content = '';
 
 	function setEditType(index: number) {
 		editType = index;
+	}
+
+	function handleValueChange(event: any) {
+		content = event.detail;
 	}
 </script>
 
@@ -26,6 +28,7 @@
 			<input
 				type="text"
 				id="slug"
+				name="slug"
 				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 				placeholder="mi-y"
 				required />
@@ -33,17 +36,19 @@
 
 		<div class="mb-6">
 			<label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-				>Title</label>
+				>{$_('title')}</label>
 			<input
 				type="text"
 				id="title"
+				name="title"
+				placeholder="Mì Ý"
 				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 				required />
 		</div>
 
 		<div class="mb-6">
 			<label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-				>Content</label>
+				>{$_('content')}</label>
 			<div class="w-full">
 				<div class="relative right-0">
 					<ul
@@ -82,14 +87,51 @@
 				</div>
 			</div>
 			{#if editType === 1}
-				<RichTextComposer theme={PlaygroundEditorTheme} />
+				<Tiptap {content} on:valueHtml={handleValueChange} />
 			{:else if editType === 2}
 				<input
+					value={content}
 					type="text"
 					id="content"
+					name="content"
 					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 					required />
+				<h3 class="text-white py-3">{$_('preview')}</h3>
+				<div class="p-5 bg-white rounded-lg">{@html content}</div>
 			{/if}
+			
+			<div class="my-6">
+				<label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+					>Tags</label>
+				<input
+					type="text"
+					id="tags"
+					name="tags"
+					placeholder={$_('tags-placeholder')}
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+			</div>
+
+			<div class="my-6">
+				<label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+					>{$_('preparation-time')}</label>
+				<input
+					type="number"
+					id="preparation-time"
+					name="preparation-time"
+					placeholder={$_('in-minute')}
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+			</div>
+
+			<div class="my-6">
+				<label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+					>Tags</label>
+				<input
+					type="text"
+					id="tags"
+					name="tags"
+					placeholder={$_('tags-placeholder')}
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+			</div>
 		</div>
 
 		<button

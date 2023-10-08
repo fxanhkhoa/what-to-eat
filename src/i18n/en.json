@@ -33,5 +33,18 @@
 	"dish-management": "Dish Management",
 	"add": "Add",
 	"editor": "Editor",
-	"raw-html": "Raw Html"
+	"raw-html": "Raw Html",
+	"preview": "Preview",
+	"tags-placeholder": "Tags separate by comma",
+	"author": "Author",
+	"title": "Title",
+	"content": "Content",
+	"preparation-time": "Preparation Time",
+	"cooking-time": "Cooking Time",
+	"difficult-level": "Difficult Level",
+	"rating": "Rating",
+	"meal-categories": "Meal Categories",
+	"ingredient-categories": "Ingredient Categories",
+	"thumbnail": "Thumbnail",
+	"in-minute": "In minute"
 }
