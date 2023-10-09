@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('./tiptap.scss');
 
 @layer base {
 	h1 {

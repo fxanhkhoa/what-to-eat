@@ -46,5 +46,8 @@
 	"meal-categories": "Meal Categories",
 	"ingredient-categories": "Ingredient Categories",
 	"thumbnail": "Thumbnail",
-	"in-minute": "In minute"
+	"in-minute": "In minute",
+	"difficulty.HARD": "Hard",
+	"difficulty.MEDIUM": "Medium",
+	"difficulty.EASY": "Easy"
 }

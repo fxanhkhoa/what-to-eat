@@ -47,6 +47,7 @@
 		"@tiptap/pm": "^2.1.11",
 		"@tiptap/starter-kit": "^2.1.11",
 		"firebase": "^10.4.0",
-		"svelte-i18n": "^3.7.4"
+		"svelte-i18n": "^3.7.4",
+		"svelte-multiselect": "^10.2.0"
 	}
 }

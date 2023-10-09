@@ -1,0 +1,17 @@
+export const DIFFICULT_LEVELS = ['HARD', 'MEDIUM', 'EASY'];
+
+export const MEAL_CATEGORIES = [
+	'BREAKFAST',
+	'LUNCH',
+	'BRUNCH',
+	'DINNER',
+	'BURGER',
+	'SALAD',
+	'SOUP',
+	'APPETIZER',
+	'DESSERT',
+	'HOTPOT',
+	'NORTH_VN',
+	'CENTRAL_VN',
+	'SOUTH_VN'
+];

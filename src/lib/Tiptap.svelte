@@ -18,7 +18,6 @@
 			onTransaction: ({ transaction, editor }) => {
 				// force re-render so `editor.isActive` works as expected
 				editor = editor;
-				console.log(editor.getHTML());
 				dispatch('valueHtml', editor.getHTML());
 			}
 		});
@@ -130,79 +129,5 @@
 
 <style lang="scss">
 	/* Basic editor styles */
-	.tiptap {
-		> * + * {
-			margin-top: 0.75em;
-		}
-
-		ul,
-		ol {
-			padding: 0 1rem;
-		}
-
-		h1,
-		h2,
-		h3,
-		h4,
-		h5,
-		h6 {
-			line-height: 1.1;
-		}
-
-		code {
-			background-color: rgba(#616161, 0.1);
-			color: #616161;
-		}
-
-		pre {
-			background: #0d0d0d;
-			color: #fff;
-			font-family: 'JetBrainsMono', monospace;
-			padding: 0.75rem 1rem;
-			border-radius: 0.5rem;
-
-			code {
-				color: inherit;
-				padding: 0;
-				background: none;
-				font-size: 0.8rem;
-			}
-		}
-
-		img {
-			max-width: 100%;
-			height: auto;
-		}
-
-		blockquote {
-			padding-left: 1rem;
-			border-left: 2px solid rgba(#0d0d0d, 0.1);
-		}
-
-		hr {
-			border: none;
-			border-top: 2px solid rgba(#0d0d0d, 0.1);
-			margin: 2rem 0;
-		}
-
-		> div {
-			> button {
-				border: 1px solid #000;
-				padding: 0.5rem;
-				margin: 0.1rem;
-				border-radius: 10px;
-				transition: all;
-				transition-duration: 300ms;
-				transition-timing-function: ease-in-out;
-			}
-
-			> button:hover {
-				background-color: #b9b9b9;
-			}
-		}
-
-		.is-active {
-			background-color: #b9b9b9;
-		}
-	}
+	
 </style>

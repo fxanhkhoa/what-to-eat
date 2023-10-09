@@ -46,5 +46,8 @@
 	"meal-categories": "Phân loại món ăn",
 	"ingredient-categories": "Phân loại nguyên liệu",
 	"thumbnail": "Ảnh bìa",
-	"in-minute": "Đơn vị phút"
+	"in-minute": "Đơn vị phút",
+	"difficulty.HARD": "Khó",
+	"difficulty.MEDIUM": "Trung bình",
+	"difficulty.EASY": "Dễ"
 }
