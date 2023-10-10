@@ -116,7 +116,9 @@
 			</div>
 
 			<div class="my-6">
-				<label for="preparation-time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+				<label
+					for="preparation-time"
+					class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 					>{$_('preparation-time')}</label>
 				<input
 					type="number"
@@ -127,7 +129,9 @@
 			</div>
 
 			<div class="my-6">
-				<label for="cooking-time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+				<label
+					for="cooking-time"
+					class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 					>{$_('cooking-time')}</label>
 				<input
 					type="text"
@@ -138,7 +142,9 @@
 			</div>
 
 			<div class="my-6">
-				<label for="difficult-level" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+				<label
+					for="difficult-level"
+					class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 					>{$_('difficult-level')}</label>
 				<select
 					bind:value={difficultLevel}
@@ -153,7 +159,10 @@
 			<div class="my-6">
 				<label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 					>{$_('meal-categories')}</label>
-				<MultiSelect bind:selected={mealCategoriesSelected} options={MEAL_CATEGORIES} />
+				<MultiSelect
+					ulSelectedClass="py-3 px-4 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+					bind:selected={mealCategoriesSelected}
+					options={MEAL_CATEGORIES} />
 				<!-- <select
 					class="py-3 px-4 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 					<option selected value={null}>{$_('difficult-level')}</option>
