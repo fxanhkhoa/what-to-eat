@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import { _ } from 'svelte-i18n';
 	import WheelOfFortune from './wheel-of-fortune.svelte';
 </script>
@@ -258,7 +258,7 @@
 					href="#_"
 					class="flex flex-wrap gap-3 justify-center relative w-full px-6 py-3 overflow-hidden text-base font-semibold text-center text-gray-800 rounded-lg bg-white hover:text-black hover:bg-purple-200 transition duration-300 ease-in-out">
 					<i class="fa-solid fa-cubes-stacked my-auto text-xl text-blue-500" />
-					<h5 class="my-auto">{$_('condiments-and-sauces')}</h5>
+					<h5 class="my-auto">{$_('sugars')}</h5>
 				</a>
 			</div>
 			<div class="col-span-4 md:col-span-3 flex gap-3">
