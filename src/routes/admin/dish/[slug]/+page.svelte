@@ -7,6 +7,8 @@
 	import { database } from '../../../../firebase/firebase-server';
 	import { addDoc, collection } from 'firebase/firestore';
 	import { toast } from '@zerodevx/svelte-toast';
+	import vietnamese from '$lib/images/vietnamese.webp';
+	import english from '$lib/images/english.webp';
 
 	let editType = 1;
 	let content = '';
@@ -24,7 +26,7 @@
 	}
 
 	async function onSubmit() {
-		const tags = (document.getElementById('title') as HTMLInputElement).value
+		const tags = (document.getElementById('tags') as HTMLInputElement).value
 			.replace(/ /g, '+')
 			.split(',');
 		const dto: Dish = {
@@ -72,6 +74,41 @@
 </svelte:head>
 
 <section id="dish-detail" class="p-5">
+	<div class="w-full">
+		<div class="relative right-0">
+			<ul
+				class="relative flex list-none flex-wrap rounded-xl bg-blue-gray-50/60 p-1 border"
+				data-tabs="tabs"
+				role="list">
+				<li
+					class="z-30 flex-auto text-center rounded-xl transition duration-300 ease-in {editType ===
+						1 && 'bg-gray-400'}">
+					<button
+						on:click={() => setEditType(1)}
+						type="button"
+						class="text-slate-700 z-30 mb-0 fle gap-2 x w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out"
+						data-tab-target=""
+						role="tab"
+						aria-selected="true">
+						<img class="h-5 w-auto mx-auto" src={vietnamese} alt="vietnamese">
+					</button>
+				</li>
+				<li
+					class="z-30 flex-auto text-center rounded-xl transition duration-300 ease-in {editType ===
+						2 && 'bg-gray-400'}">
+					<button
+						on:click={() => setEditType(2)}
+						type="button"
+						class="text-slate-700 z-30 mb-0 flex gap-2 w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out"
+						data-tab-target=""
+						role="tab"
+						aria-selected="false">
+						<img class="h-5 w-auto mx-auto" src={english} alt="english">
+					</button>
+				</li>
+			</ul>
+		</div>
+	</div>
 	<form class="shadow-lg p-5">
 		<div class="mb-6">
 			<label for="slug" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -101,9 +138,9 @@
 			<label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 				>{$_('content')}</label>
 			<div class="w-full">
-				<div class="relative right-0">
+				<div class="relative right-0 mb-1">
 					<ul
-						class="relative flex list-none flex-wrap rounded-xl bg-blue-gray-50/60 p-1"
+						class="relative flex list-none flex-wrap rounded-xl bg-blue-gray-50/60 p-1 border"
 						data-tabs="tabs"
 						role="list">
 						<li
