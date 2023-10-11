@@ -49,5 +49,7 @@
 	"in-minute": "Đơn vị phút",
 	"difficulty.HARD": "Khó",
 	"difficulty.MEDIUM": "Trung bình",
-	"difficulty.EASY": "Dễ"
+	"difficulty.EASY": "Dễ",
+	"successfully": "Thành công",
+	"fail": "Thất bại"
 }

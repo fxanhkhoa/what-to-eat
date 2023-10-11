@@ -4,8 +4,12 @@
 	import { authStore } from '../../stores/authStore';
 	import { goto } from '$app/navigation';
 	import { auth } from '../../firebase/firebase-server';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
 
 	export let data: LayoutData;
+
+	// Optionally set default options here
+	const options = {};
 
 	onMount(() => {
 		const authUnsubscribe = authStore.subscribe((curr) => {
@@ -28,6 +32,8 @@
 	<main>
 		<slot />
 	</main>
+
+	<SvelteToast {options} />
 </div>
 
 <style>

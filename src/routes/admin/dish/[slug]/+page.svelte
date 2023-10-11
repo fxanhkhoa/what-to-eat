@@ -5,7 +5,8 @@
 	import MultiSelect from 'svelte-multiselect';
 	import type { Dish } from '$lib/type/dish.type';
 	import { database } from '../../../../firebase/firebase-server';
-	import { collection, getDocs } from 'firebase/firestore';
+	import { addDoc, collection } from 'firebase/firestore';
+	import { toast } from '@zerodevx/svelte-toast';
 
 	let editType = 1;
 	let content = '';
@@ -23,24 +24,44 @@
 	}
 
 	async function onSubmit() {
+		const tags = (document.getElementById('title') as HTMLInputElement).value
+			.replace(/ /g, '+')
+			.split(',');
 		const dto: Dish = {
-			slug: '',
-			title: '',
-			content: '',
-			tags: [],
-			preparationTime: 0,
-			cookingTime: 0,
-			difficultLevel: '',
-			mealCategories: [],
-			ingredientCategories: [],
-			thumbnail: ''
+			slug: (document.getElementById('slug') as HTMLInputElement).value,
+			title: (document.getElementById('title') as HTMLInputElement).value,
+			content,
+			tags,
+			preparationTime: parseFloat(
+				(document.getElementById('preparation-time') as HTMLInputElement).value
+			),
+			cookingTime: parseFloat((document.getElementById('cooking-time') as HTMLInputElement).value),
+			difficultLevel,
+			mealCategories: mealCategoriesSelected,
+			ingredientCategories: ingredientCategoriesSelected,
+			thumbnail: (document.getElementById('thumbnail') as HTMLInputElement).value
 		};
 
-		const querySnapshot = await getDocs(collection(database, 'meal'));
-		querySnapshot.forEach((doc) => {
-			console.log(`${doc.id} => ${doc.data()}`);
-			console.log(doc.data())
-		});
+		try {
+			const docRef = await addDoc(collection(database, 'dishes'), dto);
+			console.log('Document written with ID: ', docRef.id);
+			toast.push($_('successfully'), {
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': 'rgba(72,187,120,0.9)',
+					'--toastBarBackground': '#2F855A'
+				}
+			});
+		} catch (e) {
+			console.error('Error adding document: ', e);
+			toast.push($_('fail'), {
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': '#d40202',
+					'--toastBarBackground': '#b30000'
+				}
+			});
+		}
 	}
 </script>
 
