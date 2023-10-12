@@ -1,13 +1,48 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { Dish } from '$lib/type/dish.type';
+	import { collection, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
+	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
+	import { database } from '../../../firebase/firebase-server';
 
-	export let data: PageData;
+	let dishes: Dish[];
+	let page = 1;
+	const dishesRef = collection(database, 'dishes');
+
+	const getDishes = async () => {
+		let dishQuery;
+		console.log('cakked')
+		if (page === 1) {
+			dishQuery = query(dishesRef, orderBy('createdAt'), limit(25));
+		} else {
+			// Query the first page of docs
+			const first = query(dishesRef, orderBy('createdAt'), limit(page * 25));
+			const documentSnapshots = await getDocs(first);
+
+			// Get the last visible document
+			const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+			console.log('last', lastVisible);
+
+			// Construct a new query starting at this document,
+			// get the next 25 cities.
+			dishQuery = query(dishesRef, orderBy('createdAt'), startAfter(lastVisible), limit(25));
+		}
+
+		const querySnapshot = await getDocs(dishQuery);
+		querySnapshot.forEach((doc) => {
+			// doc.data() is never undefined for query doc snapshots
+			console.log(doc.id, ' => ', doc.data());
+		});
+	};
+
+	onMount(() => {
+		getDishes();
+	});
 </script>
 
 <section id="dish" class="p-5">
-	<div class="flex justify-between">
-		<h1>{$_('dish-management')}</h1>
+	<div class="flex justify-between mb-5">
+		<h1 class="text-white font-bold drop-shadow-lg">{$_('dish-management')}</h1>
 		<div class="flex">
 			<a
 				href="/admin/dish/null"
@@ -21,6 +56,8 @@
 		</div>
 	</div>
 	<div class="grid grid-cols-12 gap-5">
-		<div class="col-span-12 md:col-span-6 lg:col-span-4" />
+		<div class="col-span-12 md:col-span-6 lg:col-span-4">
+			<div class="p-3 shadow-lg bg-slate-800" />
+		</div>
 	</div>
 </section>

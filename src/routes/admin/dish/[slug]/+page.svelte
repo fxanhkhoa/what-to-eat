@@ -1,37 +1,83 @@
 <script lang="ts">
-	import { _ } from 'svelte-i18n';
+	import { _, locale } from 'svelte-i18n';
 	import Tiptap from '$lib/Tiptap.svelte';
 	import { DIFFICULT_LEVELS, INGREDIENT_CATEGORIES, MEAL_CATEGORIES } from '$lib/constant/dish';
 	import MultiSelect from 'svelte-multiselect';
 	import type { Dish } from '$lib/type/dish.type';
 	import { database } from '../../../../firebase/firebase-server';
-	import { addDoc, collection } from 'firebase/firestore';
+	import { collection, doc, setDoc } from 'firebase/firestore';
 	import { toast } from '@zerodevx/svelte-toast';
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
+	import type { MultiLanguage } from '$lib/type/multi-language.type';
+	import { initStringMultiLanguage } from '$lib/utils/multi-language';
 
 	let editType = 1;
-	let content = '';
+	let title: MultiLanguage<string>[] = initStringMultiLanguage();
+	let selectedLanguage = 'en';
+	let content: MultiLanguage<string>[] = initStringMultiLanguage();
 	let difficultLevel = '';
 	let mealCategoriesSelected: string[] = [];
 	let ingredientCategoriesSelected: string[] = [];
 	let thumbnail = '';
 
+	let tiptap: Tiptap;
+
 	function setEditType(index: number) {
 		editType = index;
 	}
 
-	function handleValueChange(event: any) {
-		content = event.detail;
+	function setContent(event: any) {
+		content = content.map((t) => {
+			if (t.language === selectedLanguage) {
+				return {
+					...t,
+					data: event.detail
+				};
+			}
+			return t;
+		});
+	}
+
+	function setSelectedLanguage(lang: string) {
+		locale.set(lang);
+		selectedLanguage = lang;
+		tiptap.setContent(content.find((c) => c.language === selectedLanguage)?.data ?? '');
+	}
+
+	function setContentInput(event: any) {
+		content = content.map((t) => {
+			if (t.language === selectedLanguage) {
+				return {
+					...t,
+					data: event.target.value
+				};
+			}
+			return t;
+		});
+	}
+
+	function setTitle(event: any) {
+		title = title.map((t) => {
+			if (t.language === selectedLanguage) {
+				return {
+					...t,
+					data: event.target.value
+				};
+			}
+			return t;
+		});
 	}
 
 	async function onSubmit() {
 		const tags = (document.getElementById('tags') as HTMLInputElement).value
-			.replace(/ /g, '+')
-			.split(',');
+			.split(',')
+			.map((item) => {
+				return item.trim();
+			});
 		const dto: Dish = {
 			slug: (document.getElementById('slug') as HTMLInputElement).value,
-			title: (document.getElementById('title') as HTMLInputElement).value,
+			title,
 			content,
 			tags,
 			preparationTime: parseFloat(
@@ -41,12 +87,14 @@
 			difficultLevel,
 			mealCategories: mealCategoriesSelected,
 			ingredientCategories: ingredientCategoriesSelected,
-			thumbnail: (document.getElementById('thumbnail') as HTMLInputElement).value
+			thumbnail: (document.getElementById('thumbnail') as HTMLInputElement).value,
+			createdAt: new Date().toISOString(),
+			updatedAt: new Date().toISOString()
 		};
-
 		try {
-			const docRef = await addDoc(collection(database, 'dishes'), dto);
-			console.log('Document written with ID: ', docRef.id);
+			const dishesRef = collection(database, 'dishes');
+			const docRef = await setDoc(doc(dishesRef, dto.slug), dto);
+			console.log('Document written with ID: ', docRef);
 			toast.push($_('successfully'), {
 				theme: {
 					'--toastColor': 'mintcream',
@@ -81,29 +129,29 @@
 				data-tabs="tabs"
 				role="list">
 				<li
-					class="z-30 flex-auto text-center rounded-xl transition duration-300 ease-in {editType ===
-						1 && 'bg-gray-400'}">
+					class="z-30 flex-auto text-center rounded-xl transition duration-300 ease-in {selectedLanguage ===
+						'vi' && 'bg-gray-400'}">
 					<button
-						on:click={() => setEditType(1)}
+						on:click={() => setSelectedLanguage('vi')}
 						type="button"
 						class="text-slate-700 z-30 mb-0 fle gap-2 x w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out"
 						data-tab-target=""
 						role="tab"
 						aria-selected="true">
-						<img class="h-5 w-auto mx-auto" src={vietnamese} alt="vietnamese">
+						<img class="h-5 w-auto mx-auto" src={vietnamese} alt="vietnamese" />
 					</button>
 				</li>
 				<li
-					class="z-30 flex-auto text-center rounded-xl transition duration-300 ease-in {editType ===
-						2 && 'bg-gray-400'}">
+					class="z-30 flex-auto text-center rounded-xl transition duration-300 ease-in {selectedLanguage ===
+						'en' && 'bg-gray-400'}">
 					<button
-						on:click={() => setEditType(2)}
+						on:click={() => setSelectedLanguage('en')}
 						type="button"
 						class="text-slate-700 z-30 mb-0 flex gap-2 w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out"
 						data-tab-target=""
 						role="tab"
 						aria-selected="false">
-						<img class="h-5 w-auto mx-auto" src={english} alt="english">
+						<img class="h-5 w-auto mx-auto" src={english} alt="english" />
 					</button>
 				</li>
 			</ul>
@@ -126,6 +174,8 @@
 			<label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 				>{$_('title')}</label>
 			<input
+				value={title.find((t) => t.language === selectedLanguage)?.data}
+				on:change={setTitle}
 				type="text"
 				id="title"
 				name="title"
@@ -175,17 +225,23 @@
 				</div>
 			</div>
 			{#if editType === 1}
-				<Tiptap {content} on:valueHtml={handleValueChange} />
+				<Tiptap
+					bind:this={tiptap}
+					content={content.find((c) => c.language === selectedLanguage)?.data}
+					on:valueHtml={setContent} />
 			{:else if editType === 2}
 				<input
-					value={content}
+					value={content.find((c) => c.language === selectedLanguage)?.data}
+					on:change={setContentInput}
 					type="text"
 					id="content"
 					name="content"
 					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 					required />
 				<h3 class="text-white py-3">{$_('preview')}</h3>
-				<div class="p-5 bg-white rounded-lg">{@html content}</div>
+				<div class="p-5 bg-white rounded-lg">
+					{@html content.find((c) => c.language === selectedLanguage)?.data}
+				</div>
 			{/if}
 
 			<div class="my-6">

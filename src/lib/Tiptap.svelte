@@ -7,6 +7,9 @@
 	let editor: any;
 
 	export let content = '';
+	export function setContent(data: string) {
+		editor.commands.setContent(data);
+	}
 
 	const dispatch = createEventDispatcher();
 
