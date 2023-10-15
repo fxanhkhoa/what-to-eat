@@ -5,12 +5,19 @@
 	import MultiSelect from 'svelte-multiselect';
 	import type { Dish } from '$lib/type/dish.type';
 	import { database } from '../../../../firebase/firebase-server';
-	import { collection, doc, setDoc } from 'firebase/firestore';
+	import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 	import { toast } from '@zerodevx/svelte-toast';
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
 	import type { MultiLanguage } from '$lib/type/multi-language.type';
 	import { initStringMultiLanguage } from '$lib/utils/multi-language';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
+
+	export let data: PageData;
+	const { slug } = data;
 
 	let editType = 1;
 	let title: MultiLanguage<string>[] = initStringMultiLanguage();
@@ -25,6 +32,7 @@
 
 	function setEditType(index: number) {
 		editType = index;
+		tiptap.setContent(content.find((c) => c.language === selectedLanguage)?.data ?? '');
 	}
 
 	function setContent(event: any) {
@@ -113,6 +121,26 @@
 			});
 		}
 	}
+
+	const getDish = async () => {
+		if (!slug) {
+			return;
+		}
+		const docRef = doc(database, 'dishes', slug);
+		const docSnap = await getDoc(docRef);
+		if (docSnap.exists()) {
+			console.log('Document data:', docSnap.data());
+		} else {
+			// docSnap.data() will be undefined in this case
+			goto('/admin/dish');
+		}
+	};
+
+	onMount(() => {
+		if (slug) {
+			getDish();
+		}
+	});
 </script>
 
 <svelte:head>
@@ -233,7 +261,7 @@
 				<textarea
 					value={content.find((c) => c.language === selectedLanguage)?.data}
 					on:change={setContentInput}
-					minlength=5
+					minlength="5"
 					id="content"
 					name="content"
 					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

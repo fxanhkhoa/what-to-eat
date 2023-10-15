@@ -3,9 +3,12 @@
 	import { collection, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
+	import { Tooltip } from '@svelte-plugins/tooltips';
+	import { CollapsibleCard } from 'svelte-collapsible';
 	import { database } from '../../../firebase/firebase-server';
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
+	import { BADGE_COLOR_CLASSES } from '$lib/constant/badge';
 
 	let dishes: Dish[] = [];
 	let page = 1;
@@ -17,7 +20,6 @@
 		locale.set(lang);
 		selectedLanguage = lang;
 	}
-
 
 	const getDishes = async () => {
 		let dishQuery;
@@ -31,7 +33,7 @@
 
 			// Get the last visible document
 			const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-			console.log('last', lastVisible);
+			// console.log('last', lastVisible);
 
 			// Construct a new query starting at this document,
 			// get the next 25 cities.
@@ -41,7 +43,7 @@
 		const querySnapshot = await getDocs(dishQuery);
 		querySnapshot.forEach((doc) => {
 			// doc.data() is never undefined for query doc snapshots
-			console.log(doc.id, ' => ', doc.data());
+			// console.log(doc.id, ' => ', doc.data());
 			listDish.push(doc.data() as Dish);
 		});
 		dishes = listDish;
@@ -51,6 +53,14 @@
 		getDishes();
 	});
 </script>
+
+<svelte:head>
+	<title>Dishes</title>
+	<meta name="description" content="hôm nay ăn gì" />
+	<link
+		href="./../../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+		rel="stylesheet" />
+</svelte:head>
 
 <section id="dish" class="p-5">
 	<div class="flex justify-between mb-5">
@@ -104,12 +114,75 @@
 	</div>
 	<div class="grid grid-cols-12 gap-5">
 		{#each dishes as dish, i}
-			<div class="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 text-gray-200 ">
+			<div class="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 text-gray-200">
 				<div class="shadow-lg bg-slate-800">
-					<img src={dish.thumbnail} class="w-full h-auto" alt={dish.slug} />
-					<div class="p-3">
-						<div class="flex">
-							<h3>{dish.title.find(t => t.language === selectedLanguage)?.data}</h3>
+					<div class="relative">
+						<img src={dish.thumbnail} class="w-full h-48 object-cover" alt={dish.slug} />
+						<span
+							class="absolute top-3 right-3 inline-flex items-center rounded-md bg-purple-50 px-2 py-1 font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10"
+							>{dish.slug}</span>
+					</div>
+					<div class="p-3 flex flex-col gap-5">
+						<div class="flex justify-between">
+							<h3>{dish.title.find((t) => t.language === selectedLanguage)?.data}</h3>
+							<div class="flex gap-3">
+								<button>
+									<i class="fa-solid fa-trash my-auto text-red-500" />
+								</button>
+								<a href={`/admin/dish/${dish.slug}`} class="my-auto">
+									<i class="fa-solid fa-pen-to-square my-auto text-yellow-500" />
+								</a>
+							</div>
+						</div>
+						<div class="flex gap-3">
+							<div class="flex gap-3">
+								<Tooltip content={$_('preparation-time')}>
+									<i class="fa-solid fa-hourglass-end" />
+								</Tooltip>
+								<span>{dish.preparationTime} {$_('minute')}</span>
+							</div>
+							<div class="flex gap-3">
+								<Tooltip content={$_('cooking-time')}>
+									<i class="fa-regular fa-clock" />
+								</Tooltip>
+								<span>{dish.cookingTime} {$_('minute')}</span>
+							</div>
+						</div>
+						<div
+							class="flex bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-3 rounded-lg w-full">
+							<CollapsibleCard open={false}>
+								<button
+									slot="header"
+									class="header text-xs bg-transparent hover:bg-blue-500 text-gray-300 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded duration-300">
+									<span>{$_('meal-categories')}</span>
+								</button>
+								<div slot="body" class="flex flex-wrap gap-3 mt-3">
+									{#each dish.mealCategories as category, categoryIndex}
+										<span
+											class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
+												categoryIndex % BADGE_COLOR_CLASSES.length
+											]}">{$_(category)}</span>
+									{/each}
+								</div>
+							</CollapsibleCard>
+						</div>
+						<div
+							class="flex bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-3 rounded-lg w-full">
+							<CollapsibleCard open={false}>
+								<button
+									slot="header"
+									class="header text-xs bg-transparent hover:bg-blue-500 text-gray-300 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded duration-300">
+									<span>{$_('ingredient-categories')}</span>
+								</button>
+								<div slot="body" class="flex flex-wrap gap-3 mt-3">
+									{#each dish.ingredientCategories as category, categoryIndex}
+										<span
+											class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
+												categoryIndex % BADGE_COLOR_CLASSES.length
+											]}">{$_(category)}</span>
+									{/each}
+								</div>
+							</CollapsibleCard>
 						</div>
 					</div>
 				</div>

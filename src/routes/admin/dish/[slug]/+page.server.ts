@@ -2,7 +2,7 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ params }) => {
 	if (params.slug !== 'null') {
-		return {};
+		return params;
 	}
-	return {};
+	return { slug: null };
 }) satisfies PageServerLoad;

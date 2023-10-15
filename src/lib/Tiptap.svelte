@@ -1,5 +1,9 @@
 <script lang="ts">
 	import StarterKit from '@tiptap/starter-kit';
+	import { Youtube } from '@tiptap/extension-youtube';
+	import { Image } from '@tiptap/extension-image';
+	import { TextAlign } from '@tiptap/extension-text-align';
+	import { Link } from '@tiptap/extension-link';
 	import { Editor } from '@tiptap/core';
 	import { createEventDispatcher, onMount } from 'svelte';
 
@@ -13,12 +17,67 @@
 
 	const dispatch = createEventDispatcher();
 
+	const addImage = () => {
+		const url = window.prompt('URL');
+
+		if (url) {
+			editor.chain().focus().setImage({ src: url }).run();
+		}
+	};
+
+	const addYoutube = () => {
+		const url = window.prompt('URL');
+
+		if (url) {
+			editor.commands.setYoutubeVideo({
+				src: url,
+				width: 640,
+				height: 480
+			});
+		}
+	};
+
+	function setLink() {
+		const previousUrl = editor.getAttributes('link').href;
+		const url = window.prompt('URL', previousUrl);
+
+		// cancelled
+		if (url === null) {
+			return;
+		}
+
+		// empty
+		if (url === '') {
+			editor.chain().focus().extendMarkRange('link').unsetLink().run();
+
+			return;
+		}
+
+		// update link
+		editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+	}
+
 	onMount(() => {
 		editor = new Editor({
 			element: element,
-			extensions: [StarterKit],
+			extensions: [
+				StarterKit,
+				Youtube.configure({
+					inline: false
+				}),
+				Image.configure({
+					inline: true,
+					allowBase64: true
+				}),
+				TextAlign.configure({
+					types: ['heading', 'paragraph']
+				}),
+				Link.configure({
+					openOnClick: true
+				})
+			],
 			content: content,
-			onTransaction: ({ transaction, editor }) => {
+			onTransaction: () => {
 				// force re-render so `editor.isActive` works as expected
 				editor = editor;
 				dispatch('valueHtml', editor.getHTML());
@@ -125,6 +184,45 @@
 				disabled={!editor.can().chain().focus().redo().run()}>
 				redo
 			</button>
+			<button on:click={addImage} disabled={!editor.can().chain().focus().setImage().run()}>
+				<i class="fa-solid fa-image" />
+			</button>
+			<button on:click={addYoutube}>
+				<i class="fa-brands fa-youtube" />
+			</button>
+			<button
+				on:click={() => editor.chain().focus().toggleHighlight().run()}
+				class={editor.isActive('highlight') ? 'is-active' : ''}>
+				<i class="fa-solid fa-highlighter" />
+			</button>
+			<button
+				on:click={() => editor.chain().focus().setTextAlign('left').run()}
+				class={editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''}>
+				<i class="fa-solid fa-align-left" />
+			</button>
+			<button
+				on:click={() => editor.chain().focus().setTextAlign('center').run()}
+				class={editor.isActive({ textAlign: 'center' }) ? 'is-active' : ''}>
+				<i class="fa-solid fa-align-center" />
+			</button>
+			<button
+				on:click={() => editor.chain().focus().setTextAlign('right').run()}
+				class={editor.isActive({ textAlign: 'right' }) ? 'is-active' : ''}>
+				<i class="fa-solid fa-align-right" />
+			</button>
+			<button
+				on:click={() => editor.chain().focus().setTextAlign('justify').run()}
+				class={editor.isActive({ textAlign: 'justify' }) ? 'is-active' : ''}>
+				<i class="fa-solid fa-align-justify" />
+			</button>
+			<button on:click={setLink} class={editor.isActive('link') ? 'is-active' : ''}>
+				<i class="fa-solid fa-link" />
+			</button>
+			<button
+				on:click={editor.chain().focus().unsetLink().run()}
+				disabled={!editor.isActive('link')}>
+				<i class="fa-solid fa-link-slash" />
+			</button>
 		</div>
 	</div>
 {/if}
@@ -132,5 +230,4 @@
 
 <style lang="scss">
 	/* Basic editor styles */
-	
 </style>
