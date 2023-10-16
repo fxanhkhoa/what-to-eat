@@ -27,6 +27,10 @@
 	let mealCategoriesSelected: string[] = [];
 	let ingredientCategoriesSelected: string[] = [];
 	let thumbnail = '';
+	let slugInput = '';
+	let tagsInput = '';
+	let preparationTime = 0;
+	let cookingTime = 0;
 
 	let tiptap: Tiptap;
 
@@ -78,24 +82,20 @@
 	}
 
 	async function onSubmit() {
-		const tags = (document.getElementById('tags') as HTMLInputElement).value
-			.split(',')
-			.map((item) => {
-				return item.trim();
-			});
+		const tags = tagsInput.split(',').map((item) => {
+			return item.trim();
+		});
 		const dto: Dish = {
-			slug: (document.getElementById('slug') as HTMLInputElement).value,
+			slug: slugInput,
 			title,
 			content,
 			tags,
-			preparationTime: parseFloat(
-				(document.getElementById('preparation-time') as HTMLInputElement).value
-			),
-			cookingTime: parseFloat((document.getElementById('cooking-time') as HTMLInputElement).value),
+			preparationTime,
+			cookingTime,
 			difficultLevel,
 			mealCategories: mealCategoriesSelected,
 			ingredientCategories: ingredientCategoriesSelected,
-			thumbnail: (document.getElementById('thumbnail') as HTMLInputElement).value,
+			thumbnail,
 			createdAt: new Date().toISOString(),
 			updatedAt: new Date().toISOString()
 		};
@@ -129,7 +129,18 @@
 		const docRef = doc(database, 'dishes', slug);
 		const docSnap = await getDoc(docRef);
 		if (docSnap.exists()) {
-			console.log('Document data:', docSnap.data());
+			const dish: Dish = docSnap.data() as Dish;
+			slugInput = dish.slug;
+			title = dish.title;
+			content = dish.content;
+			tiptap.setContent(content.find((c) => c.language === selectedLanguage)?.data ?? '');
+			tagsInput = dish.tags.join(',');
+			preparationTime = dish.preparationTime;
+			cookingTime = dish.cookingTime;
+			difficultLevel = dish.difficultLevel;
+			mealCategoriesSelected = dish.mealCategories;
+			ingredientCategoriesSelected = dish.ingredientCategories;
+			thumbnail = dish.thumbnail;
 		} else {
 			// docSnap.data() will be undefined in this case
 			goto('/admin/dish');
@@ -190,6 +201,7 @@
 			<label for="slug" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 				>Slug</label>
 			<input
+				bind:value={slugInput}
 				type="text"
 				id="slug"
 				name="slug"
@@ -276,6 +288,7 @@
 				<label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 					>Tags</label>
 				<input
+					bind:value={tagsInput}
 					type="text"
 					id="tags"
 					name="tags"
@@ -289,6 +302,7 @@
 					class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 					>{$_('preparation-time')}</label>
 				<input
+					bind:value={preparationTime}
 					type="number"
 					id="preparation-time"
 					name="preparation-time"
@@ -302,6 +316,7 @@
 					class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 					>{$_('cooking-time')}</label>
 				<input
+					bind:value={cookingTime}
 					type="text"
 					id="cooking-time"
 					name="cooking-time"
