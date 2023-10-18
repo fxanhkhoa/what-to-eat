@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Dish } from '$lib/type/dish.type';
-	import { collection, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
+	import { collection, deleteDoc, doc, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
 	import { Tooltip } from '@svelte-plugins/tooltips';
@@ -48,6 +48,12 @@
 		});
 		dishes = listDish;
 	};
+
+	const deleteDish = async (slug: string) => {
+		if (confirm(`are you sure to delete ${slug}?`)) {
+			await deleteDoc(doc(database, "dishes", slug));
+		}
+	}
 
 	onMount(() => {
 		getDishes();
@@ -126,7 +132,7 @@
 						<div class="flex justify-between">
 							<h3>{dish.title.find((t) => t.language === selectedLanguage)?.data}</h3>
 							<div class="flex gap-3">
-								<button>
+								<button on:click={() => deleteDish(dish.slug)}>
 									<i class="fa-solid fa-trash my-auto text-red-500" />
 								</button>
 								<a href={`/admin/dish/${dish.slug}`} class="my-auto">
