@@ -5,6 +5,7 @@
 	import { auth } from '../../firebase/firebase-server';
 	import { authStore } from '../../stores/authStore';
 	import { _ } from 'svelte-i18n';
+	import '@fortawesome/fontawesome-free/css/all.min.css'
 
 	let provider: GoogleAuthProvider;
 
@@ -40,9 +41,6 @@
 <svelte:head>
 	<title>{$_('login')}</title>
 	<meta name="description" content={$_('login')} />
-	<link
-		href="./../../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
-		rel="stylesheet" />
 </svelte:head>
 
 <section id="login">

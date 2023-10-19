@@ -15,6 +15,7 @@
 	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
+	import '@fortawesome/fontawesome-free/css/all.min.css'
 
 	export let data: PageData;
 	const { slug } = data;
@@ -155,9 +156,8 @@
 </script>
 
 <svelte:head>
-	<link
-		href="./../../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
-		rel="stylesheet" />
+	<title>Dish: {slug}</title>
+	<meta name="description" content="hôm nay ăn gì" />
 </svelte:head>
 
 <section id="dish-detail" class="p-5">

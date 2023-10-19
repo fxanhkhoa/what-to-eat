@@ -53,6 +53,7 @@
 		"@tiptap/pm": "^2.1.11",
 		"@tiptap/starter-kit": "^2.1.11",
 		"firebase": "^10.4.0",
+		"intl-messageformat": "^10.5.4",
 		"svelte-collapsible": "^0.2.2",
 		"svelte-i18n": "^3.7.4",
 		"svelte-multiselect": "^10.2.0",

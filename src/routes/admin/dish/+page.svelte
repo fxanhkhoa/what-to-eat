@@ -9,6 +9,7 @@
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
 	import { BADGE_COLOR_CLASSES } from '$lib/constant/badge';
+	import '@fortawesome/fontawesome-free/css/all.min.css'
 
 	let dishes: Dish[] = [];
 	let page = 1;
@@ -63,9 +64,6 @@
 <svelte:head>
 	<title>Dishes</title>
 	<meta name="description" content="hôm nay ăn gì" />
-	<link
-		href="./../../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
-		rel="stylesheet" />
 </svelte:head>
 
 <section id="dish" class="p-5">
