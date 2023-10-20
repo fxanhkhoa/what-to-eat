@@ -1,18 +1,38 @@
-FROM node:18-alpine AS builder
+
+# stage build
+FROM node:18-alpine as builder
 
 WORKDIR /app
+
+# copy everything to the container
 COPY . .
 
-RUN npm install
-RUN npm run build 
+# clean install all dependencies
+RUN npm ci
 
+# remove potential security issues
+RUN npm audit fix
+    
+# build SvelteKit app
+RUN npm run build
+
+
+# stage run
 FROM node:18-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/build /app/build
-COPY --from=builder /app/package.json /app/
+# copy dependency list
+COPY --from=builder /app/package*.json ./
+
+# clean install dependencies, no devDependencies, no prepare script
+RUN npm ci --production --ignore-scripts
+
+# remove potential security issues
+RUN npm audit fix
+
+# copy built SvelteKit app to /app
+COPY --from=builder /app/build ./
 
 EXPOSE 3000
-
-CMD ["node", "build/index.js"]
+CMD ["node", "./index.js"]
