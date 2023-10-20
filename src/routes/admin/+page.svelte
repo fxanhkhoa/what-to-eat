@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import { _ } from 'svelte-i18n';
+	import '@fortawesome/fontawesome-free/css/all.min.css'
 
 	export let data: PageData;
 
@@ -11,9 +12,6 @@
 <svelte:head>
 	<title>Admin</title>
 	<meta name="description" content="hôm nay ăn gì" />
-	<link
-		href="./../../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
-		rel="stylesheet" />
 </svelte:head>
 
 <section id="main" class="p-5 md:px-20 py-5">

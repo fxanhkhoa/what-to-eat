@@ -4,6 +4,8 @@
 	import { goto } from '$app/navigation';
 	import { auth } from '../../firebase/firebase-server';
 	import { authStore } from '../../stores/authStore';
+	import { _ } from 'svelte-i18n';
+	import '@fortawesome/fontawesome-free/css/all.min.css'
 
 	let provider: GoogleAuthProvider;
 
@@ -35,6 +37,11 @@
 			});
 	}
 </script>
+
+<svelte:head>
+	<title>{$_('login')}</title>
+	<meta name="description" content={$_('login')} />
+</svelte:head>
 
 <section id="login">
 	<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">

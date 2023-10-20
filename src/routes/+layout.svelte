@@ -2,7 +2,7 @@
 	import '../i18n';
 	import Header from './Header.svelte';
 	import './styles.css';
-	import '../app.css';
+	import '../app.scss';
 </script>
 
 <div class="app">

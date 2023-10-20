@@ -4,8 +4,12 @@
 	import { authStore } from '../../stores/authStore';
 	import { goto } from '$app/navigation';
 	import { auth } from '../../firebase/firebase-server';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
 
 	export let data: LayoutData;
+
+	// Optionally set default options here
+	const options = {};
 
 	onMount(() => {
 		const authUnsubscribe = authStore.subscribe((curr) => {
@@ -24,14 +28,12 @@
 	});
 </script>
 
-<div class="app">
+<div class="app bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
 	<main>
 		<slot />
 	</main>
 
-	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-	</footer>
+	<SvelteToast {options} />
 </div>
 
 <style>
@@ -48,23 +50,5 @@
 		width: 100%;
 		margin: 0 auto;
 		box-sizing: border-box;
-	}
-
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
 	}
 </style>

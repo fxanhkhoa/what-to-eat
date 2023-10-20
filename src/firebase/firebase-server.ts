@@ -1,5 +1,7 @@
 import { deleteApp, getApp, getApps, initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from "firebase/firestore";
+
 
 // import {
 // 	apiKey,
@@ -18,7 +20,8 @@ const firebaseConfig = {
 	storageBucket: 'what-to-eat-90d3e.appspot.com',
 	messagingSenderId: '276849599452',
 	appId: '1:276849599452:web:598db247d5eb2e2f302519',
-	measurementId: 'G-FWE0TE8LCZ'
+	measurementId: 'G-FWE0TE8LCZ',
+	databaseURL: "https://what-to-eat.firebaseio.com",
 };
 
 let firebaseApp;
@@ -31,3 +34,4 @@ if (!getApps().length) {
 }
 
 export const auth = getAuth(firebaseApp);
+export const database = getFirestore(firebaseApp);
