@@ -53,8 +53,8 @@ jobs:
           if: github.event_name != 'pull_request'
           uses: appleboy/ssh-action@master
           with:
-            host: ${{ secrets.HOST_NHAN_HOA }}
+            host: ${{ secrets.HOST }}
             username: ${{ secrets.USERNAME }}
-            password: ${{ secrets.PASSWORD_NHAN_HOA }}
+            password: ${{ secrets.PASSWORD }}
             port: ${{ secrets.PORT }}
-            script: sh action.sh ${{ secrets.HOST }} ${{ secrets.USERNAME }} ${{ secrets.PASSWORD }} 'sh /home/dratini/producer/deployWeb.sh'
+            script: sh deploy-dratini.sh ${{ secrets.DRATINI_HOST }} ${{ secrets.DRATINI_PASSWORD }} 'sh what-to-eat/deploy.sh what-to-eat'

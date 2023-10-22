@@ -1,0 +1,6 @@
+HOST=$1
+PASSWORD=$2
+COMMAND=$3
+COMMANDTODO="sshpass -p $PASSWORD ssh $HOST -o StrictHostKeyChecking=no $COMMAND"
+echo $COMMANDTODO
+echo $($COMMANDTODO)
