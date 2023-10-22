@@ -1,0 +1,46 @@
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'what-to-eat'
+  namespace: 'default'
+spec:
+  selector:
+    matchLabels:
+      app: 'what-to-eat'
+  replicas: 1
+  strategy:
+    type: 'RollingUpdate'
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: 'what-to-eat'
+    spec:
+      containers:
+        - name: 'what-to-eat'
+          image: 'fxanhkhoa/what-to-eat:latest'
+          imagePullPolicy: 'Always'
+
+          ports:
+            - containerPort: 3000
+              name: 'what-to-eat'
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "what-to-eat-service"
+  namespace: "default"
+  labels: 
+    app: "what-to-eat-service"
+spec: 
+  ports: 
+    -
+      name: "what-to-eat-service"
+      port: 3000
+      nodePort: 30002
+  type: LoadBalancer
+  selector:
+    app: "what-to-eat"
