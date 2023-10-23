@@ -81,5 +81,9 @@
 	"VEGETABLES": "VEGETABLES",
 	"INFANT FORMULA AND BABY FOOD": "INFANT FORMULA AND BABY FOOD",
 	"OTHER": "OTHER",
-	"login": "Login"
+	"login": "Login",
+	"what-are-you-looking-for": "What are you looking for?",
+	"dish": "Dish",
+	"metadata.dish.title": "What to eat today?",
+	"metadata.dish.description": "You don't know what to eat today? Don't worry, let me introduce!"
 }

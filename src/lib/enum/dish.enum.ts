@@ -1,3 +1,9 @@
+export enum DIFFICULT_LEVELS {
+	HARD = 'HARD',
+	MEDIUM = 'MEDIUM',
+	EASY = 'EASY'
+}
+
 export const MEAL_CATEGORIES = [
 	'BREAKFAST',
 	'LUNCH',

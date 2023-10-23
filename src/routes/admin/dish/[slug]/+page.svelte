@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { _, locale } from 'svelte-i18n';
 	import Tiptap from '$lib/Tiptap.svelte';
-	import { DIFFICULT_LEVELS, INGREDIENT_CATEGORIES, MEAL_CATEGORIES } from '$lib/constant/dish';
+	import { INGREDIENT_CATEGORIES, MEAL_CATEGORIES } from '$lib/constant/dish';
 	import MultiSelect from 'svelte-multiselect';
 	import type { Dish } from '$lib/type/dish.type';
 	import { database } from '../../../../firebase/firebase-server';
@@ -12,10 +12,10 @@
 	import type { MultiLanguage } from '$lib/type/multi-language.type';
 	import { initStringMultiLanguage } from '$lib/utils/multi-language';
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
 	import '@fortawesome/fontawesome-free/css/all.min.css'
+	import { DIFFICULT_LEVELS } from '$lib/enum/dish.enum';
 
 	export let data: PageData;
 	const { slug } = data;
@@ -333,7 +333,7 @@
 					bind:value={difficultLevel}
 					class="py-3 px-4 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 					<option selected value={null}>{$_('difficult-level')}</option>
-					{#each DIFFICULT_LEVELS as level, i}
+					{#each Object.values(DIFFICULT_LEVELS) as level, i}
 						<option value={level}>{level}</option>
 					{/each}
 				</select>

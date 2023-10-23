@@ -81,5 +81,9 @@
 	"VEGETABLES": "RAU CỦ",
 	"INFANT FORMULA AND BABY FOOD": "SỮA BỘT VÀ THỨC ĂN CHO EM BÉ",
 	"OTHER": "KHÁC",
-	"login": "Đăng Nhập"
+	"login": "Đăng Nhập",
+	"what-are-you-looking-for": "Bạn đang tìm gì vậy?",
+	"dish": "Món ăn",
+	"metadata.dish.title": "Hôm nay ăn gì nhỉ?",
+	"metadata.dish.description": "Bạn không biết ăn gì hôm nay? Đừng lo, hãy để mình giới thiệu nhé!"
 }
