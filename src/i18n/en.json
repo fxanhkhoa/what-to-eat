@@ -85,5 +85,11 @@
 	"what-are-you-looking-for": "What are you looking for?",
 	"dish": "Dish",
 	"metadata.dish.title": "What to eat today?",
-	"metadata.dish.description": "You don't know what to eat today? Don't worry, let me introduce!"
+	"metadata.dish.description": "You don't know what to eat today? Don't worry, let me introduce!",
+	"metadata.dish.breakfast.title": "Which dishes are for breakfast?",
+	"metadata.dish.breakfast.description": "Breakfast is the first meal of the day usually eaten in the morning. The word in English refers to breaking the fasting period of the previous night. Various \"typical\" or \"traditional\" breakfast menus exist, with food choices varying by regions and traditions worldwide.",
+	"back": "Back",
+	"discover": "Discover",
+	"short-description": "Short Description",
+	"view-detail": "View Detail"
 }

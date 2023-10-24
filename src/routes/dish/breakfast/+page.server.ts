@@ -2,13 +2,19 @@ import type { Dish } from '$lib/type/dish.type';
 import { collection, getDocs, limit, orderBy, query, startAfter, where } from 'firebase/firestore';
 import type { PageServerLoad } from './$types';
 import { database } from '../../../firebase/firebase-server';
+import { MEAL_CATEGORIES } from '$lib/enum/dish.enum';
 
 const getDishes = async (page: number) => {
 	const dishesRef = collection(database, 'dishes');
 	let dishQuery;
 	const listDish: Dish[] = [];
 	if (page === 1) {
-		dishQuery = query(dishesRef, where('mealCategories', 'array-contains', 'BREAKFAST'), orderBy('createdAt'), limit(25));
+		dishQuery = query(
+			dishesRef,
+			where('mealCategories', 'array-contains', MEAL_CATEGORIES.BREAKFAST),
+			orderBy('createdAt'),
+			limit(25)
+		);
 	} else {
 		// Query the first page of docs
 		const first = query(dishesRef, orderBy('createdAt'), limit(page * 25));

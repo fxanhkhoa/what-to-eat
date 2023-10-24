@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { _, locale } from 'svelte-i18n';
 	import Tiptap from '$lib/Tiptap.svelte';
-	import { INGREDIENT_CATEGORIES, MEAL_CATEGORIES } from '$lib/constant/dish';
 	import MultiSelect from 'svelte-multiselect';
 	import type { Dish } from '$lib/type/dish.type';
 	import { database } from '../../../../firebase/firebase-server';
@@ -14,14 +13,15 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
-	import '@fortawesome/fontawesome-free/css/all.min.css'
-	import { DIFFICULT_LEVELS } from '$lib/enum/dish.enum';
+	import '@fortawesome/fontawesome-free/css/all.min.css';
+	import { DIFFICULT_LEVELS, INGREDIENT_CATEGORIES, MEAL_CATEGORIES } from '$lib/enum/dish.enum';
 
 	export let data: PageData;
 	const { slug } = data;
 
 	let editType = 1;
 	let title: MultiLanguage<string>[] = initStringMultiLanguage();
+	let shortDescription: MultiLanguage<string>[] = initStringMultiLanguage();
 	let selectedLanguage = 'en';
 	let content: MultiLanguage<string>[] = initStringMultiLanguage();
 	let difficultLevel = '';
@@ -82,6 +82,18 @@
 		});
 	}
 
+	function setShortDescription(event: any) {
+		shortDescription = shortDescription.map((t) => {
+			if (t.language === selectedLanguage) {
+				return {
+					...t,
+					data: event.target.value
+				};
+			}
+			return t;
+		});
+	}
+
 	async function onSubmit() {
 		const tags = tagsInput.split(',').map((item) => {
 			return item.trim();
@@ -89,6 +101,7 @@
 		const dto: Dish = {
 			slug: slugInput,
 			title,
+			shortDescription,
 			content,
 			tags,
 			preparationTime,
@@ -133,6 +146,7 @@
 			const dish: Dish = docSnap.data() as Dish;
 			slugInput = dish.slug;
 			title = dish.title;
+			shortDescription = dish.shortDescription;
 			content = dish.content;
 			tiptap.setContent(content.find((c) => c.language === selectedLanguage)?.data ?? '');
 			tagsInput = dish.tags.join(',');
@@ -161,7 +175,18 @@
 </svelte:head>
 
 <section id="dish-detail" class="p-5">
-	<div class="w-full">
+	<div class="flex">
+		<a
+			href="/admin/dish"
+			class="group text-purple-700 hover:text-purple-500 font-semibold transition-all duration-300 ease-in-out">
+			<span
+				class="bg-left-bottom bg-gradient-to-r from-purple-500 to-purple-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+				<i class="fa-solid fa-circle-left my-auto" />
+				<span class="ml-2">{$_('back')}</span>
+			</span>
+		</a>
+	</div>
+	<div class="w-full mt-5">
 		<div class="relative right-0">
 			<ul
 				class="relative flex list-none flex-wrap rounded-xl bg-blue-gray-50/60 p-1 border"
@@ -219,7 +244,23 @@
 				type="text"
 				id="title"
 				name="title"
-				placeholder="Mì Ý"
+				placeholder={$_('title')}
+				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+				required />
+		</div>
+
+		<div class="mb-6">
+			<label
+				for="shortDescription"
+				class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+				>{$_('short-description')}</label>
+			<input
+				value={shortDescription.find((t) => t.language === selectedLanguage)?.data}
+				on:change={setShortDescription}
+				type="text"
+				id="shortDescription"
+				name="shortDescription"
+				placeholder={$_('short-description')}
 				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 				required />
 		</div>
@@ -347,7 +388,7 @@
 				<MultiSelect
 					ulSelectedClass="py-3 px-4 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 					bind:selected={mealCategoriesSelected}
-					options={MEAL_CATEGORIES} />
+					options={Object.values(MEAL_CATEGORIES)} />
 			</div>
 
 			<div class="my-6">
@@ -358,7 +399,7 @@
 				<MultiSelect
 					ulSelectedClass="py-3 px-4 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 					bind:selected={ingredientCategoriesSelected}
-					options={INGREDIENT_CATEGORIES} />
+					options={Object.values(INGREDIENT_CATEGORIES)} />
 			</div>
 
 			<div class="my-6">

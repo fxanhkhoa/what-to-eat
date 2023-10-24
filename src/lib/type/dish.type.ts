@@ -4,6 +4,7 @@ import type { MultiLanguage } from './multi-language.type';
 export type Dish = {
 	slug: string;
 	title: MultiLanguage<string>[];
+	shortDescription: MultiLanguage<string>[];
 	content: MultiLanguage<string>[];
 	tags: string[];
 	preparationTime: number;
