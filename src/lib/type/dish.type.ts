@@ -13,4 +13,6 @@ export type Dish = {
 	mealCategories: string[];
 	ingredientCategories: string[];
 	thumbnail: string;
+	video?: string;
+	ingredients: string[];
 } & Base;

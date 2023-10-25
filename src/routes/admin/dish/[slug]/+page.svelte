@@ -110,6 +110,7 @@
 			mealCategories: mealCategoriesSelected,
 			ingredientCategories: ingredientCategoriesSelected,
 			thumbnail,
+			ingredients: [],
 			createdAt: new Date().toISOString(),
 			updatedAt: new Date().toISOString()
 		};

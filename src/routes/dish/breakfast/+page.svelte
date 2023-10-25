@@ -10,7 +10,6 @@
 	let selectedLanguage = 'en';
 
 	onMount(() => {
-		console.log(data.dishes);
 		const sub = locale.subscribe((lang) => {
 			if (lang === 'en-US') {
 				locale.set('en');
@@ -117,14 +116,9 @@
 								</div>
 							</div>
 							<div class="col-span-2 relative">
-								<!-- <button
-									class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 w-full h-full flex flex-col gap-3 justify-center items-center transition duration-300 ease-in-out rounded-r-lg">
-									<i class="fa-solid fa-circle-right" />
-									<span>{$_('view-detail')}</span>
-								</button> -->
 								<a
 									href={`/dish/${dish.slug}`}
-									class="relative w-full h-full inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-l rounded-r-full group">
+									class="relative w-full h-full inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-l rounded-r-full group border-gray-100">
 									<span
 										class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-purple-500 group-hover:translate-x-0 ease">
 										<svg
