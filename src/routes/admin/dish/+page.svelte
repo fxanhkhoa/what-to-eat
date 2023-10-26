@@ -1,6 +1,15 @@
 <script lang="ts">
 	import type { Dish } from '$lib/type/dish.type';
-	import { collection, deleteDoc, doc, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
+	import {
+		collection,
+		deleteDoc,
+		doc,
+		getDocs,
+		limit,
+		orderBy,
+		query,
+		startAfter
+	} from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
 	import { Tooltip } from '@svelte-plugins/tooltips';
@@ -9,7 +18,7 @@
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
 	import { BADGE_COLOR_CLASSES } from '$lib/constant/badge';
-	import '@fortawesome/fontawesome-free/css/all.min.css'
+	import '@fortawesome/fontawesome-free/css/all.min.css';
 
 	let dishes: Dish[] = [];
 	let page = 1;
@@ -52,9 +61,9 @@
 
 	const deleteDish = async (slug: string) => {
 		if (confirm(`are you sure to delete ${slug}?`)) {
-			await deleteDoc(doc(database, "dishes", slug));
+			await deleteDoc(doc(database, 'dishes', slug));
 		}
-	}
+	};
 
 	onMount(() => {
 		getDishes();
@@ -67,6 +76,17 @@
 </svelte:head>
 
 <section id="dish" class="p-5">
+	<div class="flex">
+		<a
+			href="/admin"
+			class="group text-purple-700 hover:text-purple-500 font-semibold transition-all duration-300 ease-in-out">
+			<span
+				class="bg-left-bottom bg-gradient-to-r from-purple-500 to-purple-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+				<i class="fa-solid fa-circle-left my-auto" />
+				<span class="ml-2">{$_('back')}</span>
+			</span>
+		</a>
+	</div>
 	<div class="flex justify-between mb-5">
 		<h1 class="text-white font-bold drop-shadow-lg">{$_('dish-management')}</h1>
 		<div class="flex">
