@@ -92,5 +92,14 @@
 	"discover": "Khám phá",
 	"short-description": "Mô tả ngắn",
 	"view-detail": "Xem Chi Tiết",
-	"ingredient-management": "Quản lý nguyên liệu"
+	"ingredient-management": "Quản lý nguyên liệu",
+	"measure": "Đơn vị đo lường",
+	"calories": "Calo",
+	"carbohydrate": "Cacbohydrat",
+	"fat": "Chất Béo",
+	"weight": "Trọng Lượng",
+	"protein": "Chất Đạm",
+	"cholesterol": "Cholesterol",
+	"sodium": "Natri",
+	"submit": "Lưu"
 }

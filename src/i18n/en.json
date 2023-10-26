@@ -92,5 +92,14 @@
 	"discover": "Discover",
 	"short-description": "Short Description",
 	"view-detail": "View Detail",
-	"ingredient-management": "Ingredient Management"
+	"ingredient-management": "Ingredient Management",
+	"measure": "Measure",
+	"calories": "Calories",
+	"carbohydrate": "Carbohydrate",
+	"fat": "Fat",
+	"weight": "Weight",
+	"protein": "Protein",
+	"cholesterol": "Cholesterol",
+	"sodium": "Sodium",
+	"submit": "Submit"
 }

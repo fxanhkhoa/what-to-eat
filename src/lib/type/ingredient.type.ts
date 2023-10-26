@@ -1,4 +1,3 @@
-import type { INGREDIENT_CATEGORIES } from "$lib/enum/dish.enum";
 import type { MultiLanguage } from "./multi-language.type";
 
 export type Ingredient = {
@@ -8,7 +7,7 @@ export type Ingredient = {
     calories: number;
     carbohydrate: number;
     fat: number;
-    ingredientCategory: INGREDIENT_CATEGORIES;
+    ingredientCategory: string[];
     weight: number;
     protein: number;
     cholesterol: number;
