@@ -8,6 +8,10 @@
 	import english from '$lib/images/english.webp';
 	import { MultiSelect } from 'svelte-multiselect';
 	import { INGREDIENT_CATEGORIES } from '$lib/enum/dish.enum';
+	import type { Ingredient } from '$lib/type/ingredient.type';
+	import { collection, doc, setDoc } from 'firebase/firestore';
+	import { database } from '../../../../firebase/firebase-server';
+	import { toast } from '@zerodevx/svelte-toast';
 
 	export let data: PageData;
 	const { ingredient } = data;
@@ -43,7 +47,42 @@
 		});
 	};
 
-	const onSubmit = () => {};
+	const onSubmit = async () => {
+		const dto: Ingredient = {
+			slug: slugInput,
+			title: title,
+			measure: measure,
+			calories: calories,
+			carbohydrate: carbohydrate,
+			fat: fat,
+			ingredientCategory: ingredientCategoriesSelected,
+			weight: weight,
+			protein: protein,
+			cholesterol: cholesterol,
+			sodium: sodium
+		};
+		try {
+			const dishesRef = collection(database, 'ingredients');
+			const docRef = await setDoc(doc(dishesRef, dto.slug), dto);
+			console.log('Document written with ID: ', docRef);
+			toast.push($_('successfully'), {
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': 'rgba(72,187,120,0.9)',
+					'--toastBarBackground': '#2F855A'
+				}
+			});
+		} catch (e) {
+			console.error('Error adding document: ', e);
+			toast.push($_('fail'), {
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': '#d40202',
+					'--toastBarBackground': '#b30000'
+				}
+			});
+		}
+	};
 
 	onMount(() => {
 		if (ingredient) {
