@@ -1,3 +1,4 @@
+import type { Base } from "./base.type";
 import type { MultiLanguage } from "./multi-language.type";
 
 export type Ingredient = {
@@ -12,4 +13,4 @@ export type Ingredient = {
     protein: number;
     cholesterol: number;
     sodium: number;
-};
+} & Base;

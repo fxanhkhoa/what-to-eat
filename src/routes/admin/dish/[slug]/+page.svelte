@@ -32,6 +32,7 @@
 	let tagsInput = '';
 	let preparationTime = 0;
 	let cookingTime = 0;
+	let createdAt = '';
 
 	let tiptap: Tiptap;
 
@@ -111,7 +112,7 @@
 			ingredientCategories: ingredientCategoriesSelected,
 			thumbnail,
 			ingredients: [],
-			createdAt: new Date().toISOString(),
+			createdAt: slug ? createdAt : new Date().toISOString(),
 			updatedAt: new Date().toISOString()
 		};
 		try {
@@ -157,6 +158,7 @@
 			mealCategoriesSelected = dish.mealCategories;
 			ingredientCategoriesSelected = dish.ingredientCategories;
 			thumbnail = dish.thumbnail;
+			createdAt = dish.createdAt;
 		} else {
 			// docSnap.data() will be undefined in this case
 			goto('/admin/dish');

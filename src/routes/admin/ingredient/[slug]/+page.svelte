@@ -28,7 +28,21 @@
 	let cholesterol = 0;
 	let sodium = 0;
 
-	const init = () => {};
+	const init = () => {
+		if (ingredient) {
+			slugInput = ingredient.slug;
+			title = ingredient.title;
+			measure = ingredient.measure;
+			calories = ingredient.calories;
+			carbohydrate = ingredient.carbohydrate;
+			fat = ingredient.fat;
+			ingredientCategoriesSelected = ingredient.ingredientCategory;
+			weight = ingredient.weight;
+			protein = ingredient.protein;
+			cholesterol = ingredient.cholesterol;
+			sodium = ingredient.sodium;
+		}
+	};
 
 	const setSelectedLanguage = (lang: string) => {
 		locale.set(lang);
@@ -59,7 +73,9 @@
 			weight: weight,
 			protein: protein,
 			cholesterol: cholesterol,
-			sodium: sodium
+			sodium: sodium,
+			createdAt: ingredient ? ingredient.createdAt : new Date().toISOString(),
+			updatedAt: new Date().toISOString()
 		};
 		try {
 			const dishesRef = collection(database, 'ingredients');
@@ -186,9 +202,7 @@
 		</div>
 
 		<div class="mb-6">
-			<label
-				for="calories"
-				class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+			<label for="calories" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 				>{$_('calories')}</label>
 			<input
 				bind:value={calories}

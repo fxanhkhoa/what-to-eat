@@ -101,5 +101,7 @@
 	"protein": "Chất Đạm",
 	"cholesterol": "Cholesterol",
 	"sodium": "Natri",
-	"submit": "Lưu"
+	"submit": "Lưu",
+	"created-at": "Tạo Lúc",
+	"updated-at": "Cập Nhật Lúc"
 }

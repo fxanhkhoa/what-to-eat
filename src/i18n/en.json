@@ -101,5 +101,7 @@
 	"protein": "Protein",
 	"cholesterol": "Cholesterol",
 	"sodium": "Sodium",
-	"submit": "Submit"
+	"submit": "Submit",
+	"created-at": "Created At",
+	"updated-at": "Updated At"
 }

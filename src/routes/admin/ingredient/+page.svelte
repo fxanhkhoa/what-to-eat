@@ -3,14 +3,23 @@
 	import { _, locale } from 'svelte-i18n';
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
+	import { onMount } from 'svelte';
+	import { Tooltip } from '@svelte-plugins/tooltips';
 
 	export let data: PageData;
+	const { ingredients } = data;
 	let selectedLanguage = 'en';
 
 	function setSelectedLanguage(lang: string) {
 		locale.set(lang);
 		selectedLanguage = lang;
 	}
+
+	const deleteIngredient = (slug: string) => {};
+
+	onMount(() => {
+		console.log(ingredients);
+	});
 </script>
 
 <section id="main" class="p-5">
@@ -73,5 +82,40 @@
 				</li>
 			</ul>
 		</div>
+	</div>
+	<div class="grid grid-cols-12 gap-5">
+		{#each ingredients as ingredient, i}
+			<div class="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 text-gray-200">
+				<div class="shadow-lg bg-slate-800">
+					<div class="p-3 flex flex-col gap-5">
+						<div class="flex justify-between">
+							<h3>{ingredient.title.find((t) => t.language === selectedLanguage)?.data}</h3>
+							<div class="flex gap-3">
+								<button on:click={() => deleteIngredient(ingredient.slug)}>
+									<i class="fa-solid fa-trash my-auto text-red-500" />
+								</button>
+								<a href={`/admin/ingredient/${ingredient.slug}`} class="my-auto">
+									<i class="fa-solid fa-pen-to-square my-auto text-yellow-500" />
+								</a>
+							</div>
+						</div>
+						<div class="flex justify-between">
+							<div class="flex gap-2">
+								<Tooltip content={$_('created-at')}>
+									<i class="fa-solid fa-clock my-auto" />
+								</Tooltip>
+								<span>{new Date(ingredient.createdAt).toLocaleDateString(selectedLanguage)}</span>
+							</div>
+							<div class="flex gap-2">
+								<Tooltip content={$_('updated-at')}>
+									<i class="fa-solid fa-stopwatch my-auto" />
+								</Tooltip>
+								<span>{new Date(ingredient.updatedAt).toLocaleDateString(selectedLanguage)}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{/each}
 	</div>
 </section>
