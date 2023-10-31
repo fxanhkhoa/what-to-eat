@@ -103,5 +103,8 @@
 	"sodium": "Natri",
 	"submit": "Lưu",
 	"created-at": "Tạo Lúc",
-	"updated-at": "Cập Nhật Lúc"
+	"updated-at": "Cập Nhật Lúc",
+	"ingredients": "Nguyên Liệu",
+	"quantity": "Số Lượng",
+	"note": "Ghi Chú"
 }

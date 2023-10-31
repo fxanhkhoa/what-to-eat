@@ -16,3 +16,9 @@ export type Dish = {
 	video?: string;
 	ingredients: string[];
 } & Base;
+
+export type IngredientsInDish = {
+	quantity: number;
+	slug: string;
+	note: string;
+};

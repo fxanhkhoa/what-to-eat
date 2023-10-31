@@ -31,3 +31,5 @@ export const getIngredients = async (page = 1) => {
 	});
 	return listIngredient;
 };
+
+export const searchIngredients = (keyword: string) => {}

@@ -103,5 +103,8 @@
 	"sodium": "Sodium",
 	"submit": "Submit",
 	"created-at": "Created At",
-	"updated-at": "Updated At"
+	"updated-at": "Updated At",
+	"ingredients": "Ingredients",
+	"quantity": "Quantity",
+	"note": "Note"
 }

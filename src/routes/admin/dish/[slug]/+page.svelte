@@ -2,7 +2,7 @@
 	import { _, locale } from 'svelte-i18n';
 	import Tiptap from '$lib/Tiptap.svelte';
 	import MultiSelect from 'svelte-multiselect';
-	import type { Dish } from '$lib/type/dish.type';
+	import type { Dish, IngredientsInDish } from '$lib/type/dish.type';
 	import { database } from '../../../../firebase/firebase-server';
 	import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 	import { toast } from '@zerodevx/svelte-toast';
@@ -15,6 +15,8 @@
 	import { goto } from '$app/navigation';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import { DIFFICULT_LEVELS, INGREDIENT_CATEGORIES, MEAL_CATEGORIES } from '$lib/enum/dish.enum';
+	import type { Ingredient } from '$lib/type/ingredient.type';
+	import Select from 'svelte-select';
 
 	export let data: PageData;
 	const { slug } = data;
@@ -33,6 +35,7 @@
 	let preparationTime = 0;
 	let cookingTime = 0;
 	let createdAt = '';
+	let ingredients: IngredientsInDish[] = [];
 
 	let tiptap: Tiptap;
 
@@ -94,6 +97,36 @@
 			return t;
 		});
 	}
+
+	const addIngredient = () => {
+		ingredients = [{ note: '', quantity: 0, slug: '' }, ...ingredients];
+	};
+
+	const deleteIngredient = (index: number) => {
+		ingredients.splice(index, 1);
+	};
+
+	const updateSlug = (index: number, data: string) => {
+		ingredients[index].slug = data;
+	};
+
+	const updateNote = (index: number, data: string) => {
+		ingredients[index].note = data;
+	};
+
+	const updateQuantity = (index: number, data: number) => {
+		ingredients[index].quantity = data;
+	};
+
+	const loadOptions = async (filterText: string) => {
+		return [{value: 'aaa', label: 'sss'}]
+	};
+
+	const optionIdentifier = 'slug';
+	const getOptionLabel = (option: Ingredient) =>
+		option.title.find((t) => t.language === selectedLanguage)?.data;
+	const getSelectionLabel = (option: Ingredient) =>
+		option.title.find((t) => t.language === selectedLanguage)?.data;
 
 	async function onSubmit() {
 		const tags = tagsInput.split(',').map((item) => {
@@ -327,6 +360,48 @@
 					{@html content.find((c) => c.language === selectedLanguage)?.data}
 				</div>
 			{/if}
+		</div>
+
+		<div class="mb-6">
+			<label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+				>{$_('ingredients')}</label>
+			<button
+				type="button"
+				on:click={addIngredient}
+				class="px-5 py-2.5 font-medium bg-blue-50 hover:bg-blue-100 hover:text-blue-600 text-blue-500 rounded-lg text-sm">
+				{$_('add')} +
+			</button>
+			{#each ingredients as ingredient, i}
+				<div class="grid grid-cols-12 gap-5">
+					<div class="col-span-4">
+						<label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+							>Slug</label>
+						<Select
+							{loadOptions}
+							placeholder="Search for 🍺" />
+					</div>
+					<div class="col-span-2">
+						<label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+							>{$_('quantity')}</label>
+						<input
+							type="number"
+							id="tags"
+							name="tags"
+							placeholder={$_('quantity')}
+							class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+					</div>
+					<div class="col-span-6">
+						<label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+							>{$_('note')}</label>
+						<input
+							type="text"
+							id={`note-${i}`}
+							name="tags"
+							placeholder={$_('note')}
+							class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+					</div>
+				</div>
+			{/each}
 		</div>
 
 		<div class="mb-6">
