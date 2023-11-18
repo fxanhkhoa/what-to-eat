@@ -74,17 +74,21 @@
 		});
 	}
 
-	function setTitle(event: any) {
+	const setTitle = (
+		event: Event & {
+			currentTarget: EventTarget & HTMLInputElement;
+		}
+	) => {
 		title = title.map((t) => {
 			if (t.language === selectedLanguage) {
 				return {
 					...t,
-					data: event.target.value
+					data: event.currentTarget.value
 				};
 			}
 			return t;
 		});
-	}
+	};
 
 	function setShortDescription(event: any) {
 		shortDescription = shortDescription.map((t) => {
@@ -119,7 +123,7 @@
 	};
 
 	const loadOptions = async (filterText: string) => {
-		return [{value: 'aaa', label: 'sss'}]
+		return [{ value: 'aaa', label: 'sss' }];
 	};
 
 	const optionIdentifier = 'slug';
@@ -376,9 +380,7 @@
 					<div class="col-span-4">
 						<label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 							>Slug</label>
-						<Select
-							{loadOptions}
-							placeholder="Search for 🍺" />
+						<Select {loadOptions} placeholder="Search for 🍺" />
 					</div>
 					<div class="col-span-2">
 						<label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"

@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 	import { auth } from '../../firebase/firebase-server';
-	import { authStore } from '../../stores/authStore';
 	import { _ } from 'svelte-i18n';
-	import '@fortawesome/fontawesome-free/css/all.min.css'
+	import '@fortawesome/fontawesome-free/css/all.min.css';
 
 	let provider: GoogleAuthProvider;
 
@@ -18,14 +16,14 @@
 			.then((result) => {
 				// This gives you a Google Access Token. You can use it to access the Google API.
 				const credential = GoogleAuthProvider.credentialFromResult(result);
-				const token = credential?.accessToken;
 				const user = result.user;
-				authStore.update((curr) => {
-					return { ...curr, isLoading: false, currentUser: user };
+				user.getIdToken().then((idToken) => {
+					(document.getElementById("idToken") as HTMLInputElement).value = idToken;
+					(document.getElementById("submitBtn") as HTMLButtonElement).click();
 				});
-				goto('/admin');
 			})
 			.catch((error) => {
+				console.log(error);
 				// Handle Errors here.
 				const errorCode = error.code;
 				const errorMessage = error.message;
@@ -53,9 +51,9 @@
 					<div>
 						<h1 class="text-2xl font-semibold">Login Form with Floating Labels</h1>
 					</div>
-					<div class="divide-y divide-gray-200">
+					<form method="POST" action="/api/login" class="divide-y divide-gray-200">
 						<div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-							<div class="relative">
+							<div class="relative hidden">
 								<input
 									autocomplete="off"
 									id="email"
@@ -68,7 +66,7 @@
 									class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
 									>Email Address</label>
 							</div>
-							<div class="relative">
+							<div class="relative hidden">
 								<input
 									autocomplete="off"
 									id="password"
@@ -81,8 +79,10 @@
 									class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
 									>Password</label>
 							</div>
-							<div class="relative">
-								<button class="bg-blue-500 text-white rounded-md px-2 py-1">Submit</button>
+							<input id="idToken" name="idToken" type="text" class="hidden" />
+							<div class="relative hidden">
+								<button id="submitBtn" type="submit" class="bg-blue-500 text-white rounded-md px-2 py-1"
+									>Submit</button>
 							</div>
 							<div class="px-6 sm:px-0 max-w-sm">
 								<button
@@ -105,7 +105,7 @@
 									<div /></button>
 							</div>
 						</div>
-					</div>
+					</form>
 				</div>
 			</div>
 		</div>

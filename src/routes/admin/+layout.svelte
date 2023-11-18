@@ -1,30 +1,26 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
-	import { authStore } from '../../stores/authStore';
 	import { goto } from '$app/navigation';
-	import { auth } from '../../firebase/firebase-server';
-	import { SvelteToast } from '@zerodevx/svelte-toast';
-
-	export let data: LayoutData;
+	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
+	import {_} from "svelte-i18n";
 
 	// Optionally set default options here
 	const options = {};
 
 	onMount(() => {
-		const authUnsubscribe = authStore.subscribe((curr) => {
-			if (!curr.currentUser) {
-				goto('/login');
-			}
-			auth.updateCurrentUser(curr.currentUser);
-			try {
-				auth.currentUser?.reload().then();
-			} catch (error) {
-				auth.signOut();
-				goto('/login');
-			}
-		});
-		return { authUnsubscribe };
+		// if (!isLoggedIn()) {
+		// 	localStorage.clear();
+		// 	toast.push($_('please-login-again'), {
+		// 		theme: {
+		// 			'--toastColor': 'mintcream',
+		// 			'--toastBackground': '#d40202',
+		// 			'--toastBarBackground': '#b30000'
+		// 		}
+		// 	});
+		// 	goto('/login');
+		// }
+		return {};
 	});
 </script>
 

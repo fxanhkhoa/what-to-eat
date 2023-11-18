@@ -106,5 +106,6 @@
 	"updated-at": "Updated At",
 	"ingredients": "Ingredients",
 	"quantity": "Quantity",
-	"note": "Note"
+	"note": "Note",
+	"please-login-again": "Please login again"
 }
