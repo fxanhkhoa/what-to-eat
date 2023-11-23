@@ -4,10 +4,17 @@
 	import { auth } from '../../firebase/firebase-server';
 	import { _ } from 'svelte-i18n';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
+	import { page } from '$app/stores';
+	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
 
 	let provider: GoogleAuthProvider;
+	export let data: PageData;
 
 	onMount(() => {
+		if (data.token) {
+			goto('/');
+		}
 		provider = new GoogleAuthProvider();
 	});
 
@@ -18,8 +25,9 @@
 				const credential = GoogleAuthProvider.credentialFromResult(result);
 				const user = result.user;
 				user.getIdToken().then((idToken) => {
-					(document.getElementById("idToken") as HTMLInputElement).value = idToken;
-					(document.getElementById("submitBtn") as HTMLButtonElement).click();
+					(document.getElementById('idToken') as HTMLInputElement).value = idToken;
+					(document.getElementById('redirect') as HTMLInputElement).value = $page.url.pathname;
+					(document.getElementById('submitBtn') as HTMLButtonElement).click();
 				});
 			})
 			.catch((error) => {
@@ -80,9 +88,12 @@
 									>Password</label>
 							</div>
 							<input id="idToken" name="idToken" type="text" class="hidden" />
+							<input id="redirect" name="redirect" type="text" class="hidden" />
 							<div class="relative hidden">
-								<button id="submitBtn" type="submit" class="bg-blue-500 text-white rounded-md px-2 py-1"
-									>Submit</button>
+								<button
+									id="submitBtn"
+									type="submit"
+									class="bg-blue-500 text-white rounded-md px-2 py-1">Submit</button>
 							</div>
 							<div class="px-6 sm:px-0 max-w-sm">
 								<button

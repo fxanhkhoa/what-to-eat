@@ -1,4 +1,4 @@
 export type MultiLanguage<T> = {
-	language: string;
+	lang: string;
 	data: T;
 };

@@ -1,8 +1,7 @@
-import { getIngredients } from '$lib/services/ingredient.service';
+import { COOKIES_TOKEN } from '$lib/constant/cookies';
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ url }) => {
-	const page = parseInt(url.searchParams.get('page') ?? '1', 10);
-	const ingredients = await getIngredients(page);
-	return { ingredients };
+export const load = (async ({ cookies }) => {
+	const token = cookies.get(COOKIES_TOKEN);
+	return { token };
 }) satisfies PageServerLoad;

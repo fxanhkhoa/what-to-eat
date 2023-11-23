@@ -107,5 +107,11 @@
 	"ingredients": "Nguyên Liệu",
 	"quantity": "Số Lượng",
 	"note": "Ghi Chú",
-	"please-login-again": "Vui lòng đăng nhập lại"
+	"please-login-again": "Vui lòng đăng nhập lại",
+	"create-new": "Tạo mới",
+	"next": "Tiếp",
+	"prev": "Trước",
+	"input-text-to-search": "Nhập chữ để tìm",
+	"videos": "Videos",
+	"youtube-url": "Đường dẫn Youtube"
 }

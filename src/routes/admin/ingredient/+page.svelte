@@ -5,10 +5,38 @@
 	import english from '$lib/images/english.webp';
 	import { onMount } from 'svelte';
 	import { Tooltip } from '@svelte-plugins/tooltips';
+	import { page } from '$app/stores';
+	import { getContextClient, gql, queryStore } from '@urql/svelte';
+	import type { Ingredient } from '../../../gql/graphql';
+	import '@fortawesome/fontawesome-free/css/all.min.css';
+	import Pagination from '$lib/components/pagination.svelte';
 
-	export let data: PageData;
-	const { ingredients } = data;
 	let selectedLanguage = 'en';
+
+	const p = parseInt($page.url.searchParams.get('page') ?? '1', 10);
+	const keyword = $page.url.searchParams.get('keyword');
+
+	const limit = 25;
+
+	const ingredients = queryStore<{ ingredients: Ingredient[] }>({
+		client: getContextClient(),
+		query: gql`
+			query ($keyword: String, $page: Int, $limit: Int) {
+				ingredients(keyword: $keyword, page: $page, limit: $limit) {
+					_id
+					slug
+					title {
+						lang
+						data
+					}
+					createdAt
+					updatedAt
+				}
+			}
+		`,
+		variables: { keyword, page: p, limit },
+		requestPolicy: 'cache-and-network'
+	});
 
 	function setSelectedLanguage(lang: string) {
 		locale.set(lang);
@@ -17,10 +45,13 @@
 
 	const deleteIngredient = (slug: string) => {};
 
-	onMount(() => {
-		console.log(ingredients);
-	});
+	onMount(() => {});
 </script>
+
+<svelte:head>
+	<title>{$_('ingredient-management')}</title>
+	<meta name="description" content={$_('ingredient-management')} />
+</svelte:head>
 
 <section id="main" class="p-5">
 	<div class="flex">
@@ -83,39 +114,53 @@
 			</ul>
 		</div>
 	</div>
-	<div class="grid grid-cols-12 gap-5">
-		{#each ingredients as ingredient, i}
-			<div class="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 text-gray-200">
-				<div class="shadow-lg bg-slate-800">
-					<div class="p-3 flex flex-col gap-5">
-						<div class="flex justify-between">
-							<h3>{ingredient.title.find((t) => t.language === selectedLanguage)?.data}</h3>
-							<div class="flex gap-3">
-								<button on:click={() => deleteIngredient(ingredient.slug)}>
-									<i class="fa-solid fa-trash my-auto text-red-500" />
-								</button>
-								<a href={`/admin/ingredient/${ingredient.slug}`} class="my-auto">
-									<i class="fa-solid fa-pen-to-square my-auto text-yellow-500" />
-								</a>
+	{#if $ingredients.fetching}
+		<p>Loading...</p>
+	{:else if $ingredients.error}
+		<p>Oh no... {$ingredients.error.message}</p>
+	{:else if !$ingredients.data}
+		<p>Oh no... no data</p>
+	{:else}
+		<div class="grid grid-cols-12 gap-5">
+			{#each $ingredients?.data?.ingredients as ingredient, i}
+				<div class="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 text-gray-200">
+					<div class="shadow-lg bg-slate-800">
+						<div class="p-3 flex flex-col gap-5">
+							<div class="flex justify-between">
+								<h3>{ingredient.title?.find((t) => t?.lang === selectedLanguage)?.data}</h3>
+								<div class="flex gap-3">
+									<button on:click={() => deleteIngredient(ingredient.slug)}>
+										<i class="fa-solid fa-trash my-auto text-red-500" />
+									</button>
+									<a href={`/admin/ingredient/${ingredient.slug}`} class="my-auto">
+										<i class="fa-solid fa-pen-to-square my-auto text-yellow-500" />
+									</a>
+								</div>
 							</div>
-						</div>
-						<div class="flex justify-between">
-							<div class="flex gap-2">
-								<Tooltip content={$_('created-at')}>
-									<i class="fa-solid fa-clock my-auto" />
-								</Tooltip>
-								<span>{new Date(ingredient.createdAt).toLocaleDateString(selectedLanguage)}</span>
-							</div>
-							<div class="flex gap-2">
-								<Tooltip content={$_('updated-at')}>
-									<i class="fa-solid fa-stopwatch my-auto" />
-								</Tooltip>
-								<span>{new Date(ingredient.updatedAt).toLocaleDateString(selectedLanguage)}</span>
+							<div class="flex justify-between">
+								<div class="flex gap-2">
+									<Tooltip content={$_('created-at')}>
+										<i class="fa-solid fa-clock my-auto" />
+									</Tooltip>
+									<span>{new Date(ingredient.createdAt).toLocaleDateString(selectedLanguage)}</span>
+								</div>
+								<div class="flex gap-2">
+									<Tooltip content={$_('updated-at')}>
+										<i class="fa-solid fa-stopwatch my-auto" />
+									</Tooltip>
+									<span>{new Date(ingredient.updatedAt).toLocaleDateString(selectedLanguage)}</span>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		{/each}
-	</div>
+			{/each}
+		</div>
+		<hr class="my-5" />
+		<Pagination
+			disabledPrevious={p === 1}
+			disabledNext={!$ingredients.data.ingredients.length}
+			on:next={() => (location.href = `/admin/ingredient?page=${p + 1}`)}
+			on:prev={() => (location.href = `/admin/ingredient?page=${p - 1}`)} />
+	{/if}
 </section>

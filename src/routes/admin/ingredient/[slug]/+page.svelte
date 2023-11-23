@@ -6,15 +6,17 @@
 	import { _, locale } from 'svelte-i18n';
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
-	import { MultiSelect } from 'svelte-multiselect';
 	import { INGREDIENT_CATEGORIES } from '$lib/enum/dish.enum';
-	import type { Ingredient } from '$lib/type/ingredient.type';
-	import { collection, doc, setDoc } from 'firebase/firestore';
-	import { database } from '../../../../firebase/firebase-server';
-	import { toast } from '@zerodevx/svelte-toast';
+	import { getContextClient, gql, mutationStore, queryStore } from '@urql/svelte';
+	import type {
+		CreateIngredientInput,
+		Ingredient,
+		UpdateIngredientInput
+	} from '../../../../gql/graphql';
+	import '@fortawesome/fontawesome-free/css/all.min.css';
+	import Select from 'svelte-select';
+	import { showError, showSuccess } from '$lib/utils/toast';
 
-	export let data: PageData;
-	const { ingredient } = data;
 	let selectedLanguage = 'en';
 	let title: MultiLanguage<string>[] = initStringMultiLanguage();
 	let slugInput = '';
@@ -28,19 +30,59 @@
 	let cholesterol = 0;
 	let sodium = 0;
 
-	const init = () => {
+	let mutationObservable: any;
+
+	export let data: PageData;
+	const client = getContextClient();
+
+	const ingredient = queryStore<{ ingredient: Ingredient }>({
+		client,
+		query: gql`
+			query ($slug: String!) {
+				ingredient(slug: $slug) {
+					_id
+					title {
+						lang
+						data
+					}
+					slug
+					measure
+					calories
+					carbohydrate
+					fat
+					ingredientCategory
+					weight
+					protein
+					cholesterol
+					sodium
+				}
+			}
+		`,
+		variables: { slug: data.slug },
+		requestPolicy: 'cache-and-network'
+	});
+
+	$: if (!$ingredient.fetching) {
+		init($ingredient.data?.ingredient);
+	}
+
+	const init = (ingredient?: Ingredient) => {
 		if (ingredient) {
 			slugInput = ingredient.slug;
-			title = ingredient.title;
-			measure = ingredient.measure;
-			calories = ingredient.calories;
-			carbohydrate = ingredient.carbohydrate;
-			fat = ingredient.fat;
-			ingredientCategoriesSelected = ingredient.ingredientCategory;
-			weight = ingredient.weight;
-			protein = ingredient.protein;
-			cholesterol = ingredient.cholesterol;
-			sodium = ingredient.sodium;
+			if (ingredient.title) {
+				title = ingredient.title as unknown as MultiLanguage<string>[];
+			}
+			measure = ingredient.measure ?? '';
+			calories = ingredient.calories ?? 0;
+			carbohydrate = ingredient.carbohydrate ?? 0;
+			fat = ingredient.fat ?? 0;
+			if (ingredient.ingredientCategory && ingredient.ingredientCategory) {
+				ingredientCategoriesSelected = ingredient.ingredientCategory as string[];
+			}
+			weight = ingredient.weight ?? 0;
+			protein = ingredient.protein ?? 0;
+			cholesterol = ingredient.cholesterol ?? 0;
+			sodium = ingredient.sodium ?? 0;
 		}
 	};
 
@@ -49,12 +91,16 @@
 		selectedLanguage = lang;
 	};
 
-	const setTitle = (event: any) => {
+	const setTitle = (
+		event: Event & {
+			currentTarget: EventTarget & HTMLInputElement;
+		}
+	) => {
 		title = title.map((t) => {
-			if (t.language === selectedLanguage) {
+			if (t.lang === selectedLanguage) {
 				return {
 					...t,
-					data: event.target.value
+					data: event.currentTarget.value
 				};
 			}
 			return t;
@@ -62,39 +108,70 @@
 	};
 
 	const onSubmit = async () => {
-		const dto: Ingredient = {
-			slug: slugInput,
-			title: title,
-			measure: measure,
-			calories: calories,
-			carbohydrate: carbohydrate,
-			fat: fat,
-			ingredientCategory: ingredientCategoriesSelected,
-			weight: weight,
-			protein: protein,
-			cholesterol: cholesterol,
-			sodium: sodium,
-			createdAt: ingredient ? ingredient.createdAt : new Date().toISOString(),
-			updatedAt: new Date().toISOString()
-		};
-		try {
-			const dishesRef = collection(database, 'ingredients');
-			const docRef = await setDoc(doc(dishesRef, dto.slug), dto);
-			console.log('Document written with ID: ', docRef);
-			toast.push($_('successfully'), {
-				theme: {
-					'--toastColor': 'mintcream',
-					'--toastBackground': 'rgba(72,187,120,0.9)',
-					'--toastBarBackground': '#2F855A'
+		if (!data.slug) {
+			const dto: CreateIngredientInput = {
+				slug: slugInput,
+				title: title as any,
+				measure: measure,
+				calories: calories,
+				carbohydrate: carbohydrate,
+				fat: fat,
+				ingredientCategory: ingredientCategoriesSelected,
+				weight: weight,
+				protein: protein,
+				cholesterol: cholesterol,
+				sodium: sodium
+			};
+			const result = mutationStore({
+				client,
+				query: gql`
+					mutation ($createIngredientInput: CreateIngredientInput!) {
+						createIngredient(createIngredientInput: $createIngredientInput) {
+							_id
+							slug
+						}
+					}
+				`,
+				variables: { createIngredientInput: dto }
+			});
+			mutationObservable = result.subscribe((res) => {
+				if (!res.fetching && !res.error) {
+					showSuccess($_('successfully'));
+				} else if (!res.fetching && res.error) {
+					showError(`${$_('fail')}: ${res.error.message}`);
 				}
 			});
-		} catch (e) {
-			console.error('Error adding document: ', e);
-			toast.push($_('fail'), {
-				theme: {
-					'--toastColor': 'mintcream',
-					'--toastBackground': '#d40202',
-					'--toastBarBackground': '#b30000'
+		} else {
+			const dto: UpdateIngredientInput = {
+				slug: slugInput,
+				title: title as any,
+				measure: measure,
+				calories: calories,
+				carbohydrate: carbohydrate,
+				fat: fat,
+				ingredientCategory: ingredientCategoriesSelected,
+				weight: weight,
+				protein: protein,
+				cholesterol: cholesterol,
+				sodium: sodium
+			};
+			const result = mutationStore({
+				client,
+				query: gql`
+					mutation ($updateIngredientInput: UpdateIngredientInput!) {
+						updateIngredient(updateIngredientInput: $updateIngredientInput) {
+							_id
+							slug
+						}
+					}
+				`,
+				variables: { updateIngredientInput: dto }
+			});
+			mutationObservable = result.subscribe((res) => {
+				if (!res.fetching && !res.error) {
+					showSuccess($_('successfully'));
+				} else if (!res.fetching && res.error) {
+					showError(`${$_('fail')}: ${res.error.message}`);
 				}
 			});
 		}
@@ -104,14 +181,16 @@
 		if (ingredient) {
 			init();
 		}
+		return { mutationObservable };
 	});
 </script>
 
 <svelte:head>
-	<title>Ingredient: {ingredient?.slug}</title>
+	<title>{$_('ingredients')}: {data.slug ?? $_('create-new')}</title>
 	<meta
 		name="description"
-		content={ingredient?.title.find((t) => t.language === selectedLanguage)?.data} />
+		content={$ingredient?.data?.ingredient.title?.find((t) => t?.lang === selectedLanguage)
+			?.data} />
 </svelte:head>
 
 <section id="main" class="p-5">
@@ -179,7 +258,7 @@
 			<label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 				>{$_('title')}</label>
 			<input
-				value={title.find((t) => t.language === selectedLanguage)?.data}
+				value={title.find((t) => t.lang === selectedLanguage)?.data ?? ''}
 				on:change={setTitle}
 				type="text"
 				id="title"
@@ -290,10 +369,15 @@
 				for="ingredient-categories"
 				class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 				>{$_('ingredient-categories')}</label>
-			<MultiSelect
-				ulSelectedClass="py-3 px-4 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-				bind:selected={ingredientCategoriesSelected}
-				options={Object.values(INGREDIENT_CATEGORIES)} />
+			<Select
+				multiple
+				class="rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-700 border-gray-600 dark:text-white"
+				bind:value={ingredientCategoriesSelected}
+				showChevron
+				items={Object.values(INGREDIENT_CATEGORIES).map((v) => ({
+					label: v,
+					value: v
+				}))} />
 		</div>
 
 		<button

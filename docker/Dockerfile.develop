@@ -1,6 +1,6 @@
 
 # stage build
-FROM node:18-alpine as builder
+FROM node:20-alpine as builder
 
 WORKDIR /app
 
@@ -12,13 +12,18 @@ RUN npm ci
 
 # remove potential security issues
 RUN npm audit fix
+
+ARG PUBLIC_ENDPOINT
+ENV PUBLIC_ENDPOINT ${PUBLIC_ENDPOINT}
+ARG PUBLIC_COOKIES_SECURE
+ENV PUBLIC_COOKIES_SECURE ${PUBLIC_COOKIES_SECURE}
     
 # build SvelteKit app
 RUN npm run build
 
 
 # stage run
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 

@@ -107,5 +107,11 @@
 	"ingredients": "Ingredients",
 	"quantity": "Quantity",
 	"note": "Note",
-	"please-login-again": "Please login again"
+	"please-login-again": "Please login again",
+	"create-new": "Create new",
+	"next": "Next",
+	"prev": "Prev",
+	"input-text-to-search": "Input text to search",
+	"videos": "Videos",
+	"youtube-url": "Youtube URL"
 }
