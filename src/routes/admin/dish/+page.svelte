@@ -1,19 +1,23 @@
 <script lang="ts">
-	import type { Dish } from '$lib/type/dish.type';
-	import { collection, deleteDoc, doc, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
 	import { Tooltip } from '@svelte-plugins/tooltips';
 	import { CollapsibleCard } from 'svelte-collapsible';
-	import { database } from '../../../firebase/firebase-server';
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
 	import { BADGE_COLOR_CLASSES } from '$lib/constant/badge';
-	import '@fortawesome/fontawesome-free/css/all.min.css'
+	import '@fortawesome/fontawesome-free/css/all.min.css';
+	import { getContextClient, gql, mutationStore, queryStore } from '@urql/svelte';
+	import { page } from '$app/stores';
+	import { toast } from '@zerodevx/svelte-toast';
+	import type { Dish } from '../../../gql/graphql';
+	import Pagination from '$lib/components/pagination.svelte';
 
-	let dishes: Dish[] = [];
-	let page = 1;
-	const dishesRef = collection(database, 'dishes');
+	const p = parseInt($page.url.searchParams.get('page') ?? '1', 10);
+	const keyword = $page.url.searchParams.get('keyword');
+
+	const limit = 25;
+	let removeObservable: any;
 
 	let selectedLanguage = 'en';
 
@@ -22,43 +26,70 @@
 		selectedLanguage = lang;
 	}
 
-	const getDishes = async () => {
-		let dishQuery;
-		let listDish: Dish[] = [];
-		if (page === 1) {
-			dishQuery = query(dishesRef, orderBy('createdAt'), limit(25));
-		} else {
-			// Query the first page of docs
-			const first = query(dishesRef, orderBy('createdAt'), limit(page * 25));
-			const documentSnapshots = await getDocs(first);
-
-			// Get the last visible document
-			const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-			// console.log('last', lastVisible);
-
-			// Construct a new query starting at this document,
-			// get the next 25 cities.
-			dishQuery = query(dishesRef, orderBy('createdAt'), startAfter(lastVisible), limit(25));
-		}
-
-		const querySnapshot = await getDocs(dishQuery);
-		querySnapshot.forEach((doc) => {
-			// doc.data() is never undefined for query doc snapshots
-			// console.log(doc.id, ' => ', doc.data());
-			listDish.push(doc.data() as Dish);
-		});
-		dishes = listDish;
-	};
+	const client = getContextClient();
+	const dishes = queryStore<{ dishes: Dish[] }>({
+		client,
+		query: gql`
+			query ($keyword: String, $page: Int, $limit: Int) {
+				dishes(keyword: $keyword, page: $page, limit: $limit) {
+					_id
+					slug
+					title {
+						lang
+						data
+					}
+					preparationTime
+					cookingTime
+					mealCategories
+					ingredientCategories
+					thumbnail
+					createdAt
+					updatedAt
+				}
+			}
+		`,
+		variables: { keyword, page: p, limit },
+		requestPolicy: 'cache-and-network'
+	});
 
 	const deleteDish = async (slug: string) => {
 		if (confirm(`are you sure to delete ${slug}?`)) {
-			await deleteDoc(doc(database, "dishes", slug));
-		}
-	}
+			const result = mutationStore({
+				client,
+				query: gql`
+					mutation ($slug: String!) {
+						removeDish(slug: $slug) {
+							_id
+							slug
+						}
+					}
+				`,
+				variables: { slug }
+			});
 
-	onMount(() => {
-		getDishes();
-	});
+			removeObservable = result.subscribe((res) => {
+				if (!res.fetching && !res.error) {
+					toast.push($_('successfully'), {
+						theme: {
+							'--toastColor': 'mintcream',
+							'--toastBackground': 'rgba(72,187,120,0.9)',
+							'--toastBarBackground': '#2F855A'
+						}
+					});
+				} else if (!res.fetching && res.error) {
+					toast.push(`${$_('fail')}: ${res.error.message}`, {
+						theme: {
+							'--toastColor': 'mintcream',
+							'--toastBackground': '#d40202',
+							'--toastBarBackground': '#b30000'
+						}
+					});
+				}
+			});
+		}
+	};
+
+	onMount(() => {});
 </script>
 
 <svelte:head>
@@ -67,6 +98,17 @@
 </svelte:head>
 
 <section id="dish" class="p-5">
+	<div class="flex">
+		<a
+			href="/admin"
+			class="group text-purple-700 hover:text-purple-500 font-semibold transition-all duration-300 ease-in-out">
+			<span
+				class="bg-left-bottom bg-gradient-to-r from-purple-500 to-purple-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+				<i class="fa-solid fa-circle-left my-auto" />
+				<span class="ml-2">{$_('back')}</span>
+			</span>
+		</a>
+	</div>
 	<div class="flex justify-between mb-5">
 		<h1 class="text-white font-bold drop-shadow-lg">{$_('dish-management')}</h1>
 		<div class="flex">
@@ -116,81 +158,95 @@
 			</ul>
 		</div>
 	</div>
-	<div class="grid grid-cols-12 gap-5">
-		{#each dishes as dish, i}
-			<div class="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 text-gray-200">
-				<div class="shadow-lg bg-slate-800">
-					<div class="relative">
-						<img src={dish.thumbnail} class="w-full h-48 object-cover" alt={dish.slug} />
-						<span
-							class="absolute top-3 right-3 inline-flex items-center rounded-md bg-purple-50 px-2 py-1 font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10"
-							>{dish.slug}</span>
-					</div>
-					<div class="p-3 flex flex-col gap-5">
-						<div class="flex justify-between">
-							<h3>{dish.title.find((t) => t.language === selectedLanguage)?.data}</h3>
-							<div class="flex gap-3">
-								<button on:click={() => deleteDish(dish.slug)}>
-									<i class="fa-solid fa-trash my-auto text-red-500" />
-								</button>
-								<a href={`/admin/dish/${dish.slug}`} class="my-auto">
-									<i class="fa-solid fa-pen-to-square my-auto text-yellow-500" />
-								</a>
-							</div>
+	{#if $dishes.fetching}
+		<p>Loading...</p>
+	{:else if $dishes.error}
+		<p>Oh no... {$dishes.error.message}</p>
+	{:else if !$dishes.data}
+		<p>Oh no... no data</p>
+	{:else}
+		<div class="grid grid-cols-12 gap-5">
+			{#each $dishes.data.dishes as dish, i}
+				<div class="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 text-gray-200">
+					<div class="shadow-lg bg-slate-800">
+						<div class="relative">
+							<img src={dish.thumbnail} class="w-full h-48 object-cover" alt={dish.slug} />
+							<span
+								class="absolute top-3 right-3 inline-flex items-center rounded-md bg-purple-50 px-2 py-1 font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10"
+								>{dish.slug}</span>
 						</div>
-						<div class="flex gap-3">
-							<div class="flex gap-3">
-								<Tooltip content={$_('preparation-time')}>
-									<i class="fa-solid fa-hourglass-end" />
-								</Tooltip>
-								<span>{dish.preparationTime} {$_('minute')}</span>
-							</div>
-							<div class="flex gap-3">
-								<Tooltip content={$_('cooking-time')}>
-									<i class="fa-regular fa-clock" />
-								</Tooltip>
-								<span>{dish.cookingTime} {$_('minute')}</span>
-							</div>
-						</div>
-						<div
-							class="flex bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-3 rounded-lg w-full">
-							<CollapsibleCard open={false}>
-								<button
-									slot="header"
-									class="header text-xs bg-transparent hover:bg-blue-500 text-gray-300 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded duration-300">
-									<span>{$_('meal-categories')}</span>
-								</button>
-								<div slot="body" class="flex flex-wrap gap-3 mt-3">
-									{#each dish.mealCategories as category, categoryIndex}
-										<span
-											class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
-												categoryIndex % BADGE_COLOR_CLASSES.length
-											]}">{$_(category)}</span>
-									{/each}
+						<div class="p-3 flex flex-col gap-5">
+							<div class="flex justify-between">
+								<h3>{dish.title.find((t) => t?.lang === selectedLanguage)?.data}</h3>
+								<div class="flex gap-3">
+									<button on:click={() => deleteDish(dish.slug)}>
+										<i class="fa-solid fa-trash my-auto text-red-500" />
+									</button>
+									<a href={`/admin/dish/${dish.slug}`} class="my-auto">
+										<i class="fa-solid fa-pen-to-square my-auto text-yellow-500" />
+									</a>
 								</div>
-							</CollapsibleCard>
-						</div>
-						<div
-							class="flex bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-3 rounded-lg w-full">
-							<CollapsibleCard open={false}>
-								<button
-									slot="header"
-									class="header text-xs bg-transparent hover:bg-blue-500 text-gray-300 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded duration-300">
-									<span>{$_('ingredient-categories')}</span>
-								</button>
-								<div slot="body" class="flex flex-wrap gap-3 mt-3">
-									{#each dish.ingredientCategories as category, categoryIndex}
-										<span
-											class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
-												categoryIndex % BADGE_COLOR_CLASSES.length
-											]}">{$_(category)}</span>
-									{/each}
+							</div>
+							<div class="flex gap-3">
+								<div class="flex gap-3">
+									<Tooltip content={$_('preparation-time')}>
+										<i class="fa-solid fa-hourglass-end" />
+									</Tooltip>
+									<span>{dish.preparationTime} {$_('minute')}</span>
 								</div>
-							</CollapsibleCard>
+								<div class="flex gap-3">
+									<Tooltip content={$_('cooking-time')}>
+										<i class="fa-regular fa-clock" />
+									</Tooltip>
+									<span>{dish.cookingTime} {$_('minute')}</span>
+								</div>
+							</div>
+							<div
+								class="flex bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-3 rounded-lg w-full">
+								<CollapsibleCard open={false}>
+									<button
+										slot="header"
+										class="header text-xs bg-transparent hover:bg-blue-500 text-gray-300 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded duration-300">
+										<span>{$_('meal-categories')}</span>
+									</button>
+									<div slot="body" class="flex flex-wrap gap-3 mt-3">
+										{#each dish.mealCategories as category, categoryIndex}
+											<span
+												class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
+													categoryIndex % BADGE_COLOR_CLASSES.length
+												]}">{$_(category ?? '')}</span>
+										{/each}
+									</div>
+								</CollapsibleCard>
+							</div>
+							<div
+								class="flex bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-3 rounded-lg w-full">
+								<CollapsibleCard open={false}>
+									<button
+										slot="header"
+										class="header text-xs bg-transparent hover:bg-blue-500 text-gray-300 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded duration-300">
+										<span>{$_('ingredient-categories')}</span>
+									</button>
+									<div slot="body" class="flex flex-wrap gap-3 mt-3">
+										{#each dish.ingredientCategories as category, categoryIndex}
+											<span
+												class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
+													categoryIndex % BADGE_COLOR_CLASSES.length
+												]}">{$_(category ?? '')}</span>
+										{/each}
+									</div>
+								</CollapsibleCard>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		{/each}
-	</div>
+			{/each}
+		</div>
+		<hr class="my-5" />
+		<Pagination
+			disabledPrevious={p === 1}
+			disabledNext={!$dishes.data.dishes.length}
+			on:next={() => (location.href = `/admin/dish?page=${p + 1}`)}
+			on:prev={() => (location.href = `/admin/dish?page=${p - 1}`)} />
+	{/if}
 </section>

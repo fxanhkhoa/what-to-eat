@@ -1,30 +1,47 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
-	import { authStore } from '../../stores/authStore';
 	import { goto } from '$app/navigation';
-	import { auth } from '../../firebase/firebase-server';
-	import { SvelteToast } from '@zerodevx/svelte-toast';
-
-	export let data: LayoutData;
+	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
+	import { _ } from 'svelte-i18n';
+	import { Client, cacheExchange, fetchExchange, setContextClient } from '@urql/svelte';
+	import { PUBLIC_ENDPOINT } from '$env/static/public';
 
 	// Optionally set default options here
 	const options = {};
+	export let data: LayoutData;
+
+	const client = new Client({
+		url: `${PUBLIC_ENDPOINT}/query`,
+		exchanges: [cacheExchange, fetchExchange],
+		fetchOptions: () => {
+			const token = data.token;
+			return {
+				headers: {
+					authorization: token ? `Bearer ${token}` : '',
+					'content-type': 'application/json'
+				}
+			};
+		}
+	});
+
+	setContextClient(client);
 
 	onMount(() => {
-		const authUnsubscribe = authStore.subscribe((curr) => {
-			if (!curr.currentUser) {
+		if (!data.token) {
+			localStorage.clear();
+			toast.push($_('please-login-again'), {
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': '#d40202',
+					'--toastBarBackground': '#b30000'
+				}
+			});
+			setTimeout(() => {
 				goto('/login');
-			}
-			auth.updateCurrentUser(curr.currentUser);
-			try {
-				auth.currentUser?.reload().then();
-			} catch (error) {
-				auth.signOut();
-				goto('/login');
-			}
-		});
-		return { authUnsubscribe };
+			}, 2000);
+		}
+		return {};
 	});
 </script>
 
