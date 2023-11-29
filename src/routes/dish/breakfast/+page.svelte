@@ -104,10 +104,10 @@
 								{/if}
 
 								<h4 class="font-bold">
-									{dish.title?.find((t) => t.language === selectedLanguage)?.data}
+									{dish.title?.find((t) => t.lang === selectedLanguage)?.data}
 								</h4>
 								<span class="text-gray-400 text-left"
-									>{dish.shortDescription?.find((s) => s.language === selectedLanguage)?.data ??
+									>{dish.shortDescription?.find((s) => s.lang === selectedLanguage)?.data ??
 										''}</span>
 								<div class="flex gap-1">
 									<i class="fa-solid fa-stopwatch my-auto" />

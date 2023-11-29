@@ -1,24 +1,25 @@
-import type { Dish } from '$lib/type/dish.type';
-import { doc, getDoc } from 'firebase/firestore';
+import { PUBLIC_ENDPOINT } from '$env/static/public';
+import { DishService } from '$lib/services/dish.service';
+import { IngredientService } from '$lib/services/ingredient.service';
 import type { PageServerLoad } from './$types';
-import { database } from '../../../firebase/firebase-server';
 import { error } from '@sveltejs/kit';
 
-const getDish = async (slug: string) => {
-	const dishesRef = doc(database, 'dishes', slug);
-	const docSnap = await getDoc(dishesRef);
-	if (docSnap.exists()) {
-		return docSnap.data() as Dish;
-	}
-	return null;
-};
-
 export const load = (async ({ params }) => {
-	const dish = await getDish(params.slug);
-	if (!dish) {
-		throw error(404, {
-			message: 'Not found'
+	try {
+		const dish = await DishService.findOne(PUBLIC_ENDPOINT, params.slug);
+		const ingredientPromises = dish.ingredients.map((ingredient) => {
+			return IngredientService.findOne(PUBLIC_ENDPOINT, ingredient?.slug ?? '');
+		});
+		const relatedDishesPromises = dish.relatedDishes.map((dish) =>
+			DishService.findOne(PUBLIC_ENDPOINT, dish ?? '')
+		);
+		const ingredients = await Promise.all(ingredientPromises);
+		const relatedDishes = await Promise.all(relatedDishesPromises);
+		return { dish, ingredients, relatedDishes };
+	} catch (err) {
+		console.log(err)
+		throw error(500, {
+			message: 'Internal server error'
 		});
 	}
-	return { dish };
 }) satisfies PageServerLoad;

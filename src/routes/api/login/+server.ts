@@ -33,7 +33,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		maxAge: 60 * 60 * 24 * 365
 	});
 	const parsed = jwtDecode<JWTTokenPayload>(json.token);
-	console.log(parsed);
+	
 	if (parsed.role_name === 'ADMIN') {
 		return new Response('Login Redirect', { status: 303, headers: { location: '/admin' } });
 	} else {

@@ -46,11 +46,20 @@
 	let cookingTime = 0;
 	let ingredients: IngredientsInDish[] = [];
 	let videos: string[] = [];
+	let relatedDishes: string[] = [];
 
 	let searching = false;
 	let timeout: NodeJS.Timeout;
 
 	let tiptap: Tiptap;
+	let dishSearch: OperationResultStore<
+		{
+			dishes: Dish[];
+		},
+		AnyVariables
+	> &
+		Pausable;
+
 	let ingredientsSearch: OperationResultStore<
 		{
 			ingredients: Ingredient[];
@@ -128,7 +137,6 @@
 			}
 			return t;
 		});
-		console.log(shortDescription);
 	}
 
 	const addIngredient = () => {
@@ -146,6 +154,19 @@
 	const deleteVideo = (index: number) => {
 		const newVideos = videos.filter((e, i) => i !== index);
 		videos = [...newVideos];
+	};
+
+	const addRelatedDish = () => {
+		relatedDishes = ['', ...relatedDishes];
+	};
+
+	const updateRelatedDish = (index: number, data: string) => {
+		relatedDishes[index] = data;
+	};
+
+	const deleteRelatedDish = (index: number) => {
+		const newRelatedDishes = relatedDishes.filter((e, i) => i !== index);
+		relatedDishes = [...newRelatedDishes];
 	};
 
 	const deleteIngredient = (index: number) => {
@@ -185,6 +206,26 @@
 		});
 	};
 
+	const searchDish = (filterText: string) => {
+		dishSearch = queryStore<{ dishes: Dish[] }>({
+			client,
+			query: gql`
+				query ($keyword: String, $page: Int, $limit: Int) {
+					dishes(keyword: $keyword, page: $page, limit: $limit) {
+						_id
+						slug
+						title {
+							lang
+							data
+						}
+					}
+				}
+			`,
+			variables: { keyword: filterText, page: 1, limit: 99999 },
+			requestPolicy: 'cache-and-network'
+		});
+	};
+
 	const loadOptions = async (filterText: string) => {
 		searching = true;
 		if (timeout) clearTimeout(timeout);
@@ -192,11 +233,17 @@
 		return [];
 	};
 
+	const loadDishesOptions = async (filterText: string) => {
+		searching = true;
+		if (timeout) clearTimeout(timeout);
+		timeout = setTimeout(() => searchDish(filterText), 300);
+		return [];
+	};
+
 	async function onSubmit() {
 		const tags = tagsInput.split(',').map((item) => {
 			return item.trim();
 		});
-		console.log(shortDescription);
 		if (!slug) {
 			const dto: CreateDishInput = {
 				slug: slugInput,
@@ -211,7 +258,8 @@
 				ingredientCategories: ingredientCategoriesSelected.map((e) => e.value),
 				thumbnail,
 				ingredients: ingredients,
-				videos
+				videos,
+				relatedDishes
 			};
 
 			const result = mutationStore({
@@ -247,7 +295,8 @@
 				ingredientCategories: ingredientCategoriesSelected.map((e) => e.value),
 				thumbnail,
 				ingredients: ingredients,
-				videos
+				videos,
+				relatedDishes
 			};
 			const result = mutationStore({
 				client,
@@ -282,7 +331,9 @@
 			}
 			if (dish.content.length > 0) {
 				content = dish.content as MultiLanguage<string>[];
-				tiptap.setContent(content.find((c) => c.lang === selectedLanguage)?.data ?? '');
+				if (tiptap) {
+					tiptap.setContent(content.find((c) => c.lang === selectedLanguage)?.data ?? '');
+				}
 			}
 			if (dish.tags) {
 				tagsInput = dish.tags.join(', ');
@@ -311,6 +362,7 @@
 			if (dish.ingredients) {
 				ingredients = dish.ingredients as IngredientsInDish[];
 			}
+			relatedDishes = dish.relatedDishes as string[];
 		}
 	};
 
@@ -346,6 +398,7 @@
 					ingredientCategories
 					thumbnail
 					videos
+					relatedDishes
 					ingredients {
 						quantity
 						slug
@@ -626,7 +679,7 @@
 				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 				<option selected value={null}>{$_('difficult-level')}</option>
 				{#each Object.values(DIFFICULT_LEVELS) as level, i}
-					<option value={level}>{level}</option>
+					<option value={level}>{$_(level)}</option>
 				{/each}
 			</select>
 		</div>
@@ -645,7 +698,7 @@
 				class="rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-700 border-gray-600 dark:text-white"
 				bind:value={mealCategoriesSelected}
 				items={Object.values(MEAL_CATEGORIES).map((v) => ({
-					label: v,
+					label: $_(v),
 					value: v
 				}))} />
 		</div>
@@ -664,7 +717,7 @@
 				bind:value={ingredientCategoriesSelected}
 				showChevron
 				items={Object.values(INGREDIENT_CATEGORIES).map((v) => ({
-					label: v,
+					label: $_(v),
 					value: v
 				}))} />
 		</div>
@@ -708,6 +761,39 @@
 					<button
 						type="button"
 						on:click={() => deleteVideo(i)}
+						class="px-5 py-2.5 font-medium bg-red-500 hover:bg-red-400 hover:text-gray-200 transition duration-300 text-white rounded-lg text-sm mb-2">
+						<i class="fa-solid fa-trash-can" />
+					</button>
+				</div>
+			{/each}
+		</div>
+
+		<div class="mb-6">
+			<label
+				for="relatedDishes"
+				class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+				>{$_('related-dishes')}</label>
+			<button
+				type="button"
+				on:click={addRelatedDish}
+				class="px-5 py-2.5 font-medium bg-blue-50 hover:bg-blue-100 hover:text-blue-600 text-blue-500 rounded-lg text-sm mb-2">
+				{$_('add')} +
+			</button>
+			{#each relatedDishes as relatedDish, i}
+				<div class="flex gap-2">
+					<Select
+						value={relatedDish}
+						class="rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-700 border-gray-600 dark:text-white"
+						loadOptions={loadDishesOptions}
+						items={$dishSearch?.data?.dishes.map((e) => ({
+							label: e.title.find((t) => t?.lang === selectedLanguage)?.data,
+							value: e.slug
+						}))}
+						on:change={(event) => updateRelatedDish(i, event.detail.value)}
+						placeholder={$_('input-text-to-search')} />
+					<button
+						type="button"
+						on:click={() => deleteRelatedDish(i)}
 						class="px-5 py-2.5 font-medium bg-red-500 hover:bg-red-400 hover:text-gray-200 transition duration-300 text-white rounded-lg text-sm mb-2">
 						<i class="fa-solid fa-trash-can" />
 					</button>

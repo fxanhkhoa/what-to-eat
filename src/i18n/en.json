@@ -69,7 +69,7 @@
 	"MILK AND DAIRY": "MILK AND DAIRY",
 	"GRAINS": "GRAINS",
 	"BEVERAGES NONALCOHOLIC": "BEVERAGES NONALCOHOLIC",
-	"PROTEIN_FOODS": "PROTEIN FOODS",
+	"PROTEIN FOODS": "PROTEIN FOODS",
 	"SNACKS AND SWEETS": "SNACKS AND SWEETS",
 	"ALCOHOLIC BEVERAGES": "ALCOHOLIC BEVERAGES",
 	"WATER": "WATER",
@@ -113,5 +113,10 @@
 	"prev": "Prev",
 	"input-text-to-search": "Input text to search",
 	"videos": "Videos",
-	"youtube-url": "Youtube URL"
+	"youtube-url": "Youtube URL",
+	"copied": "Copied",
+	"related-dishes": "Related Dishes",
+	"EASY": "Easy",
+	"MEDIUM": "Medium",
+	"HARD": "Hard"
 }
