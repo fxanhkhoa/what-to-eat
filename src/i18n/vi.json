@@ -113,5 +113,10 @@
 	"prev": "Trước",
 	"input-text-to-search": "Nhập chữ để tìm",
 	"videos": "Videos",
-	"youtube-url": "Đường dẫn Youtube"
+	"youtube-url": "Đường dẫn Youtube",
+	"copied": "Đã sao chép",
+	"related-dishes": "Những món ăn liên quan",
+	"EASY": "Dễ",
+	"MEDIUM": "Vừa",
+	"HARD": "Khó"
 }

@@ -1,15 +1,10 @@
 import { baseHeader } from '$lib/constant/api';
-import type { Ingredient } from '../../gql/graphql';
+import type { Dish } from '../../gql/graphql';
 
-const prefix = 'ingredient';
+const prefix = 'dish';
 
-export const IngredientService = {
-	find: async (
-		endpoint: string,
-		page = 1,
-		limit = 25,
-		keyword: string | null
-	): Promise<Ingredient[]> => {
+export const DishService = {
+	find: async (endpoint: string, page = 1, limit = 25, keyword: string | null): Promise<Dish[]> => {
 		let queryParams = `page=${page}&limit=${limit}`;
 		if (keyword) {
 			queryParams += `&keyword=${keyword}`;
@@ -20,7 +15,8 @@ export const IngredientService = {
 		});
 		return await response.json();
 	},
-	findOne: async (endpoint: string, slug: string): Promise<Ingredient> => {
+
+	findOne: async (endpoint: string, slug: string): Promise<Dish> => {
 		const response = await fetch(`${endpoint}/${prefix}/${slug}`, {
 			method: 'GET',
 			headers: { ...baseHeader }

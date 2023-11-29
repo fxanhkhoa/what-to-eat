@@ -3,6 +3,7 @@
 	import Header from './Header.svelte';
 	import './styles.css';
 	import '../app.scss';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
 </script>
 
 <div class="app">
@@ -10,6 +11,7 @@
 
 	<main>
 		<slot />
+		<SvelteToast />
 	</main>
 
 	<footer>

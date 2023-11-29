@@ -24,6 +24,7 @@ export type CreateDishInput = {
   ingredients: Array<InputMaybe<IngredientsInDishInput>>;
   mealCategories: Array<InputMaybe<Scalars['String']['input']>>;
   preparationTime?: InputMaybe<Scalars['Float']['input']>;
+  relatedDishes: Array<InputMaybe<Scalars['String']['input']>>;
   shortDescription: Array<InputMaybe<MultiLanguageInput_D>>;
   slug: Scalars['String']['input'];
   tags: Array<InputMaybe<Scalars['String']['input']>>;
@@ -80,6 +81,7 @@ export type Dish = {
   ingredients: Array<Maybe<IngredientsInDish>>;
   mealCategories: Array<Maybe<Scalars['String']['output']>>;
   preparationTime?: Maybe<Scalars['Float']['output']>;
+  relatedDishes: Array<Maybe<Scalars['String']['output']>>;
   shortDescription: Array<Maybe<MultiLanguage_D>>;
   slug: Scalars['String']['output'];
   tags: Array<Maybe<Scalars['String']['output']>>;
@@ -379,6 +381,7 @@ export type UpdateDishInput = {
   ingredients: Array<InputMaybe<IngredientsInDishInput>>;
   mealCategories: Array<InputMaybe<Scalars['String']['input']>>;
   preparationTime?: InputMaybe<Scalars['Float']['input']>;
+  relatedDishes: Array<InputMaybe<Scalars['String']['input']>>;
   shortDescription: Array<InputMaybe<MultiLanguageInput_D>>;
   slug: Scalars['String']['input'];
   tags: Array<InputMaybe<Scalars['String']['input']>>;
