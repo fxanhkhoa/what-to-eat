@@ -8,9 +8,9 @@
 	import { showSuccess } from '$lib/utils/toast';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import DishCard from '$lib/components/dish/dish-card.svelte';
-	import DifficultyLevel from '$lib/components/ultility/difficulty-level.svelte';
+	import DifficultyLevel from '$lib/components/utility/difficulty-level.svelte';
 	import { DIFFICULT_LEVELS } from '$lib/enum/dish.enum';
-	import Category from '$lib/components/ultility/category.svelte';
+	import Category from '$lib/components/utility/category.svelte';
 
 	export let data: PageData;
 	$: ({ dish, ingredients, relatedDishes } = data);

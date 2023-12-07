@@ -20,6 +20,7 @@ export const IngredientService = {
 		});
 		return await response.json();
 	},
+
 	findOne: async (endpoint: string, slug: string): Promise<Ingredient> => {
 		const response = await fetch(`${endpoint}/${prefix}/${slug}`, {
 			method: 'GET',

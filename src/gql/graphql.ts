@@ -38,6 +38,7 @@ export type CreateIngredientInput = {
   carbohydrate?: InputMaybe<Scalars['Int']['input']>;
   cholesterol?: InputMaybe<Scalars['Int']['input']>;
   fat?: InputMaybe<Scalars['Int']['input']>;
+  images: Array<InputMaybe<Scalars['String']['input']>>;
   ingredientCategory: Array<InputMaybe<Scalars['String']['input']>>;
   measure?: InputMaybe<Scalars['String']['input']>;
   protein?: InputMaybe<Scalars['Int']['input']>;
@@ -104,6 +105,7 @@ export type Ingredient = {
   deletedAt?: Maybe<Scalars['Time']['output']>;
   deletedBy?: Maybe<Scalars['String']['output']>;
   fat?: Maybe<Scalars['Int']['output']>;
+  images: Array<Maybe<Scalars['String']['output']>>;
   ingredientCategory: Array<Maybe<Scalars['String']['output']>>;
   measure?: Maybe<Scalars['String']['output']>;
   protein?: Maybe<Scalars['Int']['output']>;
@@ -395,6 +397,7 @@ export type UpdateIngredientInput = {
   carbohydrate?: InputMaybe<Scalars['Int']['input']>;
   cholesterol?: InputMaybe<Scalars['Int']['input']>;
   fat?: InputMaybe<Scalars['Int']['input']>;
+  images: Array<InputMaybe<Scalars['String']['input']>>;
   ingredientCategory: Array<InputMaybe<Scalars['String']['input']>>;
   measure?: InputMaybe<Scalars['String']['input']>;
   protein?: InputMaybe<Scalars['Int']['input']>;

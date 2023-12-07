@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { DIFFICULT_LEVELS } from '$lib/enum/dish.enum';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import { _, locale } from 'svelte-i18n';
@@ -7,7 +6,7 @@
 	import DishCard from '$lib/components/dish/dish-card.svelte';
 
 	export let data: PageData;
-	const { dishes } = data;
+	$: ({ dishes } = data);
 
 	let selectedLanguage = 'en';
 
