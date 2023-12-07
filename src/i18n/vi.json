@@ -118,5 +118,11 @@
 	"related-dishes": "Những món ăn liên quan",
 	"EASY": "Dễ",
 	"MEDIUM": "Vừa",
-	"HARD": "Khó"
+	"HARD": "Khó",
+	"metadata.ingredient.title": "Tìm nguyên liệu nấu ăn?",
+	"metadata.ingredient.description": "Đây là tất cả các nguyên liệu chúng tôi thu thập từ khắp thế giới.",
+	"images": "Hình ảnh",
+	"reference-over": "Tham chiếu trên",
+	"search-for-ingredients": "Tìm nguyên liệu",
+	"search": "Tìm"
 }

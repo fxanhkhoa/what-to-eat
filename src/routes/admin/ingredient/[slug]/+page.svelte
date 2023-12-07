@@ -24,11 +24,12 @@
 	let calories = 0;
 	let carbohydrate = 0;
 	let fat = 0;
-	let ingredientCategoriesSelected: string[] = [];
+	let ingredientCategoriesSelected: { label: string; value: string }[] = [];
 	let weight = 0;
 	let protein = 0;
 	let cholesterol = 0;
 	let sodium = 0;
+	let images: string[] = [];
 
 	let mutationObservable: any;
 
@@ -55,6 +56,7 @@
 					protein
 					cholesterol
 					sodium
+					images
 				}
 			}
 		`,
@@ -77,13 +79,30 @@
 			carbohydrate = ingredient.carbohydrate ?? 0;
 			fat = ingredient.fat ?? 0;
 			if (ingredient.ingredientCategory && ingredient.ingredientCategory) {
-				ingredientCategoriesSelected = ingredient.ingredientCategory as string[];
+				ingredientCategoriesSelected = ingredient.ingredientCategory.map((e) => ({
+					value: e ?? '',
+					label: $_(e ?? '')
+				}));
 			}
 			weight = ingredient.weight ?? 0;
 			protein = ingredient.protein ?? 0;
 			cholesterol = ingredient.cholesterol ?? 0;
 			sodium = ingredient.sodium ?? 0;
+			images = ingredient.images as string[];
 		}
+	};
+
+	const addImage = () => {
+		images = ['', ...images];
+	};
+
+	const updateImage = (index: number, data: string) => {
+		images[index] = data;
+	};
+
+	const deleteImage = (index: number) => {
+		const newVideos = images.filter((e, i) => i !== index);
+		images = [...newVideos];
 	};
 
 	const setSelectedLanguage = (lang: string) => {
@@ -116,11 +135,12 @@
 				calories: calories,
 				carbohydrate: carbohydrate,
 				fat: fat,
-				ingredientCategory: ingredientCategoriesSelected,
+				ingredientCategory: ingredientCategoriesSelected.map((e) => e.value),
 				weight: weight,
 				protein: protein,
 				cholesterol: cholesterol,
-				sodium: sodium
+				sodium: sodium,
+				images
 			};
 			const result = mutationStore({
 				client,
@@ -149,11 +169,12 @@
 				calories: calories,
 				carbohydrate: carbohydrate,
 				fat: fat,
-				ingredientCategory: ingredientCategoriesSelected,
+				ingredientCategory: ingredientCategoriesSelected.map((e) => e.value),
 				weight: weight,
 				protein: protein,
 				cholesterol: cholesterol,
-				sodium: sodium
+				sodium: sodium,
+				images
 			};
 			const result = mutationStore({
 				client,
@@ -378,6 +399,36 @@
 					label: v,
 					value: v
 				}))} />
+		</div>
+
+		<div class="mb-6">
+			<label for="images" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+				>{$_('images')}</label>
+			<button
+				type="button"
+				on:click={addImage}
+				class="px-5 py-2.5 font-medium bg-blue-50 hover:bg-blue-100 hover:text-blue-600 text-blue-500 rounded-lg text-sm mb-2">
+				{$_('add')} +
+			</button>
+			{#each images as image, i}
+				<div class="flex gap-2">
+					<input
+						value={image}
+						on:change={(event) => updateImage(i, event.currentTarget.value)}
+						type="text"
+						id={`cooking-time-${i}`}
+						name={`cooking-time-${i}`}
+						placeholder={$_('image-url')}
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2 my-auto" />
+					<button
+						type="button"
+						on:click={() => deleteImage(i)}
+						class="px-5 py-2.5 font-medium bg-red-500 hover:bg-red-400 hover:text-gray-200 transition duration-300 text-white rounded-lg text-sm mb-2 my-auto">
+						<i class="fa-solid fa-trash-can" />
+					</button>
+					<img src={image} alt="" class="w-12 h-auto rounded-lg" />
+				</div>
+			{/each}
 		</div>
 
 		<button

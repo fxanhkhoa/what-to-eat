@@ -2,7 +2,7 @@
 	import { _ } from 'svelte-i18n';
 	import { DIFFICULT_LEVELS } from '$lib/enum/dish.enum';
 	import type { Dish } from '../../../gql/graphql';
-	import DifficultyLevel from '../ultility/difficulty-level.svelte';
+	import DifficultyLevel from '../utility/difficulty-level.svelte';
 
 	export let dish: Dish;
     export let selectedLanguage: string;

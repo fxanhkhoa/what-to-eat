@@ -118,5 +118,11 @@
 	"related-dishes": "Related Dishes",
 	"EASY": "Easy",
 	"MEDIUM": "Medium",
-	"HARD": "Hard"
+	"HARD": "Hard",
+	"metadata.ingredient.title": "Looking for some ingredients?",
+	"metadata.ingredient.description": "These are all ingredients that we collected all over the world",
+	"images": "Images",
+	"reference-over": "Reference over",
+	"search-for-ingredients": "Search for ingredients",
+	"search": "Search"
 }
