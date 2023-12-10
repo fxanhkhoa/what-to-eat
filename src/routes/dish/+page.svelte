@@ -12,12 +12,12 @@
 
 	onMount(() => {
 		locale.subscribe((lang) => {
-			if (lang === 'en-US') {
+			if (lang?.includes('en')) {
 				locale.set('en');
 				return;
 			}
 			if (lang) {
-				selectedLanguage = lang;
+				selectedLanguage = lang.split('-')[0];
 			}
 		});
 	});

@@ -18,12 +18,12 @@
 
 	onMount(() => {
 		const sub = locale.subscribe((lang) => {
-			if (lang === 'en-US') {
+			if (lang?.includes('en')) {
 				locale.set('en');
 				return;
 			}
 			if (lang) {
-				selectedLanguage = lang;
+				selectedLanguage = lang.split('-')[0];
 			}
 		});
 		return sub;
@@ -103,13 +103,13 @@
 				</div>
 				<ul class="list-none">
 					{#each dish.ingredients as ingredient}
-						<div class="inline-flex md:flex items-center">
+						<div class="inline-flex md:flex items-center w-full">
 							<label
 								class="relative flex items-center p-3 rounded-full cursor-pointer"
-								for="ripple-on"
+								for={ingredient?.slug}
 								data-ripple-dark="true">
 								<input
-									id="ripple-on"
+									id={ingredient?.slug}
 									type="checkbox"
 									class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-purple-500 checked:bg-purple-500 checked:before:bg-purple-500 hover:before:opacity-10" />
 								<div
@@ -118,23 +118,32 @@
 								</div>
 							</label>
 							<label
-								class="mt-px font-light text-gray-500 cursor-pointer select-none"
-								for="ripple-on">
+								class="flex-1 mt-px font-light text-gray-500 cursor-pointer select-none"
+								for={ingredient?.slug}>
 								<div class="grid grid-cols-12 gap-2">
-									<div class="col-span-2 font-bold">
+									<div class="col-span-2 font-bold my-auto">
 										{ingredient?.quantity}
 										{ingredients.find((i) => i.slug === ingredient?.slug)?.measure}
 									</div>
-									<div class="col-span-3">
+									<div class="col-span-4 my-auto">
 										{ingredients
 											.find((i) => i.slug === ingredient?.slug)
 											?.title.find((t) => t?.lang === selectedLanguage)?.data}
 									</div>
-									<div class="col-span-7 text-gray-400">
-										({ingredient?.note})
+									<div class="col-span-6 text-gray-400 my-auto">
+										{#if ingredient?.note !== ''}
+											({ingredient?.note})
+										{/if}
 									</div>
 								</div>
 							</label>
+							<div>
+								<a
+									href={`/ingredient?keyword=${ingredient?.slug.replaceAll('-', ' ')}`}
+									class="bg-transparent hover:bg-gray-300 text-gray-700 font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded transition duration-300">
+									<span><i class="fa-solid fa-arrow-up-right-from-square" /></span>
+								</a>
+							</div>
 						</div>
 					{/each}
 				</ul>

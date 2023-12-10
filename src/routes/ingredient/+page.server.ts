@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ url }) => {
 	const page = parseInt(url.searchParams.get('page') ?? '1', 10);
-	const limit = parseInt(url.searchParams.get('limit') ?? '1', 10);
+	const limit = parseInt(url.searchParams.get('limit') ?? '10', 10);
 	const keyword = url.searchParams.get('keyword');
 	try {
 		const ingredients = await IngredientService.find(PUBLIC_ENDPOINT, page, limit, keyword);

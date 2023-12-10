@@ -13,12 +13,12 @@
 
 	onMount(() => {
 		locale.subscribe((lang) => {
-			if (lang === 'en-US') {
+			if (lang?.includes('en')) {
 				locale.set('en');
 				return;
 			}
 			if (lang) {
-				selectedLanguage = lang;
+				selectedLanguage = lang.split('-')[0];
 			}
 		});
 	});
@@ -65,6 +65,17 @@
 </section>
 
 <section id="main" class="p-5 md:p-10">
+	<div class="flex">
+		<button
+			on:click={() => history.back()}
+			class="group text-purple-700 hover:text-purple-500 font-semibold transition-all duration-300 ease-in-out">
+			<span
+				class="bg-left-bottom bg-gradient-to-r from-purple-500 to-purple-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+				<i class="fa-solid fa-circle-left my-auto" />
+				<span class="ml-2">{$_('back')}</span>
+			</span>
+		</button>
+	</div>
 	<div class="grid grid-cols-12 gap-5">
 		{#each ingredients as ingredient}
 			<div class="col-span-12 md:col-span-4">
