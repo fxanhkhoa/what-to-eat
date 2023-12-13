@@ -51,7 +51,7 @@
 	class="bg-white px-10 md:px-32 relative flex flex-col"
 	style="min-height: 20vh;">
 	<div
-		class="relative grid grid-cols-12 gap-5 -translate-y-20 bg-white rounded-lg p-5 md:p-10 shadow-lg drop-shadow-xl max-h-44 meal-category-height transition-all duration-300 ease-in-out overflow-hidden">
+		class="relative grid grid-cols-12 gap-5 -translate-y-20 bg-white rounded-lg p-5 md:p-10 shadow-lg drop-shadow-xl max-h-[600px] md:max-h-44 hover:max-h-[600px] meal-category-height transition-all duration-300 ease-in-out overflow-hidden">
 		<div
 			class="col-span-4 md:col-span-3 flex flex-col justify-center items-center gap-1 cursor-pointer group">
 			<div class="p-3 bg-gray-100 rounded-full group-hover:bg-gray-300 duration-300 ease-in-out">
@@ -304,20 +304,5 @@
 	#welcome {
 		background-image: url('../lib/images/bg-section-welcome.jpg');
 		background-size: cover;
-	}
-
-	.meal-category-height:hover {
-		max-height: 600px;
-	}
-
-	@media only screen and (max-width: 640px) {
-		.meal-category-height {
-			max-height: 600px;
-		}
-
-		h5 {
-			font-size: 1rem /* 16px */;
-			line-height: 1.5rem /* 24px */;
-		}
 	}
 </style>

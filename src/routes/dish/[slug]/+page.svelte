@@ -13,7 +13,7 @@
 	import Category from '$lib/components/utility/category.svelte';
 
 	export let data: PageData;
-	$: ({ dish, ingredients, relatedDishes } = data);
+	$: ({ dish, ingredients, relatedDishes, pageUrl } = data);
 	let selectedLanguage = 'en';
 
 	onMount(() => {
@@ -37,7 +37,24 @@
 
 <svelte:head>
 	<title>{$_('dish')}: {dish.title.find((t) => t?.lang === selectedLanguage)?.data}</title>
-	<meta name="description" content="hôm nay ăn gì" />
+	<meta
+		name="description"
+		content={dish.shortDescription.find((t) => t?.lang === selectedLanguage)?.data} />
+	<meta name="keywords" content={dish.tags.join(', ')} />
+	<meta name="subject" content={dish.title.find((t) => t?.lang === selectedLanguage)?.data} />
+	<meta name="copyright" content="Dratini Technology" />
+	<meta name="robots" content="index,follow" />
+	<meta name="coverage" content="Worldwide" />
+	<meta name="distribution" content="Global" />
+	<meta name="rating" content="General" />
+	<meta name="revisit-after" content="7 days" />
+
+	<meta name="og:title" content={dish.title.find((t) => t?.lang === selectedLanguage)?.data} />
+	<meta name="og:type" content="dish" />
+	<meta name="og:url" content={`${pageUrl}/dish/${dish.slug}`} />
+	<meta name="og:image" content={dish.thumbnail} />
+	<meta name="og:site_name" content={dish.title.find((t) => t?.lang === selectedLanguage)?.data} />
+	<meta name="og:description" content={dish.shortDescription.find((t) => t?.lang === selectedLanguage)?.data} />
 </svelte:head>
 
 <section id="banner" class="h-[40rem] relative">
