@@ -1,4 +1,4 @@
-import { PUBLIC_ENDPOINT } from '$env/static/public';
+import { PUBLIC_ENDPOINT, PUBLIC_PAGE_ENDPOINT } from '$env/static/public';
 import { DishService } from '$lib/services/dish.service';
 import { IngredientService } from '$lib/services/ingredient.service';
 import type { PageServerLoad } from './$types';
@@ -15,7 +15,7 @@ export const load = (async ({ params }) => {
 		);
 		const ingredients = await Promise.all(ingredientPromises);
 		const relatedDishes = await Promise.all(relatedDishesPromises);
-		return { dish, ingredients, relatedDishes };
+		return { dish, ingredients, relatedDishes, pageUrl: PUBLIC_PAGE_ENDPOINT };
 	} catch (err) {
 		console.log(err)
 		throw error(500, {

@@ -26,6 +26,8 @@
 <svelte:head>
 	<title>{$_('metadata.dish.title')}</title>
 	<meta name="description" content={$_('metadata.dish.description')} />
+	<meta name="keywords" content="ăn gì, what to eat, eat what, ăn chi"/>
+	<meta name="robots" content="index,follow" />
 </svelte:head>
 
 <section id="banner">
