@@ -14,7 +14,7 @@
 	on:click={() => {
 		flip = !flip;
 	}}
-	class="w-full h-auto relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-8 pt-10 max-w-sm mx-auto mt-24 {flip
+	class="w-full h-72 relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-8 pt-10 mx-auto mt-24 {flip
 		? 'animate-hFlip gap-3'
 		: 'animate-hFlipBack'}">
 	{#if !flip}
@@ -37,7 +37,7 @@
 		<div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40" />
 		<div class="z-10 grid grid-cols-4 gap-2">
 			{#each ingredient.images as src}
-				<div class="col-span-1">
+				<div class="col-span-1 mt-3">
 					<img alt="" {src} class="rounded-lg w-auto" />
 				</div>
 			{/each}

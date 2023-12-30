@@ -4,6 +4,7 @@
 	import type { PageData } from './$types';
 	import { _, locale } from 'svelte-i18n';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 	$: ({ ingredients } = data);
@@ -22,6 +23,10 @@
 			}
 		});
 	});
+
+	const onSubmit = () => {
+		goto(`/ingredient?keyword=${searchText}`);
+	};
 </script>
 
 <svelte:head>
@@ -34,11 +39,12 @@
 	<h4>{$_('metadata.ingredient.description')}</h4>
 </section>
 
-<section id="filter">
+<form id="filter" on:submit|preventDefault={onSubmit}>
 	<div class="flex justify-center gap-2">
 		<div class="w-1/2 md:w-1/3 my-auto">
 			<div class="relative w-full min-w-[200px] h-10">
 				<input
+					bind:value={searchText}
 					class="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-6 py-5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
 					placeholder="" />
 				<label
@@ -53,18 +59,17 @@
 				<div
 					class="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-yellow-400 via-pink-500 to-green-600" />
 			</div>
-			<a
-				href={`?keyword=${searchText}`}
-				class="relative z-10 inline-flex gap-2 items-center justify-center w-full px-4 py-2 text-xs font-bold text-white transition-all duration-200 bg-purple-900 border-2 border-transparent sm:w-auto rounded-xl font-pj hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-				role="button">
+			<button
+				type="submit"
+				class="relative z-10 inline-flex gap-2 items-center justify-center w-full px-4 py-2 text-xs font-bold text-white transition-all duration-200 bg-purple-900 border-2 border-transparent sm:w-auto rounded-xl font-pj hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900">
 				<span>{$_('search')}</span>
 				<i class="fa-solid fa-magnifying-glass" />
-			</a>
+			</button>
 		</div>
 	</div>
-</section>
+</form>
 
-<section id="main" class="p-5 md:p-10">
+<section id="main" class="p-5 bg-gradient-to-b from-white to-gray-100 md:p-10">
 	<div class="flex">
 		<button
 			on:click={() => history.back()}
