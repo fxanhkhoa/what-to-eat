@@ -18,8 +18,8 @@ export const load = (async ({ params }) => {
 		return { dish, ingredients, relatedDishes, pageUrl: PUBLIC_PAGE_ENDPOINT };
 	} catch (err) {
 		console.log(err)
-		throw error(500, {
-			message: 'Internal server error'
-		});
+		error(500, {
+        			message: 'Internal server error'
+        		});
 	}
 }) satisfies PageServerLoad;

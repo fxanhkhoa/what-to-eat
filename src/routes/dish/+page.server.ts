@@ -11,8 +11,8 @@ export const load = (async ({ url }) => {
 		const dishes = await DishService.find(PUBLIC_ENDPOINT, page, limit, keyword);
 		return { dishes };
 	} catch (err) {
-		throw error(404, {
-			message: 'Not found'
-		});
+		error(404, {
+        			message: 'Not found'
+        		});
 	}
 }) satisfies PageServerLoad;

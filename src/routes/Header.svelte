@@ -49,15 +49,20 @@
 				</a>
 			</li>
 			<li class="p-3 xl:p-6 relative">
-				<a href="/dish" on:focus={dishOpen} on:mouseover={dishOpen} class="flex items-center gap-1">
+				<button on:focus={dishOpen} on:mouseover={dishOpen} class="flex items-center gap-1">
 					<span>{$_('dish')}</span>
 					<i class="fa-solid fa-chevron-down text-xs text-gray-400" />
-				</a>
+				</button>
 				{#if showDish}
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div
 						class="absolute z-50 left-0 w-48 py-2 mt-2 mr-10 bg-white rounded-lg shadow-xl transition-all duration-300"
 						on:mouseleave={dishClose}>
+						<a
+							href="/dish"
+							class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
+							{$_('all')}
+						</a>
 						<a
 							href="/breakfast"
 							class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
@@ -87,22 +92,22 @@
 				</a>
 			</li>
 			<li class="p-3 xl:p-6 relative">
-				<a href="/games" on:focus={gameOpen} on:mouseover={gameOpen}>
+				<button on:focus={gameOpen} on:mouseover={gameOpen}>
 					<span>{$_('games')}</span>
 					<i class="fa-solid fa-chevron-down text-xs text-gray-400" />
-				</a>
+				</button>
 				{#if showGame}
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div
 						class="absolute z-50 left-0 w-48 py-2 mt-2 mr-10 bg-white rounded-lg shadow-xl transition-all duration-300"
 						on:mouseleave={gameClose}>
 						<a
-							href="/wheel-of-fortune"
+							href="/games/wheel-of-fortune"
 							class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
 							{$_('wheel-of-fortune')}
 						</a>
 						<a
-							href="/flipping-cards"
+							href="/games/flipping-cards"
 							class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
 							{$_('flipping-cards')}
 						</a>
@@ -229,17 +234,22 @@
 				</a>
 			</li>
 			<li class="xl:p-6 border w-full relative">
-				<a
-					href="/dish"
+				<button
 					on:click={toggleDishOpen}
-					class="flex items-center gap-1 p-3 {currentPath.indexOf('/dish') > -1 && 'active'}">
+					class="w-full flex justify-between items-center gap-1 p-3 {currentPath.indexOf('/dish') > -1 && 'active'}">
 					<span class="mx-3">{$_('dish')}</span>
 					<i class="fa-solid fa-chevron-down text-xs text-gray-400" />
-				</a>
+				</button>
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
 					class="w-full bg-white rounded-lg shadow-xl transition-all duration-300 max-h-0 px-3 overflow-hidden {showDish &&
 						'max-h-96'}">
+					<a
+						href="/dish"
+						on:click={toggleDishOpen}
+						class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
+						{$_('all')}
+					</a>
 					<a
 						href="/dish/breakfast"
 						on:click={toggleDishOpen}
@@ -272,13 +282,12 @@
 				</a>
 			</li>
 			<li class="xl:p-6 border w-full relative">
-				<a
-					href="/dish"
+				<button
 					on:click={toggleGameOpen}
-					class="flex items-center gap-1 p-3 {currentPath.indexOf('/games') > -1 && 'active'}">
+					class="flex justify-between items-center gap-1 p-3 {currentPath.indexOf('/games') > -1 && 'active'}">
 					<span class="mx-3">{$_('games')}</span>
 					<i class="fa-solid fa-chevron-down text-xs text-gray-400" />
-				</a>
+				</button>
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
 					class="w-full bg-white rounded-lg shadow-xl transition-all duration-300 max-h-0 px-3 overflow-hidden {showGame &&

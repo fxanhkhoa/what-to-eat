@@ -4,3 +4,8 @@ export type Base = {
 	createdBy?: string;
 	updatedBy?: string;
 };
+
+export type APIPagination<T> = {
+	data: Array<T>;
+	count: number;
+};

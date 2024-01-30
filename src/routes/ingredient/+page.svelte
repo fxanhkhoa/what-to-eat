@@ -4,13 +4,31 @@
 	import type { PageData } from './$types';
 	import { _, locale } from 'svelte-i18n';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
-	import { goto } from '$app/navigation';
+	import { createPagination, melt } from '@melt-ui/svelte';
 
 	export let data: PageData;
-	$: ({ ingredients } = data);
+	const { rows, total, keyword, page, limit } = data;
 
 	let selectedLanguage = 'en';
 	let searchText = '';
+
+	const {
+		elements: { root, pageTrigger, prevButton, nextButton },
+		states: { pages }
+	} = createPagination({
+		count: total,
+		perPage: limit,
+		defaultPage: page,
+		siblingCount: 1,
+		onPageChange: (p) => {
+			if (keyword) {
+				location.href = `${location.pathname}?keyword=${keyword}&page=${p.next}`;
+			} else {
+				location.href = `${location.pathname}?page=${p.next}`;
+			}
+			return p.next;
+		}
+	});
 
 	onMount(() => {
 		locale.subscribe((lang) => {
@@ -25,7 +43,7 @@
 	});
 
 	const onSubmit = () => {
-		goto(`/ingredient?keyword=${searchText}`);
+		location.href = `/ingredient?keyword=${searchText}`;
 	};
 </script>
 
@@ -81,11 +99,36 @@
 			</span>
 		</button>
 	</div>
-	<div class="grid grid-cols-12 gap-5">
-		{#each ingredients as ingredient}
+	<div class="grid grid-cols-12 gap-5 overflow-auto h-[45vh]">
+		{#each rows as ingredient}
 			<div class="col-span-12 md:col-span-4">
 				<IngredientCard {ingredient} {selectedLanguage} />
 			</div>
 		{/each}
 	</div>
+	<nav class="flex flex-col items-center gap-4 mt-3" aria-label="pagination" use:melt={$root}>
+		<div class="flex items-center gap-2">
+			<button
+				class="grid h-8 items-center rounded-md bg-white px-3 text-sm text-purple-900 shadow-sm
+      hover:opacity-75 disabled:cursor-not-allowed disabled:opacity-50 data-[selected]:bg-purple-900
+      data-[selected]:text-white"
+				use:melt={$prevButton}><i class="fa-solid fa-chevron-left" /></button>
+			{#each $pages as page (page.key)}
+				{#if page.type === 'ellipsis'}
+					<span>...</span>
+				{:else}
+					<button
+						class="grid h-8 items-center rounded-md bg-white px-3 text-sm text-purple-900 shadow-sm
+          hover:opacity-75 disabled:cursor-not-allowed disabled:opacity-50 data-[selected]:bg-purple-900
+        data-[selected]:text-white"
+						use:melt={$pageTrigger(page)}>{page.value}</button>
+				{/if}
+			{/each}
+			<button
+				class="grid h-8 items-center rounded-md bg-white px-3 text-sm text-purple-900 shadow-sm
+      hover:opacity-75 disabled:cursor-not-allowed disabled:opacity-50 data-[selected]:bg-purple-900
+    data-[selected]:text-white"
+				use:melt={$nextButton}><i class="fa-solid fa-chevron-right" /></button>
+		</div>
+	</nav>
 </section>
