@@ -128,5 +128,6 @@
 	"wheel-of-fortune": "Wheel Of Fortune",
 	"flipping-cards": "Flipping Cards",
 	"games": "Games",
-	"all": "All"
+	"all": "All",
+	"no-item-info": "There is no item"
 }

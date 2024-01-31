@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
-	import { Tooltip } from '@svelte-plugins/tooltips';
 	import { CollapsibleCard } from 'svelte-collapsible';
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
@@ -12,12 +11,15 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import type { Dish } from '../../../gql/graphql';
 	import Pagination from '$lib/components/pagination.svelte';
+	import type { Unsubscriber } from 'svelte/store';
+	import Collapsible from '$lib/components/common/Collapsible.svelte';
+	import Tooltip from '$lib/components/common/Tooltip.svelte';
 
 	const p = parseInt($page.url.searchParams.get('page') ?? '1', 10);
 	const keyword = $page.url.searchParams.get('keyword');
 
 	const limit = 25;
-	let removeObservable: any;
+	let removeObservable: Unsubscriber;
 
 	let selectedLanguage = 'en';
 
@@ -76,6 +78,7 @@
 							'--toastBarBackground': '#2F855A'
 						}
 					});
+					removeObservable;
 				} else if (!res.fetching && res.error) {
 					toast.push(`${$_('fail')}: ${res.error.message}`, {
 						theme: {
@@ -84,6 +87,7 @@
 							'--toastBarBackground': '#b30000'
 						}
 					});
+					removeObservable;
 				}
 			});
 		}
@@ -188,55 +192,39 @@
 								</div>
 							</div>
 							<div class="flex gap-3">
-								<div class="flex gap-3">
-									<Tooltip content={$_('preparation-time')}>
-										<i class="fa-solid fa-hourglass-end" />
-									</Tooltip>
-									<span>{dish.preparationTime} {$_('minute')}</span>
-								</div>
-								<div class="flex gap-3">
-									<Tooltip content={$_('cooking-time')}>
-										<i class="fa-regular fa-clock" />
-									</Tooltip>
-									<span>{dish.cookingTime} {$_('minute')}</span>
-								</div>
-							</div>
-							<div
-								class="flex bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-3 rounded-lg w-full">
-								<CollapsibleCard open={false}>
-									<button
-										slot="header"
-										class="header text-xs bg-transparent hover:bg-blue-500 text-gray-300 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded duration-300">
-										<span>{$_('meal-categories')}</span>
-									</button>
-									<div slot="body" class="flex flex-wrap gap-3 mt-3">
-										{#each dish.mealCategories as category, categoryIndex}
-											<span
-												class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
-													categoryIndex % BADGE_COLOR_CLASSES.length
-												]}">{$_(category ?? '')}</span>
-										{/each}
+								<Tooltip text={$_('preparation-time')}>
+									<div class="flex gap-4 cursor-default">
+										<i class="fa-solid fa-hourglass-end my-auto" />
+										<span>{dish.preparationTime} {$_('minute')}</span>
 									</div>
-								</CollapsibleCard>
-							</div>
-							<div
-								class="flex bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-3 rounded-lg w-full">
-								<CollapsibleCard open={false}>
-									<button
-										slot="header"
-										class="header text-xs bg-transparent hover:bg-blue-500 text-gray-300 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded duration-300">
-										<span>{$_('ingredient-categories')}</span>
-									</button>
-									<div slot="body" class="flex flex-wrap gap-3 mt-3">
-										{#each dish.ingredientCategories as category, categoryIndex}
-											<span
-												class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
-													categoryIndex % BADGE_COLOR_CLASSES.length
-												]}">{$_(category ?? '')}</span>
-										{/each}
+								</Tooltip>
+								<Tooltip text={$_('cooking-time')}>
+									<div class="flex gap-3 cursor-default">
+										<i class="fa-regular fa-clock my-auto" />
+										<span>{dish.cookingTime} {$_('minute')}</span>
 									</div>
-								</CollapsibleCard>
+								</Tooltip>
 							</div>
+							<Collapsible title={$_('meal-categories')}>
+								<div class="flex flex-wrap gap-3 mt-3">
+									{#each dish.mealCategories as category, categoryIndex}
+										<span
+											class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
+												categoryIndex % BADGE_COLOR_CLASSES.length
+											]}">{$_(category ?? '')}</span>
+									{/each}
+								</div>
+							</Collapsible>
+							<Collapsible title={$_('meal-categories')}>
+								<div class="flex flex-wrap gap-3 mt-3">
+									{#each dish.ingredientCategories as category, categoryIndex}
+										<span
+											class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
+												categoryIndex % BADGE_COLOR_CLASSES.length
+											]}">{$_(category ?? '')}</span>
+									{/each}
+								</div>
+							</Collapsible>
 						</div>
 					</div>
 				</div>
