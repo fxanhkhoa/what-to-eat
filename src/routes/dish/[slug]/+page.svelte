@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import { locale, _ } from 'svelte-i18n';
-	import { Tooltip } from '@svelte-plugins/tooltips';
 	import { Youtube } from '$lib/utils/youtube';
 	import { page } from '$app/stores';
 	import { showSuccess } from '$lib/utils/toast';
@@ -11,10 +10,12 @@
 	import DifficultyLevel from '$lib/components/utility/difficulty-level.svelte';
 	import { DIFFICULT_LEVELS } from '$lib/enum/dish.enum';
 	import Category from '$lib/components/utility/category.svelte';
+	import Tooltip from '$lib/components/common/Tooltip.svelte';
 
 	export let data: PageData;
 	$: ({ dish, ingredients, relatedDishes, pageUrl } = data);
 	let selectedLanguage = 'en';
+
 
 	onMount(() => {
 		const sub = locale.subscribe((lang) => {
@@ -54,7 +55,9 @@
 	<meta name="og:url" content={`${pageUrl}/dish/${dish.slug}`} />
 	<meta name="og:image" content={dish.thumbnail} />
 	<meta name="og:site_name" content={dish.title.find((t) => t?.lang === selectedLanguage)?.data} />
-	<meta name="og:description" content={dish.shortDescription.find((t) => t?.lang === selectedLanguage)?.data} />
+	<meta
+		name="og:description"
+		content={dish.shortDescription.find((t) => t?.lang === selectedLanguage)?.data} />
 </svelte:head>
 
 <section id="banner" class="h-[40rem] relative">
@@ -88,18 +91,18 @@
 					{dish.shortDescription.find((t) => t?.lang === selectedLanguage)?.data}
 				</h5>
 				<div class="flex justify-start gap-5">
-					<div class="flex gap-4">
-						<Tooltip content={$_('preparation-time')}>
-							<i class="fa-solid fa-hourglass-end" />
-						</Tooltip>
-						<span>{dish.preparationTime} {$_('minute')}</span>
-					</div>
-					<div class="flex gap-3">
-						<Tooltip content={$_('cooking-time')}>
-							<i class="fa-regular fa-clock" />
-						</Tooltip>
-						<span>{dish.cookingTime} {$_('minute')}</span>
-					</div>
+					<Tooltip text={$_('preparation-time')}>
+						<div class="flex gap-4 cursor-default">
+							<i class="fa-solid fa-hourglass-end my-auto" />
+							<span>{dish.preparationTime} {$_('minute')}</span>
+						</div>
+					</Tooltip>
+					<Tooltip text={$_('cooking-time')}>
+						<div class="flex gap-3 cursor-default">
+							<i class="fa-regular fa-clock my-auto" />
+							<span>{dish.cookingTime} {$_('minute')}</span>
+						</div>
+					</Tooltip>
 				</div>
 				<Category categories={[...dish.mealCategories, ...dish.ingredientCategories]} />
 			</div>
@@ -119,7 +122,7 @@
 					<h4 class="text-gray-500">{$_('ingredients')}</h4>
 				</div>
 				<ul class="list-none">
-					{#each dish.ingredients as ingredient}
+					{#each dish.ingredients.reverse() as ingredient}
 						<div class="inline-flex md:flex items-center w-full">
 							<label
 								class="relative flex items-center p-3 rounded-full cursor-pointer"
@@ -248,7 +251,7 @@
 		</div>
 		<hr />
 		<div class="grid grid-cols-12 gap-5">
-			{#each relatedDishes as dish, i}
+			{#each relatedDishes as dish}
 				<DishCard {selectedLanguage} {dish} />
 			{/each}
 		</div>

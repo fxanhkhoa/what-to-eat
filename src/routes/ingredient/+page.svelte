@@ -100,6 +100,13 @@
 		</button>
 	</div>
 	<div class="grid grid-cols-12 gap-5 overflow-auto h-[45vh]">
+		{#if !total}
+			<div
+				class="col-span-12 flex flex-col justify-center items-center gap-5 border-8 drop-shadow-lg shadow-lg">
+				<h1 class="font-bold">{$_('no-item-info')}</h1>
+				<i class="fa-solid fa-inbox text-4xl" />
+			</div>
+		{/if}
 		{#each rows as ingredient}
 			<div class="col-span-12 md:col-span-4">
 				<IngredientCard {ingredient} {selectedLanguage} />
