@@ -1,7 +1,7 @@
 import type { Dish } from '$lib/type/dish.type';
 import { collection, getDocs, limit, orderBy, query, startAfter, where } from 'firebase/firestore';
 import type { PageServerLoad } from './$types';
-import { database } from '../../../firebase/firebase-server';
+import { database } from '../../../../firebase/firebase-server';
 import { MEAL_CATEGORIES } from '$lib/enum/dish.enum';
 
 const getDishes = async (page: number) => {
