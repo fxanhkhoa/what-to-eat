@@ -74,7 +74,7 @@
 	"ALCOHOLIC BEVERAGES": "ALCOHOLIC BEVERAGES",
 	"WATER": "WATER",
 	"FATS AND OILS": "FATS AND OILS",
-	"MIXED DISHES": "MIXED DISHES",
+	"MIXED_DISHES": "MIXED DISHES",
 	"FRUIT": "FRUIT",
 	"CONDIMENTS AND SAUCES": "CONDIMENTS AND SAUCES",
 	"SUGARS": "SUGARS",
@@ -129,5 +129,7 @@
 	"flipping-cards": "Flipping Cards",
 	"games": "Games",
 	"all": "All",
-	"no-item-info": "There is no item"
+	"no-item-info": "There is no item",
+	"language": "Language",
+	"code": "Code"
 }

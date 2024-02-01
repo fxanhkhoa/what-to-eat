@@ -1,32 +1,20 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import { _, locale } from 'svelte-i18n';
+	import { _ } from 'svelte-i18n';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import DishCard from '$lib/components/dish/dish-card.svelte';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
 	$: ({ dishes } = data);
 
-	let selectedLanguage = 'en';
-
-	onMount(() => {
-		locale.subscribe((lang) => {
-			if (lang?.includes('en')) {
-				locale.set('en');
-				return;
-			}
-			if (lang) {
-				selectedLanguage = lang.split('-')[0];
-			}
-		});
-	});
+	let selectedLanguage = $page.params.lang === 'en-US' ? 'en' : $page.params.lang;
 </script>
 
 <svelte:head>
 	<title>{$_('metadata.dish.title')}</title>
 	<meta name="description" content={$_('metadata.dish.description')} />
-	<meta name="keywords" content="ăn gì, what to eat, eat what, ăn chi"/>
+	<meta name="keywords" content="ăn gì, what to eat, eat what, ăn chi" />
 	<meta name="robots" content="index,follow" />
 </svelte:head>
 

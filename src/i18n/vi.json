@@ -74,7 +74,7 @@
 	"ALCOHOLIC BEVERAGES": "ĐỒ UỐNG CÓ CỒN",
 	"WATER": "NƯỚC",
 	"FATS AND OILS": "CHẤT BÉO VÀ DẦU",
-	"MIXED DISHES": "MÓN TỔNG HỢP",
+	"MIXED_DISHES": "MÓN TỔNG HỢP",
 	"FRUIT": "TRÁI CÂY",
 	"CONDIMENTS AND SAUCES": "GIA VỊ VÀ NƯỚC SỐT",
 	"SUGARS": "ĐƯỜNG",
@@ -129,5 +129,7 @@
 	"flipping-cards": "Lật Thẻ",
 	"games": "Trò Chơi",
 	"all": "Tất cả",
-	"no-item-info": "Không có sản phẩm"
+	"no-item-info": "Không có sản phẩm",
+	"language": "Ngôn ngữ",
+	"code": "Mã"
 }

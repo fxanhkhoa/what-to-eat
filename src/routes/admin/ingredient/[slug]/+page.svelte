@@ -391,12 +391,15 @@
 				class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 				>{$_('ingredient-categories')}</label>
 			<Select
+				--multi-item-bg="#29313d"
+				--multi-item-outline="#29313d"
+				placeholder={$_('ingredient-categories')}
 				multiple
 				class="rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-700 border-gray-600 dark:text-white"
 				bind:value={ingredientCategoriesSelected}
 				showChevron
 				items={Object.values(INGREDIENT_CATEGORIES).map((v) => ({
-					label: v,
+					label: $_(v),
 					value: v
 				}))} />
 		</div>
