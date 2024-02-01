@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 	import { onMount } from 'svelte';
-	import { auth } from '../../firebase/firebase-server';
+	import { auth } from '../../../firebase/firebase-server';
 	import { _ } from 'svelte-i18n';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import { page } from '$app/stores';
