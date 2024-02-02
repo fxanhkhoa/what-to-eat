@@ -30,10 +30,10 @@
 	</div>
 	<div class="col-span-2 relative">
 		<a
-			href="/dish/{dish.slug}"
+			href={`dish/${dish.slug}`}
 			class="relative w-full h-full inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-l rounded-r-3xl group border-gray-100">
 			<span
-				class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-purple-500 group-hover:translate-x-0 ease">
+				class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full group-hover:bg-purple-500 group-hover:translate-x-0 ease">
 				<i class="fa-solid fa-arrow-right" />
 			</span>
 			<span

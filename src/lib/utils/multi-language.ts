@@ -7,3 +7,11 @@ export const initStringMultiLanguage = (): MultiLanguage<string>[] => {
 		data: ''
 	}));
 };
+
+export const getLanguageCode = (code: string) => {
+	if (code === 'en') {
+		return 'en-US';
+	}
+
+	return code;
+};
