@@ -11,11 +11,11 @@
 	import { DIFFICULT_LEVELS } from '$lib/enum/dish.enum';
 	import Category from '$lib/components/utility/category.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
+	import { htmlDishStyle } from '$lib/constant/common-style';
 
 	export let data: PageData;
 	$: ({ dish, ingredients, relatedDishes, pageUrl } = data);
 	let selectedLanguage = 'en';
-
 
 	onMount(() => {
 		const sub = locale.subscribe((lang) => {
@@ -171,6 +171,7 @@
 		</div>
 		<div class="grid grid-cols-12 gap-5 md:gap-10 mt-5">
 			<div class="col-span-12 p-3">
+				{@html `<style>${htmlDishStyle}<style>`}
 				{@html dish.content.find((c) => c?.lang === selectedLanguage)?.data}
 			</div>
 		</div>
