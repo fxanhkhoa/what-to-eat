@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '../../i18n';
 	import Header from '$lib/components/Header.svelte';
 	import '../styles.css';
 	import '../../app.scss';
@@ -16,7 +15,6 @@
 
 	<main>
 		<slot />
-		<SvelteToast />
 	</main>
 
 	<footer>

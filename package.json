@@ -61,10 +61,10 @@
 		"@tiptap/extension-youtube": "^2.1.12",
 		"@tiptap/pm": "^2.1.11",
 		"@tiptap/starter-kit": "^2.1.11",
+		"@urql/exchange-retry": "^1.2.1",
 		"firebase": "^10.4.0",
 		"intl-messageformat": "^10.5.11",
 		"jwt-decode": "^4.0.0",
-		"svelte-collapsible": "^0.3.0",
 		"svelte-i18n": "^4.0.0",
 		"svelte-select": "^5.7.0",
 		"svelte-simple-modal": "^1.6.1"

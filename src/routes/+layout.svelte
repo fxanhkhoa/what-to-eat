@@ -1,7 +1,10 @@
 <script lang="ts">
-	import type { LayoutData } from './$types';
-
-	export let data: LayoutData;
+	import '../i18n';
+	import Toaster from '$lib/components/common/Toaster.svelte';
+	import './styles.css';
+	import '../app.scss';
 </script>
+
+<Toaster />
 
 <slot />

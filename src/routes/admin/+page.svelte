@@ -4,8 +4,6 @@
 	import { _ } from 'svelte-i18n';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 
-	export let data: PageData;
-
 	onMount(() => {});
 </script>
 
