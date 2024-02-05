@@ -2,18 +2,48 @@
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import { goto } from '$app/navigation';
-	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
-	import { _ } from 'svelte-i18n';
-	import { Client, cacheExchange, fetchExchange, setContextClient } from '@urql/svelte';
+	import { _, getLocaleFromNavigator } from 'svelte-i18n';
+	import {
+		Client,
+		cacheExchange,
+		fetchExchange,
+		mapExchange,
+		setContextClient
+	} from '@urql/svelte';
 	import { PUBLIC_ENDPOINT } from '$env/static/public';
+	import { addToast } from '$lib/components/common/Toaster.svelte';
+	import { retryExchange } from '@urql/exchange-retry';
 
-	// Optionally set default options here
-	const options = {};
+	const options = {
+		initialDelayMs: 1000,
+		maxDelayMs: 15000,
+		randomDelay: true,
+		maxNumberAttempts: 2,
+		retryIf: (err: any) => err && err.networkError
+	};
 	export let data: LayoutData;
 
 	const client = new Client({
 		url: `${PUBLIC_ENDPOINT}/query`,
-		exchanges: [cacheExchange, fetchExchange],
+		exchanges: [
+			mapExchange({
+				async onError(error, operation) {
+					console.log(`The operation ${operation.key} has errored with:`, error);
+					console.log(error.networkError?.message);
+					if (error.networkError?.message === 'Unauthorized') {
+						const response = await fetch(`/api/token`, {
+							method: 'POST'
+						});
+						if (response.status === 200) {
+							location.reload()
+						}
+					}
+				}
+			}),
+			retryExchange(options),
+			cacheExchange,
+			fetchExchange
+		],
 		fetchOptions: () => {
 			const token = data.token;
 			return {
@@ -29,16 +59,17 @@
 
 	onMount(() => {
 		if (!data.token) {
+			console.log('clear')
 			localStorage.clear();
-			toast.push($_('please-login-again'), {
-				theme: {
-					'--toastColor': 'mintcream',
-					'--toastBackground': '#d40202',
-					'--toastBarBackground': '#b30000'
+			addToast({
+				data: {
+					title: '401',
+					description: $_('please-login-again'),
+					color: 'bg-red-500'
 				}
 			});
 			setTimeout(() => {
-				goto('/login');
+				goto(`${getLocaleFromNavigator() ?? 'vi'}/login`);
 			}, 2000);
 		}
 		return {};
@@ -49,8 +80,6 @@
 	<main>
 		<slot />
 	</main>
-
-	<SvelteToast {options} />
 </div>
 
 <style>

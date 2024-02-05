@@ -564,7 +564,7 @@
 					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 					required />
 				<h3 class="text-white py-3">{$_('preview')}</h3>
-				<div class="p-5 bg-white rounded-lg">
+				<div class="p-5 bg-white rounded-lg overflow-auto h-[60vh]">
 					{@html content.find((c) => c.lang === selectedLanguage)?.data}
 				</div>
 			{/if}

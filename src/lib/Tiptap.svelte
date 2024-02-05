@@ -226,7 +226,7 @@
 		</div>
 	</div>
 {/if}
-<div class="bg-white rounded-lg rounded-t-none p-5" bind:this={element} />
+<div class="bg-white rounded-lg rounded-t-none p-5 overflow-auto h-[60vh]" bind:this={element} />
 
 <style lang="scss">
 	/* Basic editor styles */
