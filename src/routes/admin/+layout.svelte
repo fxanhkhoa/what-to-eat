@@ -28,8 +28,6 @@
 		exchanges: [
 			mapExchange({
 				async onError(error, operation) {
-					console.log(`The operation ${operation.key} has errored with:`, error);
-					console.log(error.networkError?.message);
 					if (error.networkError?.message === 'Unauthorized') {
 						const response = await fetch(`/api/token`, {
 							method: 'POST'
@@ -59,7 +57,6 @@
 
 	onMount(() => {
 		if (!data.token) {
-			console.log('clear')
 			localStorage.clear();
 			addToast({
 				data: {
@@ -69,7 +66,7 @@
 				}
 			});
 			setTimeout(() => {
-				goto(`${getLocaleFromNavigator() ?? 'vi'}/login`);
+				goto(`/${getLocaleFromNavigator() ?? 'vi'}/login`);
 			}, 2000);
 		}
 		return {};

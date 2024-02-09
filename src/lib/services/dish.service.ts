@@ -1,10 +1,16 @@
 import { baseHeader } from '$lib/constant/api';
+import type { APIPagination } from '$lib/type/base.type';
 import type { Dish } from '../../gql/graphql';
 
 const prefix = 'dish';
 
 export const DishService = {
-	find: async (endpoint: string, page = 1, limit = 25, keyword: string | null): Promise<Dish[]> => {
+	find: async (
+		endpoint: string,
+		page = 1,
+		limit = 25,
+		keyword: string | null
+	): Promise<APIPagination<Dish>> => {
 		let queryParams = `page=${page}&limit=${limit}`;
 		if (keyword) {
 			queryParams += `&keyword=${keyword}`;

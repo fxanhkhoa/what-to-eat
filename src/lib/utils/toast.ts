@@ -1,21 +1,21 @@
-import { toast } from '@zerodevx/svelte-toast';
+import { addToast } from '$lib/components/common/Toaster.svelte';
 
-export const showSuccess = (text: string) => {
-	toast.push(text, {
-		theme: {
-			'--toastColor': 'mintcream',
-			'--toastBackground': 'rgba(72,187,120,0.9)',
-			'--toastBarBackground': '#2F855A'
+export const showSuccess = (description: string, title: string) => {
+	addToast({
+		data: {
+			title: title,
+			description: description,
+			color: 'bg-green-500'
 		}
 	});
 };
 
-export const showError = (text: string) => {
-	toast.push(text, {
-		theme: {
-			'--toastColor': 'mintcream',
-			'--toastBackground': '#d40202',
-			'--toastBarBackground': '#b30000'
+export const showError = (description: string, title: string) => {
+	addToast({
+		data: {
+			title: title,
+			description: description,
+			color: 'bg-red-500'
 		}
 	});
 };

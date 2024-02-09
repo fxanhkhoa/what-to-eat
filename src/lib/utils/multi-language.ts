@@ -3,7 +3,7 @@ import type { MultiLanguage } from '$lib/type/multi-language.type';
 
 export const initStringMultiLanguage = (): MultiLanguage<string>[] => {
 	return lANGUAGES.map((lang) => ({
-		lang,
+		lang: lang === 'en-US' ? 'en' : lang,
 		data: ''
 	}));
 };

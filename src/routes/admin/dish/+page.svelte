@@ -13,7 +13,6 @@
 	import type { Unsubscriber } from 'svelte/store';
 	import Collapsible from '$lib/components/common/Collapsible.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
-	import Category from '$lib/components/utility/category.svelte';
 
 	const p = parseInt($page.url.searchParams.get('page') ?? '1', 10);
 	const keyword = $page.url.searchParams.get('keyword');
