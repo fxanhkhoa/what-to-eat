@@ -276,9 +276,9 @@
 			});
 			result.subscribe((res) => {
 				if (!res.fetching && !res.error) {
-					showSuccess($_('successfully'));
+					showSuccess($_('successfully'), '200');
 				} else if (!res.fetching && res.error) {
-					showError(`${$_('fail')}: ${res.error.message}`);
+					showError(`${$_('fail')}: ${res.error.message}`, '500');
 				}
 			});
 		} else {
@@ -312,9 +312,9 @@
 			});
 			result.subscribe((res) => {
 				if (!res.fetching && !res.error) {
-					showSuccess($_('successfully'));
+					showSuccess($_('successfully'), '200');
 				} else if (!res.fetching && res.error) {
-					showError(`${$_('fail')}: ${res.error.message}`);
+					showError(`${$_('fail')}: ${res.error.message}`, '500');
 				}
 			});
 		}

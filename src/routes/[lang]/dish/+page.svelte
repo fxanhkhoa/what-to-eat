@@ -3,12 +3,30 @@
 	import { _ } from 'svelte-i18n';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import DishCard from '$lib/components/dish/dish-card.svelte';
-	import { page } from '$app/stores';
+	import { createPagination, melt } from '@melt-ui/svelte';
 
 	export let data: PageData;
-	$: ({ dishes } = data);
+	const { rows, keyword, lang, limit, page, total } = data;
 
-	let selectedLanguage = $page.params.lang === 'en-US' ? 'en' : $page.params.lang;
+	const {
+		elements: { root, pageTrigger, prevButton, nextButton },
+		states: { pages }
+	} = createPagination({
+		count: total,
+		perPage: limit,
+		defaultPage: page,
+		siblingCount: 1,
+		onPageChange: (p) => {
+			if (keyword) {
+				location.href = `${location.pathname}?keyword=${keyword}&page=${p.next}`;
+			} else {
+				location.href = `${location.pathname}?page=${p.next}`;
+			}
+			return p.next;
+		}
+	});
+
+	let selectedLanguage = lang === 'en-US' ? 'en' : lang;
 </script>
 
 <svelte:head>
@@ -49,18 +67,43 @@
 			</span>
 		</button>
 	</div>
-	<div class="grid grid-cols-12 p-5">
+	<div class="grid grid-cols-12 p-5 h-[40vh] overflow-auto">
 		<div class="col-span-12 md:col-span-2" />
 		<div class="col-span-12 md:col-span-10">
 			<div class="p-5">
 				<div class="grid grid-cols-12 gap-5">
-					{#each dishes as dish, i}
+					{#each rows as dish, i}
 						<DishCard {dish} {selectedLanguage} />
 					{/each}
 				</div>
 			</div>
 		</div>
 	</div>
+	<nav class="flex flex-col items-center gap-4 mt-3" aria-label="pagination" use:melt={$root}>
+		<div class="flex items-center gap-2">
+			<button
+				class="grid h-8 items-center rounded-md bg-white px-3 text-sm text-purple-900 shadow-sm
+      hover:opacity-75 disabled:cursor-not-allowed disabled:opacity-50 data-[selected]:bg-purple-900
+      data-[selected]:text-white"
+				use:melt={$prevButton}><i class="fa-solid fa-chevron-left" /></button>
+			{#each $pages as page (page.key)}
+				{#if page.type === 'ellipsis'}
+					<span>...</span>
+				{:else}
+					<button
+						class="grid h-8 items-center rounded-md bg-white px-3 text-sm text-purple-900 shadow-sm
+          hover:opacity-75 disabled:cursor-not-allowed disabled:opacity-50 data-[selected]:bg-purple-900
+        data-[selected]:text-white"
+						use:melt={$pageTrigger(page)}>{page.value}</button>
+				{/if}
+			{/each}
+			<button
+				class="grid h-8 items-center rounded-md bg-white px-3 text-sm text-purple-900 shadow-sm
+      hover:opacity-75 disabled:cursor-not-allowed disabled:opacity-50 data-[selected]:bg-purple-900
+    data-[selected]:text-white"
+				use:melt={$nextButton}><i class="fa-solid fa-chevron-right" /></button>
+		</div>
+	</nav>
 </section>
 
 <style>

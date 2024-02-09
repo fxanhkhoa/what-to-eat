@@ -145,7 +145,7 @@
 				</div>
 			</li>
 			<li class="p-3 xl:p-6 {currentPath.includes('/ingredient') && 'active'}">
-				<a href="/ingredient">
+				<a href={`/${lang}/ingredient`}>
 					<span>{$_('ingredients')}</span>
 				</a>
 			</li>
@@ -275,27 +275,27 @@
 					use:melt={$subMenuMobile}
 					transition:fly={{ x: -50, duration: 150 }}>
 					<a
-						href="/dish"
+						href={`/${lang}/dish`}
 						class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
 						{$_('all')}
 					</a>
 					<a
-						href="/dish/breakfast"
+						href={`/${lang}/dish/breakfast`}
 						class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
 						{$_('breakfast')}
 					</a>
 					<a
-						href="/dish/lunch"
+						href={`/${lang}/dish/lunch`}
 						class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
 						{$_('lunch')}
 					</a>
 					<a
-						href="/dish/brunch"
+						href={`/${lang}/dish/brunch`}
 						class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
 						{$_('brunch')}
 					</a>
 					<a
-						href="/dish/dinner"
+						href={`/${lang}/dish/dinner`}
 						class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
 						{$_('dinner')}
 					</a>
@@ -303,7 +303,7 @@
 			{/if}
 			<div use:melt={$separatorMobile} class="h-0.5 w-[100%] bg-gray-200" />
 			<div class={`${currentPath.includes('/ingredient') && 'active'}`} use:melt={$itemMobile}>
-				<a href="/ingredient">
+				<a href={`/${lang}/ingredient`}>
 					<span>{$_('ingredients')}</span>
 				</a>
 			</div>
@@ -322,12 +322,12 @@
 					use:melt={$subMenuMobile1}
 					transition:fly={{ x: -50, duration: 150 }}>
 					<a
-						href="/games/wheel-of-fortune"
+						href={`${lang}/games/wheel-of-fortune`}
 						class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
 						{$_('wheel-of-fortune')}
 					</a>
 					<a
-						href="/games/flipping-cards"
+						href={`${lang}/games/flipping-cards`}
 						class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
 						{$_('flipping-cards')}
 					</a>

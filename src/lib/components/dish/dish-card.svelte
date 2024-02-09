@@ -37,8 +37,11 @@
 				<i class="fa-solid fa-arrow-right" />
 			</span>
 			<span
-				class="absolute flex items-center justify-center w-full h-full text-purple-500 transition-all duration-300 transform group-hover:translate-x-full ease"
+				class="absolute hidden md:flex items-center justify-center w-full h-full text-purple-500 transition-all duration-300 transform group-hover:translate-x-full ease"
 				>{$_('discover')}</span>
+			<span
+				class="absolute flex md:hidden items-center justify-center w-full h-full text-purple-500 transition-all duration-300 transform group-hover:translate-x-full ease"
+				><i class="fa-solid fa-right-long" /></span>
 			<span class="relative invisible">{$_('discover')}</span>
 		</a>
 	</div>
