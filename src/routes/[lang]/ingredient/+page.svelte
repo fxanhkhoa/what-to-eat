@@ -43,7 +43,7 @@
 	});
 
 	const onSubmit = () => {
-		location.href = `/ingredient?keyword=${searchText}`;
+		location.href = `/${selectedLanguage}/ingredient?keyword=${searchText}`;
 	};
 </script>
 
