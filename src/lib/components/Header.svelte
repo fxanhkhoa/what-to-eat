@@ -87,9 +87,17 @@
 	});
 
 	const languageChange = (lang: string) => {
+		let newLocation = '/';
 		if ($page.route.id) {
-			location.href = $page.route.id.replace('[lang]', lang);
+			newLocation = $page.route.id;
+			if ($page.params['lang']) {
+				newLocation = newLocation.replace('[lang]', lang);
+			}
+			if ($page.params['slug']) {
+				newLocation = newLocation.replace('[slug]', $page.params['slug']);
+			}
 		}
+		location.href = newLocation;
 	};
 </script>
 

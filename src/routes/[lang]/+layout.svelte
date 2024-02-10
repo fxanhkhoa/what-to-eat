@@ -2,7 +2,6 @@
 	import Header from '$lib/components/Header.svelte';
 	import '../styles.css';
 	import '../../app.scss';
-	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import type { PageData } from './$types';
 	import { locale } from 'svelte-i18n';
 

@@ -18,6 +18,7 @@
 	let selectedLanguage = 'en';
 
 	onMount(() => {
+		document.cookie = 'num=' + 1 + '; SameSite=None; Secure; Partitioned';
 		const sub = locale.subscribe((lang) => {
 			if (lang?.includes('en')) {
 				locale.set('en');
@@ -32,7 +33,7 @@
 
 	const copyLink = () => {
 		navigator.clipboard.writeText($page.url.toString());
-		showSuccess($_('copied'));
+		showSuccess($_('copied'), 'OK');
 	};
 </script>
 
@@ -111,10 +112,10 @@
 			<div class="col-span-12 md:col-span-6 p-3">
 				<iframe
 					class="aspect-video w-full"
-					src={`//www.youtube.com/embed/${Youtube.getId(dish.videos[0] ?? '')}`}
+					src={`https://www.youtube-nocookie.com/embed/${Youtube.getId(dish.videos[0] ?? '')}`}
 					title="YouTube video player"
 					frameborder="0"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; gyroscope; web-share"
 					allowfullscreen />
 			</div>
 			<div class="col-span-12 md:col-span-6 p-3">
