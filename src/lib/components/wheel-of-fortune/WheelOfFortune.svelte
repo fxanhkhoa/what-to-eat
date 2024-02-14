@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { COLOR_PALETTE } from '$lib/constant/color';
+	import type { Dish } from '$lib/type/dish.type';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
+	import { createEventDispatcher } from 'svelte';
 
-	let items = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'];
-	let numberOfSpinTimes = 3;
+	export let items: Dish[] = [];
+	export let numberOfSpinTimes = 3;
 	let rotate = 0;
 
 	const diameter = 350; // px
@@ -12,6 +14,8 @@
 	const perimeter = 6.283185307 * radius;
 	const sliceHeight = perimeter / numberOfSlices;
 	const sliceOffSet = sliceHeight / 2;
+
+	const dispatch = createEventDispatcher();
 
 	const spin = () => {
 		const min = 720;
@@ -22,11 +26,15 @@
 		setTimeout(() => {
 			const degreeUnit = 360 / items.length;
 			let result = items.length - Math.round((rotate / degreeUnit) % items.length);
-            console.log(Math.round((rotate / degreeUnit) % items.length))
-            if (result - 1 < 0) {
-                result = items.length;
-            }
-			console.log(`result: ${items[result - 1]}, position: ${result}`);
+			console.log(Math.round((rotate / degreeUnit) % items.length));
+			if (result - 1 < 0) {
+				result = items.length;
+			}
+			// console.log(`result: ${items[result - 1]}, position: ${result}`);
+			dispatch('onResult', {
+				result: items[result - 1],
+				position: result
+			});
 		}, 3000);
 	};
 </script>

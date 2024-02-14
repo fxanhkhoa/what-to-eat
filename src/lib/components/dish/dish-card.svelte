@@ -19,9 +19,12 @@
 		<h4 class="font-bold">
 			{dish.title?.find((t) => t?.lang === selectedLanguage)?.data}
 		</h4>
-		<span class="text-gray-400 text-left"
+		<span class="hidden md:block text-gray-400 text-left"
 			>{dish.shortDescription?.find((s) => s?.lang === selectedLanguage)?.data?.substring(0, 100) ??
 				''}</span>
+		<span class="md:hidden text-gray-400 text-left"
+		>{dish.shortDescription?.find((s) => s?.lang === selectedLanguage)?.data?.substring(0, 30) ??
+			''}...</span>
 		<div class="flex gap-1">
 			<i class="fa-solid fa-stopwatch my-auto" />
 			<span class="ml-1">{(dish?.preparationTime ?? 0) + (dish?.cookingTime ?? 0)}</span>

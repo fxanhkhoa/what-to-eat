@@ -191,8 +191,10 @@
 			mutationObservable = result.subscribe((res) => {
 				if (!res.fetching && !res.error) {
 					showSuccess($_('successfully'), '200');
+					mutationObservable;
 				} else if (!res.fetching && res.error) {
 					showError(`${$_('fail')}: ${res.error.message}`, '500');
+					mutationObservable;
 				}
 			});
 		}
@@ -202,7 +204,16 @@
 		if (ingredient) {
 			init();
 		}
-		return { mutationObservable };
+		const sub = locale.subscribe((lang) => {
+			if (lang?.includes('en')) {
+				setSelectedLanguage('en');
+				return;
+			}
+			if (lang) {
+				setSelectedLanguage(lang);
+			}
+		});
+		return sub;
 	});
 </script>
 

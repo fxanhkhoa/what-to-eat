@@ -7,12 +7,12 @@
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import { getContextClient, gql, mutationStore, queryStore } from '@urql/svelte';
 	import { page } from '$app/stores';
-	import { toast } from '@zerodevx/svelte-toast';
 	import type { Dish } from '../../../gql/graphql';
 	import Pagination from '$lib/components/pagination.svelte';
 	import type { Unsubscriber } from 'svelte/store';
 	import Collapsible from '$lib/components/common/Collapsible.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
+	import { showError, showSuccess } from '$lib/utils/toast';
 
 	const p = parseInt($page.url.searchParams.get('page') ?? '1', 10);
 	const keyword = $page.url.searchParams.get('keyword');
@@ -70,22 +70,10 @@
 
 			removeObservable = result.subscribe((res) => {
 				if (!res.fetching && !res.error) {
-					toast.push($_('successfully'), {
-						theme: {
-							'--toastColor': 'mintcream',
-							'--toastBackground': 'rgba(72,187,120,0.9)',
-							'--toastBarBackground': '#2F855A'
-						}
-					});
+					showSuccess($_('successfully'), '200');
 					removeObservable;
 				} else if (!res.fetching && res.error) {
-					toast.push(`${$_('fail')}: ${res.error.message}`, {
-						theme: {
-							'--toastColor': 'mintcream',
-							'--toastBackground': '#d40202',
-							'--toastBarBackground': '#b30000'
-						}
-					});
+					showError(`${$_('fail')}: ${res.error.message}`, '500');
 					removeObservable;
 				}
 			});

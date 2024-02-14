@@ -70,7 +70,7 @@
 	<div class="grid grid-cols-12 p-5 h-[40vh] overflow-auto">
 		<div class="col-span-12 md:col-span-2" />
 		<div class="col-span-12 md:col-span-10">
-			<div class="p-5">
+			<div class="p-2 md:p-5">
 				<div class="grid grid-cols-12 gap-5">
 					{#each rows as dish, i}
 						<DishCard {dish} {selectedLanguage} />

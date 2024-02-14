@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import { locale, _ } from 'svelte-i18n';
-	import { Youtube } from '$lib/utils/youtube';
+	import { _ } from 'svelte-i18n';
 	import { page } from '$app/stores';
 	import { showSuccess } from '$lib/utils/toast';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -11,25 +9,13 @@
 	import { DIFFICULT_LEVELS } from '$lib/enum/dish.enum';
 	import Category from '$lib/components/utility/category.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
-	import { htmlDishStyle } from '$lib/constant/common-style';
+	import YoutubeFrame from '$lib/components/common/YoutubeFrame.svelte';
 
 	export let data: PageData;
-	$: ({ dish, ingredients, relatedDishes, pageUrl } = data);
-	let selectedLanguage = 'en';
+	$: ({ dish, ingredients, relatedDishes, pageUrl, lang } = data);
+	let selectedLanguage = data.lang === 'en-US' ? 'en' : data.lang;
 
-	onMount(() => {
-		document.cookie = 'num=' + 1 + '; SameSite=None; Secure; Partitioned';
-		const sub = locale.subscribe((lang) => {
-			if (lang?.includes('en')) {
-				locale.set('en');
-				return;
-			}
-			if (lang) {
-				selectedLanguage = lang.split('-')[0];
-			}
-		});
-		return sub;
-	});
+	console.log(selectedLanguage)
 
 	const copyLink = () => {
 		navigator.clipboard.writeText($page.url.toString());
@@ -110,13 +96,7 @@
 		</div>
 		<div class="grid grid-cols-12 gap-5 md:gap-10 mt-5">
 			<div class="col-span-12 md:col-span-6 p-3">
-				<iframe
-					class="aspect-video w-full"
-					src={`https://www.youtube-nocookie.com/embed/${Youtube.getId(dish.videos[0] ?? '')}`}
-					title="YouTube video player"
-					frameborder="0"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; gyroscope; web-share"
-					allowfullscreen />
+				<YoutubeFrame id={dish.videos[0] ?? ''} />
 			</div>
 			<div class="col-span-12 md:col-span-6 p-3">
 				<div class="flex">
@@ -172,8 +152,9 @@
 		</div>
 		<div class="grid grid-cols-12 gap-5 md:gap-10 mt-5">
 			<div class="col-span-12 p-3">
-				{@html `<style>${htmlDishStyle}<style>`}
-				{@html dish.content.find((c) => c?.lang === selectedLanguage)?.data}
+				<div class="dish-html-wrapper">
+					{@html dish.content.find((c) => c?.lang === selectedLanguage)?.data}
+				</div>
 			</div>
 		</div>
 		<div class="flex justify-center gap-3">
@@ -259,3 +240,39 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	.dish-html-wrapper > :global(h2) {
+		@apply text-gray-500 py-3;
+	}
+
+	.dish-html-wrapper > :global(ul) {
+		@apply list-disc pl-5;
+	}
+
+	.dish-html-wrapper > :global(p) {
+		@apply py-1 leading-loose flex gap-2 flex-wrap;
+	}
+
+	.dish-html-wrapper > :global(p) > :global(img) {
+		@apply object-cover h-48 w-96 transition-all duration-500 rounded-2xl border-solid border border-purple-200;
+	}
+
+	.dish-html-wrapper > :global(p) > :global(img:hover) {
+		@apply object-cover w-[500px] h-auto;
+	}
+
+	.dish-html-wrapper > :global(p) > :global(a) {
+		text-decoration: underline !important;
+		text-decoration-color: #e9d5ff !important;
+		text-decoration-thickness: 1px;
+		transition-property: all;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+		transition-duration: 150ms;
+		transition-duration: 300ms;
+	}
+	.dish-html-wrapper > :global(p) > :global(a:hover) {
+		--tw-text-opacity: 1 !important;
+		color: rgb(168 85 247 / var(--tw-text-opacity)) !important;
+	}
+</style>
