@@ -10,8 +10,8 @@
 
 <div
 	class="col-span-12 md:col-span-6 xl:col-span-6 2xl:col-span-4 grid grid-cols-12 shadow-lg rounded-3xl">
-	<div class="col-span-5 p-5">
-		<img src={dish.thumbnail} alt={dish.slug} class="object-cover rounded-lg w-full h-full" />
+	<div class="col-span-5 pr-5">
+		<img src={dish.thumbnail} alt={dish.slug} class="object-cover object-center rounded-l-lg w-full h-full" />
 	</div>
 	<div class="col-span-5 flex flex-col gap-2 py-5 pr-5">
 		<DifficultyLevel difficultLevel={dish.difficultLevel ?? DIFFICULT_LEVELS.EASY} />

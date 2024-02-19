@@ -48,7 +48,7 @@
 </svelte:head>
 
 <section id="banner" class="h-[40rem] relative">
-	<img src={dish.thumbnail} alt={dish.slug} class="w-full h-full object-cover" />
+	<img src={dish.thumbnail} alt={dish.slug} class="w-full h-full object-cover object-center" />
 </section>
 
 <section id="main" class="p-5 md:p-10">
