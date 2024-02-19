@@ -1,4 +1,4 @@
-import type { Dish } from './dish.type';
+import type { Dish } from "../../gql/graphql";
 
 export type WheelOfFortuneResult = {
 	result: Dish;

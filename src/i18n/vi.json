@@ -133,5 +133,11 @@
 	"all": "Tất cả",
 	"no-item-info": "Không có sản phẩm",
 	"language": "Ngôn ngữ",
-	"code": "Mã"
+	"code": "Mã",
+	"metadata.wheel-of-fortune.title": "Món ăn - Chiếc nón kì diệu",
+	"metadata.wheel-of-fortune.description": "Không quyết định được? Xoay vòng quay nào. Chiếc nón kì diệu với các món ăn sẽ quyết định giúp bạn, không phải đau đầu để quyết định món ăn.",
+	"info": "Thông tin",
+	"wheel-of-fortune-delete-tips": "Để xoá món ăn, kéo ra ngoài vòng quay",
+	"the-result": "Kết Quả",
+	"add-to-wheel": "Thêm vào vòng xoay"
 }

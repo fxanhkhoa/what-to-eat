@@ -133,5 +133,11 @@
 	"all": "All",
 	"no-item-info": "There is no item",
 	"language": "Language",
-	"code": "Code"
+	"code": "Code",
+	"metadata.wheel-of-fortune.title": "Food - Wheel of Fortune",
+	"metadata.wheel-of-fortune.description": "Can not make decision? Let spin the wheel. Food - wheel of fortune will give you random option of dish to eat, no worry to be tired to choose dish",
+	"info": "Info",
+	"wheel-of-fortune-delete-tips": "To delete dish, drag it outside the wheel",
+	"the-result": "The Result",
+	"add-to-wheel": "Add to wheel"
 }

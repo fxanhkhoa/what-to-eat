@@ -88,6 +88,7 @@
 
 	const languageChange = (lang: string) => {
 		let newLocation = '/';
+		console.log($page)
 		if ($page.route.id) {
 			newLocation = $page.route.id;
 			if ($page.params['lang']) {
@@ -97,7 +98,7 @@
 				newLocation = newLocation.replace('[slug]', $page.params['slug']);
 			}
 		}
-		location.href = newLocation;
+		location.href = newLocation + $page.url.search;
 	};
 </script>
 
