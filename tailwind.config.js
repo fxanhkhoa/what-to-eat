@@ -12,11 +12,22 @@ export default {
 				},
 				flipHorizontalBack: {
 					'0%': { transform: 'rotateY(180deg)' }
+				},
+				flipInHorBottom: {
+					'0%': {
+						transform: 'rotateX(80deg)',
+						opacity: 0
+					},
+					'100%': {
+						transform: 'rotateX(0)',
+						opacity: 1
+					}
 				}
 			},
 			animation: {
 				hFlip: 'flipHorizontal 0.5s ease-in-out',
-				hFlipBack: 'flipHorizontalBack 0.5s ease-in-out'
+				hFlipBack: 'flipHorizontalBack 0.5s ease-in-out',
+				flipInHorBottom: 'flipInHorBottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both'
 			},
 			fontFamily: {
 				sans: [

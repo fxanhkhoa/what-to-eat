@@ -28,5 +28,14 @@ export const DishService = {
 			headers: { ...baseHeader }
 		});
 		return await response.json();
+	},
+
+	random: async (endpoint: string, limit: number = 10): Promise<Dish[]> => {
+		const queryParams = `limit=${limit}`;
+		const response = await fetch(`${endpoint}/${prefix}/random?${queryParams}`, {
+			method: 'GET',
+			headers: { ...baseHeader }
+		});
+		return await response.json();
 	}
 };

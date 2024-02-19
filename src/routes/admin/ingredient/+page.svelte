@@ -4,12 +4,13 @@
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
 	import { onMount } from 'svelte';
-	import { Tooltip } from '@svelte-plugins/tooltips';
 	import { page } from '$app/stores';
-	import { getContextClient, gql, queryStore } from '@urql/svelte';
+	import { getContextClient, gql, mutationStore, queryStore } from '@urql/svelte';
 	import type { Ingredient } from '../../../gql/graphql';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import Pagination from '$lib/components/pagination.svelte';
+	import { showError, showSuccess } from '$lib/utils/toast';
+	import Tooltip from '$lib/components/common/Tooltip.svelte';
 
 	let selectedLanguage = 'en';
 
@@ -18,8 +19,9 @@
 
 	const limit = 25;
 
+	const client = getContextClient();
 	const ingredients = queryStore<{ ingredients: Ingredient[] }>({
-		client: getContextClient(),
+		client,
 		query: gql`
 			query ($keyword: String, $page: Int, $limit: Int) {
 				ingredients(keyword: $keyword, page: $page, limit: $limit) {
@@ -43,7 +45,32 @@
 		selectedLanguage = lang;
 	}
 
-	const deleteIngredient = (slug: string) => {};
+	const deleteIngredient = (slug: string) => {
+		if (confirm(`are you sure to delete ${slug}?`)) {
+			const result = mutationStore({
+				client,
+				query: gql`
+					mutation ($slug: String!) {
+						removeIngredient(slug: $slug) {
+							_id
+							slug
+						}
+					}
+				`,
+				variables: { slug }
+			});
+
+			const removeObservable = result.subscribe((res) => {
+				if (!res.fetching && !res.error) {
+					showSuccess($_('successfully'), '200');
+					removeObservable;
+				} else if (!res.fetching && res.error) {
+					showError(`${$_('fail')}: ${res.error.message}`, '500');
+					removeObservable;
+				}
+			});
+		}
+	};
 
 	onMount(() => {});
 </script>
@@ -139,13 +166,13 @@
 							</div>
 							<div class="flex justify-between">
 								<div class="flex gap-2">
-									<Tooltip content={$_('created-at')}>
+									<Tooltip text={$_('created-at')}>
 										<i class="fa-solid fa-clock my-auto" />
 									</Tooltip>
 									<span>{new Date(ingredient.createdAt).toLocaleDateString(selectedLanguage)}</span>
 								</div>
 								<div class="flex gap-2">
-									<Tooltip content={$_('updated-at')}>
+									<Tooltip text={$_('updated-at')}>
 										<i class="fa-solid fa-stopwatch my-auto" />
 									</Tooltip>
 									<span>{new Date(ingredient.updatedAt).toLocaleDateString(selectedLanguage)}</span>

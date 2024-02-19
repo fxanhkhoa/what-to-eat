@@ -15,7 +15,7 @@
 		"codegen": "graphql-codegen"
 	},
 	"devDependencies": {
-		"@fontsource/fira-mono": "^4.5.10",
+		"@fontsource/fira-mono": "^5.0.8",
 		"@graphql-codegen/cli": "^5.0.0",
 		"@graphql-codegen/client-preset": "^4.1.0",
 		"@melt-ui/pp": "^0.3.0",
@@ -29,7 +29,6 @@
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"@urql/svelte": "^4.0.4",
-		"@zerodevx/svelte-toast": "^0.9.5",
 		"autoprefixer": "^10.4.16",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",

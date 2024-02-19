@@ -10,8 +10,6 @@ COPY . .
 # clean install all dependencies
 RUN npm ci
 
-# remove potential security issues
-RUN npm audit fix
 
 ARG PUBLIC_ENDPOINT
 ENV PUBLIC_ENDPOINT ${PUBLIC_ENDPOINT}
@@ -34,9 +32,6 @@ COPY --from=builder /app/package*.json ./
 
 # clean install dependencies, no devDependencies, no prepare script
 RUN npm ci --production --ignore-scripts
-
-# remove potential security issues
-RUN npm audit fix
 
 # copy built SvelteKit app to /app
 COPY --from=builder /app/build ./

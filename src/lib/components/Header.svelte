@@ -88,6 +88,7 @@
 
 	const languageChange = (lang: string) => {
 		let newLocation = '/';
+		console.log($page)
 		if ($page.route.id) {
 			newLocation = $page.route.id;
 			if ($page.params['lang']) {
@@ -97,7 +98,7 @@
 				newLocation = newLocation.replace('[slug]', $page.params['slug']);
 			}
 		}
-		location.href = newLocation;
+		location.href = newLocation + $page.url.search;
 	};
 </script>
 
@@ -330,12 +331,12 @@
 					use:melt={$subMenuMobile1}
 					transition:fly={{ x: -50, duration: 150 }}>
 					<a
-						href={`${lang}/games/wheel-of-fortune`}
+						href={`/${lang}/games/wheel-of-fortune`}
 						class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
 						{$_('wheel-of-fortune')}
 					</a>
 					<a
-						href={`${lang}/games/flipping-cards`}
+						href={`/${lang}/games/flipping-cards`}
 						class="block px-4 py-2 text-gray-800 hover:bg-purple-500 transition-all duration-300 hover:text-white">
 						{$_('flipping-cards')}
 					</a>

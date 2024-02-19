@@ -66,7 +66,7 @@
 				}
 			});
 			setTimeout(() => {
-				goto(`/${getLocaleFromNavigator() ?? 'vi'}/login`);
+				location.href = `/${getLocaleFromNavigator() ?? 'vi'}/login`;
 			}, 2000);
 		}
 		return {};

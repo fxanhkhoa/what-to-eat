@@ -410,7 +410,18 @@
 		variables: { slug }
 	});
 
-	onMount(() => {});
+	onMount(() => {
+		const sub = locale.subscribe((lang) => {
+			if (lang?.includes('en')) {
+				setSelectedLanguage('en');
+				return;
+			}
+			if (lang) {
+				setSelectedLanguage(lang);
+			}
+		});
+		return sub;
+	});
 </script>
 
 <svelte:head>

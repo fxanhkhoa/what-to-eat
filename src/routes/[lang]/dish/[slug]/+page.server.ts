@@ -15,11 +15,11 @@ export const load = (async ({ params }) => {
 		);
 		const ingredients = await Promise.all(ingredientPromises);
 		const relatedDishes = await Promise.all(relatedDishesPromises);
-		return { dish, ingredients, relatedDishes, pageUrl: PUBLIC_PAGE_ENDPOINT };
+		return { dish, ingredients, relatedDishes, pageUrl: PUBLIC_PAGE_ENDPOINT, lang: params.lang };
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 		error(500, {
-        			message: 'Internal server error'
-        		});
+			message: 'Internal server error'
+		});
 	}
 }) satisfies PageServerLoad;
