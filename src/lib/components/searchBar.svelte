@@ -15,6 +15,14 @@
 		}
 	};
 
+	const onTextChange = (
+		event: Event & {
+			currentTarget: EventTarget & HTMLInputElement;
+		}
+	) => {
+		dispatch('textChange', event.currentTarget.value);
+	};
+
 	let recognition: any;
 	let recognizing = false;
 	let start_timestamp = 0;
@@ -101,9 +109,11 @@
 					type="text"
 					class="bg-white h-14 w-full px-12 rounded-lg focus:outline-none hover:cursor-pointer"
 					name=""
+					on:change={onTextChange}
 					bind:value={final_transcript} />
 				<span class="absolute top-4 right-5 border-l pl-4">
 					<button
+						type="button"
 						class="text-gray-500 hover:text-green-500"
 						on:click={() => recognition.start()}
 						class:animate-bounce={recognizing}

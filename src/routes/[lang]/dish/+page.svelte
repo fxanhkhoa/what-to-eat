@@ -4,9 +4,13 @@
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import DishCard from '$lib/components/dish/dish-card.svelte';
 	import { createPagination, melt } from '@melt-ui/svelte';
+	import { buildDishFilterQueryParams } from '$lib/utils/dish';
+	import type { DishFilter } from '$lib/type/dish.type';
+	import DishFilterComp from '$lib/components/dish/DishFilterComp.svelte';
+	import Empty from '$lib/components/empty.svelte';
 
 	export let data: PageData;
-	const { rows, keyword, lang, limit, page, total } = data;
+	const { rows, keyword, lang, limit, page, total, filter } = data;
 
 	const {
 		elements: { root, pageTrigger, prevButton, nextButton },
@@ -17,16 +21,23 @@
 		defaultPage: page,
 		siblingCount: 1,
 		onPageChange: (p) => {
-			if (keyword) {
-				location.href = `${location.pathname}?keyword=${keyword}&page=${p.next}`;
-			} else {
-				location.href = `${location.pathname}?page=${p.next}`;
-			}
+			onSearch(filter, p.next);
 			return p.next;
 		}
 	});
 
 	let selectedLanguage = lang === 'en-US' ? 'en' : lang;
+
+	const onSearch = (value: DishFilter, newPage?: number) => {
+		console.log(value);
+		let queryParams = buildDishFilterQueryParams(value);
+		if (queryParams === '') {
+			queryParams = `page=${newPage ? newPage : page}&limit=${limit}`;
+		} else {
+			queryParams += `&page=${newPage ? newPage : page}&limit=${limit}`;
+		}
+		location.href = `${location.pathname}?${queryParams}`;
+	};
 </script>
 
 <svelte:head>
@@ -37,7 +48,7 @@
 </svelte:head>
 
 <section id="banner">
-	<div class="banner h-64 flex flex-col gap-2 justify-center items-center text-purple-500">
+	<div class="banner h-64 flex flex-col gap-2 justify-center items-center text-purple-500 p-5">
 		<h1 class="drop-shadow-lg font-bold uppercase">{$_('metadata.dish.title')}</h1>
 		<h5 class="text-gray-200">{$_('metadata.dish.description')}</h5>
 		<div class="flex gap-2 mt-3">
@@ -55,7 +66,7 @@
 	</div>
 </section>
 
-<section id="main" class="p-5 md:p-10">
+<section id="main" class="p-5 md:p-10 flex flex-col">
 	<div class="flex">
 		<button
 			on:click={() => history.back()}
@@ -67,14 +78,22 @@
 			</span>
 		</button>
 	</div>
-	<div class="grid grid-cols-12 p-5 h-[40vh] overflow-auto">
-		<div class="col-span-12 md:col-span-2" />
-		<div class="col-span-12 md:col-span-10">
+	<div class="grid grid-cols-12 p-5 h-[80vh]">
+		<div class="col-span-12 md:col-span-3 xl:col-span-3">
+			<DishFilterComp {selectedLanguage} on:search={(result) => onSearch(result.detail)} {filter} />
+		</div>
+		<div class="col-span-12 md:col-span-9 xl:col-span-9 overflow-auto">
 			<div class="p-2 md:p-5">
 				<div class="grid grid-cols-12 gap-5">
-					{#each rows as dish, i}
-						<DishCard {dish} {selectedLanguage} />
-					{/each}
+					{#if !rows.length}
+						<div class="col-span-12 h-[60vh]">
+							<Empty />
+						</div>
+					{:else}
+						{#each rows as dish, i}
+							<DishCard {dish} {selectedLanguage} />
+						{/each}
+					{/if}
 				</div>
 			</div>
 		</div>

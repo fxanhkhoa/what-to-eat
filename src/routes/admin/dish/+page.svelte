@@ -3,7 +3,7 @@
 	import { _, locale } from 'svelte-i18n';
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
-	import { BADGE_COLOR_CLASSES } from '$lib/constant/badge';
+	import { BADGE_COLORS } from '$lib/constant/badge';
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import { getContextClient, gql, mutationStore, queryStore } from '@urql/svelte';
 	import { page } from '$app/stores';
@@ -196,9 +196,10 @@
 								<div class="flex flex-wrap gap-3 mt-3">
 									{#each dish.mealCategories as category, categoryIndex}
 										<span
-											class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
-												categoryIndex % BADGE_COLOR_CLASSES.length
-											]}">{$_(category ?? '')}</span>
+											class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {Object.values(
+												BADGE_COLORS
+											)[categoryIndex % Object.keys(BADGE_COLORS).length]}"
+											>{$_(category ?? '')}</span>
 									{/each}
 								</div>
 							</Collapsible>
@@ -206,9 +207,10 @@
 								<div class="flex flex-wrap gap-3 mt-3">
 									{#each dish.ingredientCategories as category, categoryIndex}
 										<span
-											class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {BADGE_COLOR_CLASSES[
-												categoryIndex % BADGE_COLOR_CLASSES.length
-											]}">{$_(category ?? '')}</span>
+											class="text-xs inline-flex items-center rounded-md px-2 py-1 font-medium ring-1 ring-inset {Object.values(
+												BADGE_COLORS
+											)[categoryIndex % Object.keys(BADGE_COLORS).length]}"
+											>{$_(category ?? '')}</span>
 									{/each}
 								</div>
 							</Collapsible>

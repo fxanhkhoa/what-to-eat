@@ -1,5 +1,7 @@
 import { baseHeader } from '$lib/constant/api';
 import type { APIPagination } from '$lib/type/base.type';
+import type { DishFilter } from '$lib/type/dish.type';
+import { buildDishFilterQueryParams } from '$lib/utils/dish';
 import type { Dish } from '../../gql/graphql';
 
 const prefix = 'dish';
@@ -9,12 +11,15 @@ export const DishService = {
 		endpoint: string,
 		page = 1,
 		limit = 25,
-		keyword: string | null
+		filter: DishFilter
 	): Promise<APIPagination<Dish>> => {
-		let queryParams = `page=${page}&limit=${limit}`;
-		if (keyword) {
-			queryParams += `&keyword=${keyword}`;
+		let queryParams = buildDishFilterQueryParams(filter);
+		if (queryParams === '') {
+			queryParams = `page=${page}&limit=${limit}`;
+		} else {
+			queryParams += `&page=${page}&limit=${limit}`;
 		}
+
 		const response = await fetch(`${endpoint}/${prefix}?${queryParams}`, {
 			method: 'GET',
 			headers: { ...baseHeader }

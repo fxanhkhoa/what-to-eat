@@ -5,6 +5,7 @@
 	import { createDropdownMenu, createMenubar, melt } from '@melt-ui/svelte';
 	import { fly } from 'svelte/transition';
 	import { lANGUAGES } from '$lib/constant/multi-language';
+	import '@fortawesome/fontawesome-free/css/all.min.css';
 
 	export let currentLanguage = 'en-US';
 	$: currentPath = $page.url.pathname;
@@ -88,7 +89,6 @@
 
 	const languageChange = (lang: string) => {
 		let newLocation = '/';
-		console.log($page)
 		if ($page.route.id) {
 			newLocation = $page.route.id;
 			if ($page.params['lang']) {
