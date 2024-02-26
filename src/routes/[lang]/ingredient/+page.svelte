@@ -5,6 +5,7 @@
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import { createPagination, melt } from '@melt-ui/svelte';
 	import SearchBar from '$lib/components/searchBar.svelte';
+	import Empty from '$lib/components/empty.svelte';
 
 	export let data: PageData;
 	const { rows, total, keyword, page, limit, lang } = data;
@@ -66,10 +67,8 @@
 	</div>
 	<div class="grid grid-cols-12 gap-5 overflow-auto h-[45vh]">
 		{#if !total}
-			<div
-				class="col-span-12 flex flex-col justify-center items-center gap-5 border-8 drop-shadow-lg shadow-lg">
-				<h1 class="font-bold">{$_('no-item-info')}</h1>
-				<i class="fa-solid fa-inbox text-4xl" />
+			<div class="col-span-12">
+				<Empty />
 			</div>
 		{/if}
 		{#each rows as ingredient}

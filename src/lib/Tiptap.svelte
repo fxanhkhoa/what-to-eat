@@ -6,6 +6,7 @@
 	import { Link } from '@tiptap/extension-link';
 	import { Editor } from '@tiptap/core';
 	import { createEventDispatcher, onMount } from 'svelte';
+	import '@fortawesome/fontawesome-free/css/all.min.css';
 
 	let element: any;
 	let editor: any;

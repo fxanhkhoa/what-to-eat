@@ -15,8 +15,6 @@
 	$: ({ dish, ingredients, relatedDishes, pageUrl, lang } = data);
 	let selectedLanguage = data.lang === 'en-US' ? 'en' : data.lang;
 
-	console.log(selectedLanguage)
-
 	const copyLink = () => {
 		navigator.clipboard.writeText($page.url.toString());
 		showSuccess($_('copied'), 'OK');
@@ -47,9 +45,10 @@
 		content={dish.shortDescription.find((t) => t?.lang === selectedLanguage)?.data} />
 </svelte:head>
 
-<section id="banner" class="h-[40rem] relative">
-	<img src={dish.thumbnail} alt={dish.slug} class="w-full h-full object-cover object-center" />
-</section>
+<section
+	id="banner"
+	class={`h-[20rem] md:h-[40rem] relative bg-center bg-no-repeat bg-cover`}
+	style={`background-image: url("${dish.thumbnail}");`} />
 
 <section id="main" class="p-5 md:p-10">
 	<div class="flex">
@@ -233,10 +232,15 @@
 			</a>
 		</div>
 		<hr />
-		<div class="grid grid-cols-12 gap-5">
-			{#each relatedDishes as dish}
-				<DishCard {selectedLanguage} {dish} />
-			{/each}
+		<div class="bg-slate-100 rounded-lg p-3">
+			<div class="flex justify-center mb-3">
+				<h2 class="text-purple-400 font-semibold">{$_('related-dishes')}</h2>
+			</div>
+			<div class="grid grid-cols-12 gap-5">
+				{#each relatedDishes as dish}
+					<DishCard {selectedLanguage} {dish} />
+				{/each}
+			</div>
 		</div>
 	</div>
 </section>
@@ -255,12 +259,16 @@
 	}
 
 	.dish-html-wrapper > :global(p) > :global(img) {
-		@apply object-cover h-48 w-96 transition-all duration-500 rounded-2xl border-solid border border-purple-200;
+		@apply object-cover h-auto w-96 transition-all delay-500 duration-300 ease-in-out rounded-2xl border-solid border border-purple-200;
 	}
 
-	.dish-html-wrapper > :global(p) > :global(img:hover) {
-		@apply object-cover w-[500px] h-auto;
+	.dish-html-wrapper > :global(p) > :global(code) {
+		@apply p-3 font-serif text-purple-400 rounded-lg bg-slate-50 text-base before:content-['_🌟'];
 	}
+
+	/* .dish-html-wrapper > :global(p) > :global(img:hover) {
+		@apply w-[500px];
+	} */
 
 	.dish-html-wrapper > :global(p) > :global(a) {
 		text-decoration: underline !important;

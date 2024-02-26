@@ -9,20 +9,20 @@
 </script>
 
 <div
-	class="col-span-12 md:col-span-6 xl:col-span-6 2xl:col-span-4 grid grid-cols-12 shadow-lg rounded-3xl">
-	<div class="col-span-5 pr-5">
+	class="col-span-12 lg:col-span-6 xl:col-span-6 2xl:col-span-4 grid grid-cols-12 shadow-lg rounded-3xl">
+	<div class="col-span-12 lg:col-span-5 pr-5">
 		<img src={dish.thumbnail} alt={dish.slug} class="object-cover object-center rounded-l-lg w-full h-full" />
 	</div>
-	<div class="col-span-5 flex flex-col gap-2 py-5 pr-5">
+	<div class="col-span-12 lg:col-span-5 flex flex-col gap-2 p-5 lg:pl-0 lg:pt-0">
 		<DifficultyLevel difficultLevel={dish.difficultLevel ?? DIFFICULT_LEVELS.EASY} />
 
 		<h4 class="font-bold">
 			{dish.title?.find((t) => t?.lang === selectedLanguage)?.data}
 		</h4>
-		<span class="hidden md:block text-gray-400 text-left"
+		<span class="hidden lg:block text-gray-400 text-left"
 			>{dish.shortDescription?.find((s) => s?.lang === selectedLanguage)?.data?.substring(0, 100) ??
 				''}</span>
-		<span class="md:hidden text-gray-400 text-left"
+		<span class="lg:hidden text-gray-400 text-left"
 		>{dish.shortDescription?.find((s) => s?.lang === selectedLanguage)?.data?.substring(0, 30) ??
 			''}...</span>
 		<div class="flex gap-1">
@@ -31,7 +31,7 @@
 			<span>{$_('minute')}</span>
 		</div>
 	</div>
-	<div class="col-span-2 relative">
+	<div class="col-span-12 lg:col-span-2 relative border-t border-slate-200 md:border-t-0">
 		<a
 			href={`/${selectedLanguage}/dish/${dish.slug}`}
 			class="relative w-full h-full inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-l rounded-r-3xl group border-gray-100">
@@ -40,10 +40,10 @@
 				<i class="fa-solid fa-arrow-right" />
 			</span>
 			<span
-				class="absolute hidden md:flex items-center justify-center w-full h-full text-purple-500 transition-all duration-300 transform group-hover:translate-x-full ease"
+				class="absolute hidden lg:flex items-center justify-center w-full h-full text-purple-500 transition-all duration-300 transform group-hover:translate-x-full ease"
 				>{$_('discover')}</span>
 			<span
-				class="absolute flex md:hidden items-center justify-center w-full h-full text-purple-500 transition-all duration-300 transform group-hover:translate-x-full ease"
+				class="absolute flex lg:hidden items-center justify-center w-full h-full text-purple-500 transition-all duration-300 transform group-hover:translate-x-full ease"
 				><i class="fa-solid fa-right-long" /></span>
 			<span class="relative invisible">{$_('discover')}</span>
 		</a>

@@ -1,0 +1,1 @@
+export type ColorList = 'gray' | 'red' | 'yellow' | 'green' | 'blue' | 'indigo' | 'purple' | 'pink';

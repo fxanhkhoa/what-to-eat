@@ -134,8 +134,11 @@
 							{selectedLanguage}
 							dish={item}
 							link={`/${selectedLanguage}/dish/${item.slug}`}>
-							<div class="label">
+							<div class="hidden lg:block label text-truncate text-wrap">
 								{item.title.find((e) => e?.lang === selectedLanguage)?.data?.slice(0, 20)}...
+							</div>
+							<div class="lg:hidden label">
+								{item.title.find((e) => e?.lang === selectedLanguage)?.data?.slice(0, 10)}...
 							</div>
 						</DishPreview>
 					</li>
