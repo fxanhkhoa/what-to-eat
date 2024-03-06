@@ -277,9 +277,18 @@ export type QueryDishArgs = {
 
 
 export type QueryDishesArgs = {
+  cookingTimeFrom?: InputMaybe<Scalars['Int']['input']>;
+  cookingTimeTo?: InputMaybe<Scalars['Int']['input']>;
+  difficultLevels?: InputMaybe<Scalars['String']['input']>;
+  ingredientCategories?: InputMaybe<Scalars['String']['input']>;
+  ingredients?: InputMaybe<Scalars['String']['input']>;
   keyword?: InputMaybe<Scalars['String']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
+  mealCategories?: InputMaybe<Scalars['String']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+  preparationTimeFrom?: InputMaybe<Scalars['Int']['input']>;
+  preparationTimeTo?: InputMaybe<Scalars['Int']['input']>;
+  tags?: InputMaybe<Scalars['String']['input']>;
 };
 
 

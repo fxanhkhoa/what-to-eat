@@ -9,6 +9,8 @@
 	import Tooltip from '../common/Tooltip.svelte';
 	import SearchBar from '../searchBar.svelte';
 	import { _ } from 'svelte-i18n';
+	import TagsInput from '../common/TagsInput.svelte';
+	import type { Tag } from '@melt-ui/svelte';
 
 	export let selectedLanguage = 'en';
 	export let filter: DishFilter = {};
@@ -65,9 +67,26 @@
 	const onSearch = () => {
 		dispatch('search', filter);
 	};
+
+	const addTag = (tag: string) => {
+		filter.tags = [...(filter.tags ?? []), tag];
+	};
+
+	const updateTag = (tag: Tag) => {
+		filter.tags = filter.tags?.map((e) => {
+			if (e === tag.id) {
+				e = tag.value;
+			}
+			return e;
+		});
+	};
+
+	const removeTag = (tag: Tag) => {
+		filter.tags = filter.tags?.filter((e) => e !== tag.value);
+	};
 </script>
 
-<div class="flex flex-col gap-2 p-1 pb-3 from-slate-50 to-slate-100 bg-gradient-to-br rounded-lg">
+<div class="flex flex-col gap-2 p-1 pb-3 from-slate-100 to-slate-300 bg-gradient-to-br rounded-lg">
 	<div class="mt-3">
 		<SearchBar
 			{selectedLanguage}
@@ -143,6 +162,19 @@
 			on:selectedChange={(result) => {
 				onIngredientCategoriesChange(result.detail);
 			}} />
+	</div>
+
+	<h6 class="mb-0.5 font-medium text-purple-900 px-3 text-sm">
+		<i class="fa-solid fa-tag my-auto" />
+		<span>{$_('tags')}</span>
+	</h6>
+
+	<div class="px-2">
+		<TagsInput
+			defaultTags={filter.tags?.map((e) => ({ id: e, value: e })) ?? []}
+			on:add={(result) => addTag(result.detail)}
+			on:update={(result) => updateTag(result.detail)}
+			on:remove={(result) => removeTag(result.detail)} />
 	</div>
 
 	<div class="flex px-2 mt-2">

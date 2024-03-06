@@ -3,6 +3,7 @@
 	import { slide } from 'svelte/transition';
 
 	export let title = '';
+	export let titleClass = '';
 	export let containerStyle =
 		'bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-3 rounded-lg w-full';
 
@@ -17,7 +18,7 @@
 <div use:melt={$root} class={containerStyle}>
 	<!-- Title Part -->
 	<div class="flex items-center justify-between">
-		<span class="text-sm font-semibold">
+		<span class={`text-sm font-semibold ${titleClass}`}>
 			{title}
 		</span>
 		<button

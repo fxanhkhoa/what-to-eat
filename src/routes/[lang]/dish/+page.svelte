@@ -29,7 +29,6 @@
 	let selectedLanguage = lang === 'en-US' ? 'en' : lang;
 
 	const onSearch = (value: DishFilter, newPage?: number) => {
-		console.log(value);
 		let queryParams = buildDishFilterQueryParams(value);
 		if (queryParams === '') {
 			queryParams = `page=${newPage ? newPage : page}&limit=${limit}`;
@@ -78,15 +77,15 @@
 			</span>
 		</button>
 	</div>
-	<div class="grid grid-cols-12 p-5 h-[80vh]">
+	<div class="grid grid-cols-12 p-5 md:h-[80vh]">
 		<div class="col-span-12 md:col-span-3 xl:col-span-3">
 			<DishFilterComp {selectedLanguage} on:search={(result) => onSearch(result.detail)} {filter} />
 		</div>
-		<div class="col-span-12 md:col-span-9 xl:col-span-9 overflow-auto">
+		<div class="col-span-12 md:col-span-9 xl:col-span-9 h-[60vh] md:h-auto overflow-auto">
 			<div class="p-2 md:p-5">
 				<div class="grid grid-cols-12 gap-5">
 					{#if !rows.length}
-						<div class="col-span-12 h-[60vh]">
+						<div class="col-span-12 md:h-[60vh]">
 							<Empty />
 						</div>
 					{:else}
