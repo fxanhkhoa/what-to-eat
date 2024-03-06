@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
 	import vietnamese from '$lib/images/vietnamese.webp';
 	import english from '$lib/images/english.webp';
@@ -7,51 +6,64 @@
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 	import { getContextClient, gql, mutationStore, queryStore } from '@urql/svelte';
 	import { page } from '$app/stores';
-	import type { Dish } from '../../../gql/graphql';
+	import type { Dish, QueryDishesArgs } from '../../../gql/graphql';
 	import Pagination from '$lib/components/pagination.svelte';
 	import type { Unsubscriber } from 'svelte/store';
 	import Collapsible from '$lib/components/common/Collapsible.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 	import { showError, showSuccess } from '$lib/utils/toast';
+	import DishFilterComp from '$lib/components/dish/DishFilterComp.svelte';
+	import type { DishFilter } from '$lib/type/dish.type';
+	import { queryDishGQL } from './[slug]/graphql';
+	import { DEFAULT_DISH_FILTER } from '$lib/constant/dish';
 
 	const p = parseInt($page.url.searchParams.get('page') ?? '1', 10);
-	const keyword = $page.url.searchParams.get('keyword');
 
 	const limit = 25;
 	let removeObservable: Unsubscriber;
 
 	let selectedLanguage = 'en';
+	let filter: DishFilter = DEFAULT_DISH_FILTER;
 
 	function setSelectedLanguage(lang: string) {
 		locale.set(lang);
 		selectedLanguage = lang;
 	}
 
+	const createQueryDish = () => {
+		const queryArgs: QueryDishesArgs = {
+			page: p,
+			limit,
+			keyword: filter.keyword,
+			tags: filter.tags && filter.tags.length > 0 ? filter.tags?.join(',') : null,
+			preparationTimeFrom: filter.preparationTimeFrom,
+			preparationTimeTo: filter.preparationTimeTo,
+			cookingTimeFrom: filter.cookingTimeFrom,
+			cookingTimeTo: filter.cookingTimeTo,
+			difficultLevels:
+				filter.difficultLevels && filter.difficultLevels.length > 0
+					? filter.difficultLevels?.join(',')
+					: null,
+			mealCategories:
+				filter.mealCategories && filter.mealCategories.length > 0
+					? filter.mealCategories?.join(',')
+					: null,
+			ingredientCategories:
+				filter.ingredientCategories && filter.ingredientCategories.length > 0
+					? filter.ingredientCategories?.join(',')
+					: null
+		};
+
+		return queryStore<{ dishes: Dish[] }>({
+			client,
+			query: queryDishGQL,
+			variables: queryArgs,
+			requestPolicy: 'cache-and-network'
+		});
+	};
+
 	const client = getContextClient();
-	const dishes = queryStore<{ dishes: Dish[] }>({
-		client,
-		query: gql`
-			query ($keyword: String, $page: Int, $limit: Int) {
-				dishes(keyword: $keyword, page: $page, limit: $limit) {
-					_id
-					slug
-					title {
-						lang
-						data
-					}
-					preparationTime
-					cookingTime
-					mealCategories
-					ingredientCategories
-					thumbnail
-					createdAt
-					updatedAt
-				}
-			}
-		`,
-		variables: { keyword, page: p, limit },
-		requestPolicy: 'cache-and-network'
-	});
+	let dishes = createQueryDish();
 
 	const deleteDish = async (slug: string) => {
 		if (confirm(`are you sure to delete ${slug}?`)) {
@@ -80,7 +92,10 @@
 		}
 	};
 
-	onMount(() => {});
+	const onSearch = (dishFilter: DishFilter) => {
+		filter = dishFilter;
+		dishes = createQueryDish();
+	};
 </script>
 
 <svelte:head>
@@ -113,6 +128,11 @@
 				<span class="relative text-white">+ {$_('add')}</span>
 			</a>
 		</div>
+	</div>
+	<div class="my-3">
+		<Collapsible title={$_('filter')} titleClass="text-white font-bold">
+			<DishFilterComp on:search={(result) => onSearch(result.detail)} {filter} />
+		</Collapsible>
 	</div>
 	<div class="w-full mb-5">
 		<div class="relative right-0">

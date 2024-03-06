@@ -140,5 +140,7 @@
 	"wheel-of-fortune-delete-tips": "To delete dish, drag it outside the wheel",
 	"the-result": "The Result",
 	"add-to-wheel": "Add to wheel",
-	"please-select": "Please select"
+	"please-select": "Please select",
+	"tags": "Tags",
+	"enter-to-add-tag": "Enter to add"
 }
