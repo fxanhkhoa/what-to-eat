@@ -232,7 +232,7 @@
 			</a>
 		</div>
 		<hr />
-		<div class="bg-slate-100 rounded-lg p-3">
+		<div class="rounded-lg p-3">
 			<div class="flex justify-center mb-3">
 				<h2 class="text-purple-400 font-semibold">{$_('related-dishes')}</h2>
 			</div>
